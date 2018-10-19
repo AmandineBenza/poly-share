@@ -1,59 +1,59 @@
+# Subject
+https://docs.google.com/document/d/1VVrKrDH9Hj0iGAbUADNwkXJDBd2Hnzye52RD3ASlBMA/edit
+
 # Team
 - HAJJI Amine
 - TOUTAIN Xavier
 - BENZA Amandine
 - FORNALI Damien
 
-> Master II - SI5
-> University / Polytech Sophia-Nice
+> Master II - SI5<br>
+> University / Polytech Sophia-Nice<br>
 > Cloud Computing - 2018
-
-# Subject
-https://docs.google.com/document/d/1VVrKrDH9Hj0iGAbUADNwkXJDBd2Hnzye52RD3ASlBMA/edit
 
 # Delivery 1 - 19/10
 
 1. Architecture
-	- To simplify, our upload/download files will be text (or even images according to the time we have) 
+	- To simplify, our upload/download files formats will be standard like .txt or even images (.png) according to the time we have. 
 	- We will use a database offered by the Google Cloud Storage (NoSQL or RDBMS). When compared to relational databases, NoSQL databases are more flexible and scalable. These are attributes that interest us for this project.
-	- For the functional part, here is a link to an overview of our future software architecture: https://www.lucidchart.com/documents/edit/60177311-378e-4c72-a8da-d42296f08eff/0?shared=true&
+	- For the architecture overview, please refer to the architecture folder which contains our different schemas. 
+	It contains our architectures for the different user grades.
 
 2. Elasticity
-	- A horizontal elasticity is interesting but not only comes with advantages. Indeed using it can cause problems like.
+	- As a start, we chose to use only one instance in order to establish our lower bound.
+	- A horizontal elasticity is interesting but not only comes with advantages. Indeed using it can cause problems.
 	- instances problem > take times
 	- No wanted for now, focus on one 24/7 available instance
 
 3. Plateform cost
- > Start of billing
-	- multiple components:
-		- compute engine
-			- 1 instance
-			- Free OS: Ubuntu...
-			- VM Class: Regular
-			- Instance type: n1-standard-2
-				> (2 cpu, 7.5GB): seems reasonable for our objectives
-			n1-standard-2	2	7.5GB	$48.5500	$14.60
 
-			- Local SSD: no for now
-			- Datacenter location: Belgium
-			- Average hours per day each server is running: 24/7
+ We tried to estimate the amount such a platform would cost by month.<br>
+ As we have no scaling to refer to, we issue difficulty to evaluate how many instances we need for our users capacity of 1000 users. Thus, we choose to start with only one instance, in order to be able to evaluate our lower bound cost.<br>
 
-					<RECAP>
-			730 total hours per month
-			VM class: regular
-			Instance type: n1-standard-2
-			Region: Belgium
-			Sustained Use Discount: 30% 
-			Effective Hourly Rate: EUR 0.062
-			Estimated Component Cost: EUR 45.56 per 1 month
-			EUR: Total Estimated Cost: EUR 45.56 per 1 month
-			USD: Total Estimated Cost: USD 53.45 per 1 month 
+ The Google price calculation takes in account three components:<br>
+> - The Compute Engine cost<br>
+For the Compute Engine, we tried to estimate the lower bound, but again, we have no examples or references to really know what we are doing.   
+> - The App Engine cost<br>
+> - The Cloud Storage cost<br>
 
-			https://cloud.google.com/products/calculator/#id=057d94d7-78b0-4fbd-896c-3be2b6bedd5c
+		[Compute engine cost estimation recap]
+		730 total hours per month
+		VM class: regular
+		Instance type: n1-standard-2
+		Region: Belgium
+		Sustained Use Discount: 30% 
+		Effective Hourly Rate: EUR 0.062
+		Estimated Component Cost: EUR 45.56 per 1 month
+		EUR: Total Estimated Cost: EUR 45.56 per 1 month
+		USD: Total Estimated Cost: USD 53.45 per 1 month 
 
-			- app engine
+		----
 
-			- cloud storage (TODO)
+		- [App engine]
+
+		----
+
+		- [Cloud Storage] (Coming soon...)
 
 # Subject resume and notes
 Noob [0-100]:<br>
@@ -81,7 +81,8 @@ Pull queue:
 	- worker gets the tasks
 
 # Questions
-- Does the 1 minute delay timer starts at the end of the upload ?
+- Does the 1 minute delay timer starts at the start or the end of the upload ?
+- What to refer to, to establish costs by user grade ?
 
 # Links
 Intro: https://fhermeni.github.io/sacc/sacc-introduction.pdf<br>
@@ -98,3 +99,4 @@ Platform pricing calculator: https://cloud.google.com/products/calculator/<br>
 Compute engine pricing: https://cloud.google.com/compute/pricing<br>
 Google Machine Types: https://cloud.google.com/compute/docs/machine-types<br>
 Google cloud storages: https://cloud.google.com/products/storage/<br>
+Price calculator: https://cloud.google.com/products/calculator/<br>
