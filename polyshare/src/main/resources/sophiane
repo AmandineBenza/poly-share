@@ -1,0 +1,46 @@
+	public static String getInfo() {
+		return "Version: " + System.getProperty("java.version") + " OS: " + System.getProperty("os.name") + " User: "
+				+ System.getProperty("user.name");
+	}
+	
+	
+	///
+	
+	
+	
+//	@Override
+//	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+//		Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+//		// KeyFactory keyFactory = datastore.newKeyFactory().setKind("article");
+//		
+//		Query<Entity> query = Query.newEntityQueryBuilder()
+//				.setKind("article").build();
+//		QueryResults<Entity> results = datastore.run(query);
+//		PrintWriter writer = resp.getWriter();
+//		
+//		while(results.hasNext()){
+//			Entity next = results.next();
+//			writer.format("Name: %s, price: %s, quantity: %s\n",
+//					next.getString("name"),
+//					next.getLong("price"),
+//					next.getLong("quantity"));
+//		}
+//		
+//	};
+//
+//	@Override
+//	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+//		Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+//		KeyFactory keyFactory = datastore.newKeyFactory().setKind("article");
+//		IncompleteKey key = keyFactory.setKind("article").newKey();
+//
+//		Gson gson = new Gson();
+//		Article article = gson.fromJson(req.getReader(), Article.class);
+//
+//		// Record a visit to the datastore, storing the IP and timestamp.
+//		FullEntity<IncompleteKey> curVisit = FullEntity.newBuilder(key).set("name", article.getName())
+//				.set("price", article.getPrice()).set("quantity", article.getQuantity()).build();
+//
+//		datastore.add(curVisit);
+//	}
+	
