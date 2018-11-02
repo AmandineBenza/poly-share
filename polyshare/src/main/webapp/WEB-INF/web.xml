@@ -23,6 +23,27 @@
 		<url-pattern>/datastore</url-pattern>
 	</servlet-mapping>
 	
+	
+	<servlet>
+		<servlet-name>Upload</servlet-name>
+		<servlet-class>com.lama.polyshare.upload.Upload</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Upload</servlet-name>
+		<url-pattern>/Upload</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>TaskWorker</servlet-name>
+		<servlet-class>com.lama.polyshare.upload.Worker</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>TaskWorker</servlet-name>
+		<url-pattern>/taskqueues/worker</url-pattern>
+	</servlet-mapping> 
+	
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
