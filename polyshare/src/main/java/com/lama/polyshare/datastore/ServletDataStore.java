@@ -1,4 +1,4 @@
-package com.lama.polyshare.servlet;
+package com.lama.polyshare.datastore;
 
 import java.io.IOException;
 

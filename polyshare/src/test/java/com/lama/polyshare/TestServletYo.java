@@ -4,7 +4,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.lama.polyshare.servlet.ServletYo;
 
 import org.junit.After;
 import org.junit.Before;
