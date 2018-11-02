@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.lama.polyshare.servlet.ServletHelloApp" %>
+<%@ page import="com.lama.polyshare.HelloAppEngine" %>
 <html>
 <head>
   <link href='//fonts.googleapis.com/css?family=Marmelad' rel='stylesheet' type='text/css'>
