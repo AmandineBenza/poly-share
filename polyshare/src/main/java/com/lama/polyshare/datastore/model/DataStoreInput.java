@@ -3,11 +3,11 @@ package com.lama.polyshare.datastore.model;
 public class DataStoreInput {
 
 	private String event;
-	private Object content;
+	private Object data;
 
-	public DataStoreInput(String event, Object content) {
+	public DataStoreInput(String event, Object data) {
 		this.event = event;
-		this.content = content;
+		this.data = data;
 	}
 	
 	public DataStoreInput() {
@@ -22,12 +22,11 @@ public class DataStoreInput {
 		this.event = event;
 	}
 
-	public Object getContent() {
-		return content;
+	public Object getData() {
+		return data;
 	}
 
-	public void setContent(Object content) {
-		this.content = content;
+	public void setData(Object data) {
+		this.data = data;
 	}
-
 }
