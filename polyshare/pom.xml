@@ -54,6 +54,13 @@
 			<version>${appengine.sdk.version}</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+		
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-stubs</artifactId>
@@ -159,6 +166,7 @@
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>${appengine.sdk.version}</version>
 			</plugin>
+			
 
 		</plugins>
 	</build>

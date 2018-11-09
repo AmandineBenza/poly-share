@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
          http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
@@ -20,9 +19,24 @@
 	</servlet>
 
 	<servlet>
+		<servlet-name>ServletSendMails</servlet-name>
+		<servlet-class>com.lama.polyshare.mails.ServletSendMails</servlet-class>
+	</servlet>
+
+	<servlet>
 		<servlet-name>TaskWorker</servlet-name>
 		<servlet-class>com.lama.polyshare.upload.Worker</servlet-class>
 	</servlet>
+	
+	<servlet>
+        <servlet-name>bouncehandler</servlet-name>
+        <servlet-class>com.lama.polyshare.mails.BounceHandlerServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>bouncehandler</servlet-name>
+        <url-pattern>/_ah/bounce</url-pattern>
+    </servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>ServletYo</servlet-name>
@@ -42,6 +56,11 @@
 	<servlet-mapping>
 		<servlet-name>TaskWorker</servlet-name>
 		<url-pattern>/taskqueues/worker</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>ServletSendMails</servlet-name>
+		<url-pattern>/sendmail</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>
