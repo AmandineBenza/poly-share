@@ -30,7 +30,7 @@
 	
 	<servlet>
         <servlet-name>bouncehandler</servlet-name>
-        <servlet-class>fr.unice.appengine.email.BounceHandlerServlet</servlet-class>
+        <servlet-class>com.lama.polyshare.mails.BounceHandlerServlet</servlet-class>
     </servlet>
     
     <servlet-mapping>

@@ -51,7 +51,9 @@ public class ServletSendMails extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 	    resp.getWriter().print("Sending simple email.");
-		sendMail("amandinebenza@gmail.com", "itsdamoy@gmail.com", "Damien Fornali", "Dragibus", "Smarties");
+		sendMail("itsdamoy@gmail.com", "itsdamoy@gmail.com", "Damien Fornali", "Dragibus", "Smarties");
+		sendMail("amandinebenza@gmail.com", "amandinebenza@gmail.com", "Amandine Benza", "Dragibus", "Smarties");
+
 	};
 
 	  @Override
@@ -72,7 +74,11 @@ public class ServletSendMails extends HttpServlet {
 		
 		try{ 
 			Message msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress(sender));
+			//msg.setFrom(new InternetAddress(sender));
+			msg.setFrom(new InternetAddress("cequejeveux@polyshare.appspotmail.com"));
+
+			
+			//anything@[APP_ALIAS].appspotmail.com
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient, "Dear Mr or Ms "+ recipientName));
 			msg.setSubject(subject);
 			msg.setText(body);
