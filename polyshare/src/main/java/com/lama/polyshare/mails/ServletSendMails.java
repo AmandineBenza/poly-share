@@ -1,4 +1,4 @@
-package com.lama.polyshare.datastore.mails;
+package com.lama.polyshare.mails;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
@@ -10,8 +10,9 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServlet;
 
-public class SendMails { 
+public class ServletSendMails extends HttpServlet { 
 	
 	//https://cloud.google.com/appengine/docs/standard/java/mail/sending-mail-with-mail-api
 	
@@ -33,6 +34,12 @@ public class SendMails {
 	//} catch (UnsupportedEncodingException e) {
 	//  // ...
 	//}
+
+	/**
+	 * 
+	 */
+	
+	private static final long serialVersionUID = 2316390422015026794L;
 
 	public void sendMail(String sender,String recipient,String recipientName,String subject,String body){
 		
