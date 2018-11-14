@@ -24,35 +24,15 @@ public class ServletSendMails extends HttpServlet {
 
 	
 	//https://cloud.google.com/appengine/docs/standard/java/mail/sending-mail-with-mail-api
-	
-	//Properties props = new Properties();
-	//Session session = Session.getDefaultInstance(props, null);
 
-	//try {
-	//  Message msg = new MimeMessage(session);
-	//  msg.setFrom(new InternetAddress("admin@example.com", "Example.com Admin"));
-	//  msg.addRecipient(Message.RecipientType.TO,
-	//                   new InternetAddress("user@example.com", "Mr. User"));
-	//  msg.setSubject("Your Example.com account has been activated");
-	//  msg.setText("This is a test");
-	//  Transport.send(msg);
-	//} catch (AddressException e) {
-	//  // ...
-	//} catch (MessagingException e) {
-	//  // ...
-	//} catch (UnsupportedEncodingException e) {
-	//  // ...
-	//}
-
-	/**
-	 * 
-	 */
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 	    resp.getWriter().print("Sending simple email.");
-		sendMail("itsdamoy@gmail.com", "itsdamoy@gmail.com", "Damien Fornali", "Dragibus", "Smarties");
-		sendMail("amandinebenza@gmail.com", "amandinebenza@gmail.com", "Amandine Benza", "Dragibus", "Smarties");
+		//sendMail("itsdamoy@gmail.com", "amandinebenza@gmail.com", "Damien Fornali", "Dragibus", "Smarties");
+		sendMail("amandinebenza@gmail.com", "itsdamoy@gmail.com", "Damien Fornali", "DRAGIBUS", "IT'S WORKING");
+		sendMail("amandinebenza@gmail.com", "amandinebenza@gmail.com", "Amandine Benza", "DRAGIBUS", "IT'S WORKING");
+
 
 	};
 
@@ -74,8 +54,8 @@ public class ServletSendMails extends HttpServlet {
 		
 		try{ 
 			Message msg = new MimeMessage(session);
-			//msg.setFrom(new InternetAddress(sender));
-			msg.setFrom(new InternetAddress("cequejeveux@polyshare.appspotmail.com"));
+			msg.setFrom(new InternetAddress(sender));
+			//msg.setFrom(new InternetAddress("cequejeveux@polyshare.appspotmail.com"));
 
 			
 			//anything@[APP_ALIAS].appspotmail.com
