@@ -6,10 +6,10 @@ import com.lama.polyshare.datastore.model.User.EnumUserRank;
 
 public class UserEdition {
 
-	private UserIdentifier oid;
-	private Date lastSendDate;
-	private EnumUserRank rank;
-	private int points;
+	private UserIdentifier oid = null;
+	private Date lastSendDate = null;
+	private EnumUserRank rank = EnumUserRank.NONE;
+	private int points = -1;
 	
 	public UserEdition(UserIdentifier oid, long keyID, Date lastSendDate, EnumUserRank rank, int points) {
 		this.oid = oid;

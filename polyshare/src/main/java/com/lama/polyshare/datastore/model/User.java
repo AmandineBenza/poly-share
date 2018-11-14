@@ -89,6 +89,18 @@ public class User {
 	}
 	
 	public User editWith(UserEdition edition) {
+		if(edition.getLastSendDate() != null) {
+			lastSendDate = edition.getLastSendDate();
+		}
+		
+		if(edition.getPoints() != -1) {
+			points = edition.getPoints();
+		}
+		
+		if(edition.getRank() != EnumUserRank.NONE) {
+			rank = edition.getRank();
+		}
+		
 		return this;
 	}
 	
@@ -102,7 +114,7 @@ public class User {
 
 	// Rank 
 	public static enum EnumUserRank {
-		NOOB, CASUAL, LEET;
+		NONE, NOOB, CASUAL, LEET;
 	}
 	
 }

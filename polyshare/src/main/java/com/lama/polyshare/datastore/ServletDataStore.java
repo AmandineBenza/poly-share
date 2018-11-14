@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.cloud.datastore.Key;
-import com.google.cloud.AsyncPageImpl.NextPageFetcher;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
@@ -16,8 +15,8 @@ import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import com.google.gson.JsonObject;
 import com.lama.polyshare.commons.JSONUtils;
-import com.lama.polyshare.datastore.model.DataStoreInput;
 import com.lama.polyshare.datastore.model.DataStoreMessage;
 import com.lama.polyshare.datastore.model.User;
 import com.lama.polyshare.datastore.model.User.EnumUserRank;
@@ -51,16 +50,18 @@ public class ServletDataStore extends HttpServlet {
 	 */
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		DataStoreInput input = JSONUtils.fromJson(req.getReader(), DataStoreInput.class);
+		JsonObject root = JSONUtils.fromJson(req.getReader(), JsonObject.class);
+		System.out.println(root);
+		String event = root.get("event").getAsString();
 		String result = "Empty.";
 		
-		switch(input.getEvent()) {
+		switch(event){
 			case "create-user": {
-				result = handleUserCreation(input);
+				result = handleUserCreation(root.get("data").toString());
 				break;
 			}
 			case "edit-user": {
-				result = handleUserEdition(input);
+				result = handleUserEdition(root.get("data").toString());
 				break;
 			}
 		}
@@ -68,8 +69,8 @@ public class ServletDataStore extends HttpServlet {
 		resp.getWriter().println(result);
 	}
 	
-	private String handleUserCreation(DataStoreInput input) {
-		User newUser = (User) input.getData();
+	private String handleUserCreation(String userJson) {
+		User newUser = JSONUtils.fromJson(userJson, User.class);
 		Key key = keyFactory.setKind("user").newKey(newUser.getMail());
 		
 		Query<Entity> query = Query.newEntityQueryBuilder()
@@ -92,9 +93,8 @@ public class ServletDataStore extends HttpServlet {
 		return JSONUtils.toJson(entity);
 	}
 	
-	private String handleUserEdition(DataStoreInput input) {
-		UserEdition userEdition = (UserEdition) input.getData();
-		Key key = keyFactory.setKind("user").newKey(userEdition.getOID().getKeyID());
+	private String handleUserEdition(String userEditionJson) {
+		UserEdition userEdition = JSONUtils.fromJson(userEditionJson, UserEdition.class);
 		
 		Query<Entity> query = Query.newEntityQueryBuilder()
 				.setKind("user")
@@ -110,7 +110,6 @@ public class ServletDataStore extends HttpServlet {
 		
 		Entity toEditEntity = users.next();
 		User toEditUser  = User.fromEntity(toEditEntity);
-		// TODO EDIT
 		toEditUser.editWith(userEdition);
 		datastore.update(toEditUser.toEntity());
 		return JSONUtils.toJson(toEditUser);
