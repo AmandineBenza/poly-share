@@ -75,8 +75,8 @@ public class Upload extends HttpServlet {
 				.param("downloadLink", downloadLink)
 				.param("fileSize",String.valueOf(fileSize)));
 		
-		storageHelper.downloadFile("staging.poly-share.appspot.com", "python");
-
+		Blob b = storageHelper.downloadFile("staging.poly-share.appspot.com", "Script.py-2018-11-14-220218976");
+//		b.getContent(BlobSourceOption.);
 		try {
 			resp.getWriter().write(downloadLink);
 		} catch (Exception e) {

@@ -23,7 +23,6 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-// [START example]
 public class CloudStorageHelper {
 
 	private static Storage storage = null;
@@ -82,7 +81,7 @@ public class CloudStorageHelper {
 		// Check extension of file
 		if (fileName != null && !fileName.isEmpty() && fileName.contains(".")) {
 			final String extension = fileName.substring(fileName.lastIndexOf('.') + 1);
-			String[] allowedExt = {"jpg", "jpeg", "png", "gif",".pdf","txt"};
+			String[] allowedExt = {"jpg", "jpeg", "png", "gif",".pdf","txt","py","html",".dat"};
 			for (String s : allowedExt) {
 				if (extension.equals(s)) {
 					return this.uploadFile(filePart, bucket);
@@ -92,4 +91,5 @@ public class CloudStorageHelper {
 		}
 		return null;
 	}
+	
 }
