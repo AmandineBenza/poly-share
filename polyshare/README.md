@@ -41,7 +41,7 @@ to (`src/main/test/...`).  The following resources are quite useful:
 
 ## Updating to latest Artifacts
 
-An easy way to keep your projects up to date is to use the maven [Versions plugin][versions-plugin].
+An easy way to keep your projects up to date is to use the maven.
 
     mvn versions:display-plugin-updates
     mvn versions:display-dependency-updates
