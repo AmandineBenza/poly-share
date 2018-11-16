@@ -1,6 +1,7 @@
 package com.lama.polyshare.upload;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,32 +55,11 @@ public class Upload extends HttpServlet {
 				storageHelper.getImageOrTxtUrl(
 						req, resp, "staging.poly-share.appspot.com");//"polyshare.appspot.com");
 
-//		JsonObject root = JSONUtils.fromJson(req.getReader(), JsonObject.class);
-//		System.out.println(root);
-//		String event = root.get("event").getAsString();
-//		String result = "Empty.";
-		
-		
-//	    response.setCharacterEncoding("UTF-8");
-//        String filename = "DSR.xlsx";   
-//        response.setContentType("application/octet-stream");   
-//        response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\"");   
-//
-//        try (OutputStream out = response.getOutputStream()){
-//            File toBeCopied = new File("C://Users/Metro/Desktop/DSR.xlsx");
-//            Path path = toBeCopied.toPath();
-//            Files.copy(path, out);
-//            out.flush();
-//        }catch(IOException e){
-//            e.printStackTrace();
-//        }
-		
 		JsonObject root = new JsonObject();
 		JsonObject userData = new JsonObject();
 		root.addProperty("event","edit-user");
 		User plasticUser = new User(); 
-		
-		
+
 		String downloadLink = docInformation.getMediaLink();
 		long fileSize = docInformation.getSize();
 		plasticUser.setLastSendDate(new Date());
@@ -90,21 +70,12 @@ public class Upload extends HttpServlet {
 				.param("downloadLink", downloadLink)
 				.param("fileSize",String.valueOf(fileSize)));
 
-		
-		Blob b = storageHelper.downloadFile("staging.poly-share.appspot.com", "Script.py-2018-11-14-220218976");
-		b.getContent();
-//		resp.set
 		try {
-			resp.getWriter().write(downloadLink);
+			//			resp.getWriter().write(downloadLink);
 		} catch (Exception e) {
 			throw new ServletException("Error updating book", e);
 		}
 	}
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-
-	}
+	
 }
