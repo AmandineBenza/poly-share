@@ -37,23 +37,20 @@ public class ServletSendMails extends HttpServlet {
 //		resp.getWriter().print("Sending simple email.");
 //		sendMail("amandinebenza@gmail.com", "itsdamoy@gmail.com", "Damien Fornali", "DRAGIBUS", "IT'S WORKING");
 //		sendMail("amandinebenza@gmail.com", "amandinebenza@gmail.com", "Amandine Benza", "DRAGIBUS", "IT'S WORKING");
-//		sendUploadMail("amandine@benza.fr", "https://imggram.net/profile/fabulousnoisette/9147555548");
-//		sendDownloadMail("itsdamoy@gmail.com", "https://imggram.net/profile/fabulousnoisette/9147555548");
-//		sendDownloadMail("amandine@benza.fr", "https://imggram.net/profile/fabulousnoisette/9147555548");
 //		sendNoob("amandine@benza.fr");
 	};
 
-	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		  String type = req.getParameter("type");
-    if (type != null && type.equals("multipart")) {
-      resp.getWriter().print("Sending HTML email with attachment.");
-      sendMultipartMail();
-    } else {
-      resp.getWriter().print("Sending simple email.");
-      sendMail();
-    }
-	}
+//	@Override
+//	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+//		  String type = req.getParameter("type");
+//    if (type != null && type.equals("multipart")) {
+//      resp.getWriter().print("Sending HTML email with attachment.");
+//      sendMultipartMail();
+//    } else {
+//      resp.getWriter().print("Sending simple email.");
+//      sendMail();
+//    }
+//	}
 
 	public void sendMail(String sender, String recipient, String recipientName, String subject, String body) {
 
