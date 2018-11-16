@@ -51,7 +51,7 @@ public class ServletSendMails extends HttpServlet {
       sendMultipartMail();
     } else {
       resp.getWriter().print("Sending simple email.");
-      sendSimpleMail();
+      sendMail();
     }
 	}
 
@@ -92,5 +92,6 @@ public class ServletSendMails extends HttpServlet {
 	public void sendNoob(String recipient) {
 		sendMail("amandinebenza@gmail.com", recipient, "", "Here's your link", "Lol. No noob.");	
 	}
+    
 	
 }

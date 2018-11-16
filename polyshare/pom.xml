@@ -175,6 +175,12 @@
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>${appengine.sdk.version}</version>
+                <configuration>
+               <jvmFlags>
+                      <jvmFlag>-Ddatastore.backing_store=${project.basedir}/local_db.bin</jvmFlag>
+                  </jvmFlags>
+                  <fullScanSeconds>-1</fullScanSeconds>
+            </configuration>
 			</plugin>
 
 			<plugin>
