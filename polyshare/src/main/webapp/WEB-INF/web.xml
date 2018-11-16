@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<
 <web-app version="3.0">
+
 	<servlet>
 		<servlet-name>ServletYo</servlet-name>
 		<servlet-class>com.lama.polyshare.ServletYo</servlet-class>
@@ -15,9 +17,24 @@
 	</servlet>
 
 	<servlet>
+		<servlet-name>ServletSendMails</servlet-name>
+		<servlet-class>com.lama.polyshare.mails.ServletSendMails</servlet-class>
+	</servlet>
+
+	<servlet>
 		<servlet-name>TaskWorker</servlet-name>
 		<servlet-class>com.lama.polyshare.upload.Worker</servlet-class>
 	</servlet>
+	
+	<servlet>
+        <servlet-name>bouncehandler</servlet-name>
+        <servlet-class>com.lama.polyshare.mails.BounceHandlerServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>bouncehandler</servlet-name>
+        <url-pattern>/_ah/bounce</url-pattern>
+    </servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>ServletYo</servlet-name>
@@ -37,6 +54,11 @@
 	<servlet-mapping>
 		<servlet-name>TaskWorker</servlet-name>
 		<url-pattern>/taskqueues/worker</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>ServletSendMails</servlet-name>
+		<url-pattern>/sendmail</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>
