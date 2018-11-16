@@ -2,13 +2,14 @@ package com.lama.polyshare.datastore;
 
 import java.util.Date;
 
-import com.lama.polyshare.datastore.model.User.EnumUserRank;
+import com.lama.polyshare.datastore.model.EnumUserRank;
 
+// TODO
 public class UserEdition {
 
 	private UserIdentifier oid = null;
 	private Date lastSendDate = null;
-	private EnumUserRank rank = EnumUserRank.NONE;
+	private EnumUserRank rank = null;
 	private int points = -1;
 	
 	public UserEdition(UserIdentifier oid, long keyID, Date lastSendDate, EnumUserRank rank, int points) {
