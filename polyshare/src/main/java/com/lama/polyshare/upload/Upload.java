@@ -18,6 +18,7 @@ import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Blob.BlobSourceOption;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
@@ -47,7 +48,6 @@ public class Upload extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException,
 	ServletException {
 
-
 		CloudStorageHelper storageHelper =	new CloudStorageHelper();
 
 		BlobInfo docInformation =
@@ -58,6 +58,21 @@ public class Upload extends HttpServlet {
 //		System.out.println(root);
 //		String event = root.get("event").getAsString();
 //		String result = "Empty.";
+		
+		
+//	    response.setCharacterEncoding("UTF-8");
+//        String filename = "DSR.xlsx";   
+//        response.setContentType("application/octet-stream");   
+//        response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\"");   
+//
+//        try (OutputStream out = response.getOutputStream()){
+//            File toBeCopied = new File("C://Users/Metro/Desktop/DSR.xlsx");
+//            Path path = toBeCopied.toPath();
+//            Files.copy(path, out);
+//            out.flush();
+//        }catch(IOException e){
+//            e.printStackTrace();
+//        }
 		
 		JsonObject root = new JsonObject();
 		JsonObject userData = new JsonObject();
@@ -74,9 +89,11 @@ public class Upload extends HttpServlet {
 				.payload(JSONUtils.toJson(plasticUser))
 				.param("downloadLink", downloadLink)
 				.param("fileSize",String.valueOf(fileSize)));
+
 		
 		Blob b = storageHelper.downloadFile("staging.poly-share.appspot.com", "Script.py-2018-11-14-220218976");
-//		b.getContent(BlobSourceOption.);
+		b.getContent();
+//		resp.set
 		try {
 			resp.getWriter().write(downloadLink);
 		} catch (Exception e) {
