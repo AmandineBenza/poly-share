@@ -16,31 +16,36 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 public class ServletSendMails extends HttpServlet {
 
 	private static final long serialVersionUID = 2316390422015026794L;
+	
+	public ServletSendMails() {
+	}
+	
+	private final static ServletSendMails INSTANCE = new ServletSendMails();
 
+	public static ServletSendMails getInstance(){
+		return INSTANCE;
+	}
+	
 	// https://cloud.google.com/appengine/docs/standard/java/mail/sending-mail-with-mail-api
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		resp.getWriter().print("Sending simple email.");
-		//sendMail("amandinebenza@gmail.com", "itsdamoy@gmail.com", "Damien Fornali", "DRAGIBUS", "IT'S WORKING");
-		//sendMail("amandinebenza@gmail.com", "amandinebenza@gmail.com", "Amandine Benza", "DRAGIBUS", "IT'S WORKING");
-		sendUploadMail("amandine@benza.fr", "https://imggram.net/profile/fabulousnoisette/9147555548");
-		sendDownloadMail("itsdamoy@gmail.com", "https://imggram.net/profile/fabulousnoisette/9147555548");
-		sendDownloadMail("amandine@benza.fr", "https://imggram.net/profile/fabulousnoisette/9147555548");
-		sendNoob("amandine@benza.fr");
+//		resp.getWriter().print("Sending simple email.");
+//		sendMail("amandinebenza@gmail.com", "itsdamoy@gmail.com", "Damien Fornali", "DRAGIBUS", "IT'S WORKING");
+//		sendMail("amandinebenza@gmail.com", "amandinebenza@gmail.com", "Amandine Benza", "DRAGIBUS", "IT'S WORKING");
+//		sendUploadMail("amandine@benza.fr", "https://imggram.net/profile/fabulousnoisette/9147555548");
+//		sendDownloadMail("itsdamoy@gmail.com", "https://imggram.net/profile/fabulousnoisette/9147555548");
+//		sendDownloadMail("amandine@benza.fr", "https://imggram.net/profile/fabulousnoisette/9147555548");
+//		sendNoob("amandine@benza.fr");
 	};
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		String type = req.getParameter("type");
-		if (type != null) {
-			resp.getWriter().print("Sending simple email.");
-			sendMail("amandinebenza@gmail.com", "itsdamoy@gmail.com", "Damien Fornali", "Dragibus", "Smarties");
-			resp.getWriter().print("Done ?");
-		}
+		
 	}
 
 	public void sendMail(String sender, String recipient, String recipientName, String subject, String body) {
