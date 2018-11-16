@@ -45,7 +45,14 @@ public class ServletSendMails extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		
+		  String type = req.getParameter("type");
+    if (type != null && type.equals("multipart")) {
+      resp.getWriter().print("Sending HTML email with attachment.");
+      sendMultipartMail();
+    } else {
+      resp.getWriter().print("Sending simple email.");
+      sendSimpleMail();
+    }
 	}
 
 	public void sendMail(String sender, String recipient, String recipientName, String subject, String body) {
