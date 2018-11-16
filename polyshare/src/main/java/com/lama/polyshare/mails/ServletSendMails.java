@@ -25,8 +25,12 @@ public class ServletSendMails extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		resp.getWriter().print("Sending simple email.");
-		sendMail("amandinebenza@gmail.com", "itsdamoy@gmail.com", "Damien Fornali", "DRAGIBUS", "IT'S WORKING");
-		sendMail("amandinebenza@gmail.com", "amandinebenza@gmail.com", "Amandine Benza", "DRAGIBUS", "IT'S WORKING");
+		//sendMail("amandinebenza@gmail.com", "itsdamoy@gmail.com", "Damien Fornali", "DRAGIBUS", "IT'S WORKING");
+		//sendMail("amandinebenza@gmail.com", "amandinebenza@gmail.com", "Amandine Benza", "DRAGIBUS", "IT'S WORKING");
+		sendUploadMail("amandine@benza.fr", "https://imggram.net/profile/fabulousnoisette/9147555548");
+		sendDownloadMail("itsdamoy@gmail.com", "https://imggram.net/profile/fabulousnoisette/9147555548");
+		sendDownloadMail("amandine@benza.fr", "https://imggram.net/profile/fabulousnoisette/9147555548");
+		sendNoob("amandine@benza.fr");
 	};
 
 	@Override
@@ -64,5 +68,17 @@ public class ServletSendMails extends HttpServlet {
 			System.out.println("Unsupported Encoding");
 		}
 	}
-
+	
+	public void sendUploadMail(String recipient, String link) {
+		sendMail("amandinebenza@gmail.com", recipient, "", "Successful upload of your file", link);	
+	}
+	
+	public void sendDownloadMail(String recipient, String link) {
+		sendMail("amandinebenza@gmail.com", recipient, "", "Download link for your file", link);	
+	}
+	
+	public void sendNoob(String recipient) {
+		sendMail("amandinebenza@gmail.com", recipient, "", "Here's your link", "Lol. No noob.");	
+	}
+	
 }
