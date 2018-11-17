@@ -22,12 +22,11 @@ import com.lama.polyshare.upload.CloudStorageHelper;
 public class DeleteFilesJob extends HttpServlet {
 
 	private static final long serialVersionUID = -4274864314000137136L;
-	
 	private final static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 	private static final CloudStorageHelper cloudHelper = new CloudStorageHelper();
 	
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse resp)
+	protected void doPost(HttpServletRequest request, HttpServletResponse resp)
 			throws ServletException, IOException {
 		Query<Entity> noobFiles = Query.newEntityQueryBuilder().setKind("FileUploaded")
 				.setFilter(CompositeFilter.and(PropertyFilter.eq("rank", EnumUserRank.NOOB.toString()), PropertyFilter.lt("uploadRequestStart",
