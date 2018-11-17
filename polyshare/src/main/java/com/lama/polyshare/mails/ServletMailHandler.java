@@ -1,3 +1,4 @@
+package com.lama.polyshare.mails;
 ///*
 // * Copyright 2016 Google Inc.
 // *

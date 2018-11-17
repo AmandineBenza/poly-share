@@ -1,6 +1,7 @@
 package com.lama.polyshare.datastore.model;
 
 import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.EntityQuery.Builder;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.lama.polyshare.datastore.ServletDataStore;
@@ -47,6 +48,10 @@ public final class UserManager {
 	public QueryResults<Entity> getAll(String kind) {
 		return ServletDataStore.datastore.run(Query.newEntityQueryBuilder()
 				.setKind(kind).build());
+	}
+	
+	public Builder getUserQueryBuilder(int nbUsers) {
+		return Query.newEntityQueryBuilder().setKind("user").setLimit(nbUsers);
 	}
 	
 	public Entity getUserByMail(String userMail) {

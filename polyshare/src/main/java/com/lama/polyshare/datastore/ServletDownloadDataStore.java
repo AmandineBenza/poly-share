@@ -21,7 +21,7 @@ import com.lama.polyshare.commons.Utils;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 
 @SuppressWarnings("serial")
-public class DownloadDataStoreServlet extends HttpServlet {
+public class ServletDownloadDataStore extends HttpServlet {
 
 	private final static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 	public final static KeyFactory keyFactory = datastore.newKeyFactory();
@@ -35,11 +35,9 @@ public class DownloadDataStoreServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		handleDownloadRequest(req);
-
 	}
 
 	private void handleDownloadRequest(HttpServletRequest req) {
-
 		IncompleteKey key = keyFactory.setKind("customsLinks").newKey();
 		String mail = req.getParameter("userMail");
 		Query<Entity> uploadQuery = Query.newEntityQueryBuilder().setKind("FileUploaded")

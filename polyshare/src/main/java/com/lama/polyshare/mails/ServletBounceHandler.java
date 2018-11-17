@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.mail.BounceNotification;
 import com.google.appengine.api.mail.BounceNotificationParser;
 
-public class BounceHandlerServlet extends HttpServlet{
+public class ServletBounceHandler extends HttpServlet{
 	
 	/**
 	 * 

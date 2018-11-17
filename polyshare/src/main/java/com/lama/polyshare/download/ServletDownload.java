@@ -22,7 +22,7 @@ import com.lama.polyshare.datastore.model.UserManager;
 import com.lama.polyshare.upload.CloudStorageHelper;
 
 @SuppressWarnings("serial")
-public class DownloadServlet extends HttpServlet  {
+public class ServletDownload extends HttpServlet  {
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse resp)
