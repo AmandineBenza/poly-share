@@ -41,18 +41,18 @@ public class DataStoreWorker extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		String event = req.getParameter("event");
 		String result = "Empty.";
-		
+
 		switch(event){
-			case "consults": {
-				result = handleUsersConsultation();
-				break;
-			}
-			case "consult" : {
-				result = handleUserConsultation(req.getParameter("mail"));
-				break;
-			}
+		case "consults": {
+			result = handleUsersConsultation();
+			break;
 		}
-		
+		case "consult" : {
+			result = handleUserConsultation(req.getParameter("mail"));
+			break;
+		}
+		}
+
 		resp.getWriter().println(result);
 	};
 
@@ -83,21 +83,21 @@ public class DataStoreWorker extends HttpServlet {
 		String result = "Empty.";
 
 		switch(event){
-			case "create-user": {
-				result = handleUserCreation(root);
-				break;
-			}
-			case "create-users": {
-				result = handleUserCreations(root);
-				break;
-			}
-			case "edit-user": {
-				result = handleUserEdition(root, 
-						req.getParameter("fileSize"),
-						req.getParameter("downloadLink"), 
-						req.getParameter("fileName"));
-				break;
-			}
+		case "create-user": {
+			result = handleUserCreation(root);
+			break;
+		}
+		case "create-users": {
+			result = handleUserCreations(root);
+			break;
+		}
+		case "edit-user": {
+			result = handleUserEdition(root, 
+					req.getParameter("fileSize"),
+					req.getParameter("downloadLink"), 
+					req.getParameter("fileName"));
+			break;
+		}
 		}
 
 		resp.getWriter().println(result);
@@ -144,7 +144,7 @@ public class DataStoreWorker extends HttpServlet {
 	}
 
 	private String handleUserCreations(JsonObject msgRoot) {
-		
+
 		JsonArray usersJson = msgRoot.get("data").getAsJsonArray();
 		StringBuffer buffer = new StringBuffer();
 		int cpt = 1;
@@ -154,7 +154,7 @@ public class DataStoreWorker extends HttpServlet {
 			buffer.append(handleUserCreation(userJson.getAsJsonObject()));
 			buffer.append("\n");
 		}
-		
+
 		return buffer.toString();
 	}
 
@@ -176,9 +176,9 @@ public class DataStoreWorker extends HttpServlet {
 		JsonElement userBytesCount = msgRoot.get("bytesCount");
 		System.out.println(		);
 		int newNumberOfBytes =  (int) toEditUser.getLong("bytesCount") + Integer.parseInt(fileSize.trim());
-		
+
 		toEditUser = UserManager.instance.editUser(toEditUser,
-				
+
 				(userDateElement == null ? 
 						Timestamp.now() : 
 							Timestamp.parseTimestamp(userDateElement.getAsString())),
@@ -192,46 +192,57 @@ public class DataStoreWorker extends HttpServlet {
 
 		registerUpload(toEditUser.getString("mail"),
 				EnumUserRank.valueOf(toEditUser.getString("rank")), fileName, downloadLink);
-		
+
 		datastore.update(toEditUser);
 		return JSONUtils.toJson(datastore.get(toEditUser.getKey()));
 	}
-	
-	
+
+
 	private void registerUpload(String mail, EnumUserRank rank, String fileName, String downloadLink) throws IOException {
 		IncompleteKey key = keyFactory.setKind("FileUploaded").newKey();
-		
-		Query<Entity> uploadQuery = Query.newEntityQueryBuilder().setKind("FileUploaded")
-				.setFilter(CompositeFilter.and(PropertyFilter.eq("mail", mail), PropertyFilter.gt("uploadRequestStart",
-						Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
-				.build();
-
-		QueryResults<Entity> upload = datastore.run(uploadQuery);
-
-		Query<Entity> downloadQuery = Query.newEntityQueryBuilder().setKind("FileDownloaded")
-				.setFilter(
-						CompositeFilter
-								.and(PropertyFilter.eq("mail", mail),
-										PropertyFilter.gt("downloadRequestStart",
-												Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
-				.build();
-
-		QueryResults<Entity> download = datastore.run(downloadQuery);
 		int downloadCpt = 0;
 		int uploadCpt = 0;
-		while (download.hasNext()) {
-			download.next();
-			downloadCpt++;
+
+//		try {
+			Query<Entity> uploadQuery = Query.newEntityQueryBuilder()
+					.setKind("FileUploaded")
+					.setFilter(CompositeFilter.and(PropertyFilter.eq("mail", mail),
+							PropertyFilter.gt("UploadRequestStart",
+							Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
+					.build();
+
+			QueryResults<Entity> upload = datastore.run(uploadQuery);
+			
+			while (upload.hasNext()) {
+				upload.next();
+				uploadCpt++;
+			}
+//		}catch(Exception e){
+//		}
+		
+		try {
+			Query<Entity> downloadQuery = Query.newEntityQueryBuilder().setKind("FileDownloaded")
+					.setFilter(
+							CompositeFilter
+							.and(PropertyFilter.eq("mail", mail),
+									PropertyFilter.gt("downloadRequestStart",
+											Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
+					.build();
+
+			QueryResults<Entity> download = datastore.run(downloadQuery);
+			while (download.hasNext()) {
+				download.next();
+				downloadCpt++;
+			}
+		}
+		catch(Exception e){
 		}
 
-		while (upload.hasNext()) {
-			upload.next();
-			uploadCpt++;
-		}
+
 
 		if (Utils.isAuthorizedRequest(downloadCpt + uploadCpt, rank)) {
 			String id = Timestamp.now().toString();
-			
+
 			datastore.add(Entity.newBuilder(DataStoreWorker.keyFactory.newKey()).setKey(key)
 					.set("mail", mail)
 					.set("id", id).set("UploadRequestStart", Timestamp.now())
@@ -245,7 +256,7 @@ public class DataStoreWorker extends HttpServlet {
 			ServletSendMails.instance.sendNoob(mail);
 		}
 	}
-	
+
 	private String handleUsersConsultation() {
 		StringBuffer buffer = new StringBuffer();
 		QueryResults<Entity> users = UserManager.instance.getAllUsers();
@@ -259,11 +270,11 @@ public class DataStoreWorker extends HttpServlet {
 
 		return buffer.toString();
 	}
-	
+
 	private String handleUserConsultation(String mail) {
 		if(mail == null || mail.isEmpty())
 			return "Input mail badly formed.";
-		
+
 		return JSONUtils.toJson(UserManager.instance.getUserByMail(mail));
 	}
 

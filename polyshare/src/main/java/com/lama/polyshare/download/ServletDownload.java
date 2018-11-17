@@ -74,7 +74,6 @@ public class ServletDownload extends HttpServlet  {
 			// mail ou resp.senderreur400 invalid operation pour son rang ou sa vie ou idk balec
 			resp.sendError(404);
 		}
-
 	}
 
 	@Override
