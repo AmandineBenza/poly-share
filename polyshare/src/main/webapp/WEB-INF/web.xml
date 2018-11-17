@@ -6,10 +6,10 @@
 		<servlet-name>ServletYo</servlet-name>
 		<servlet-class>com.lama.polyshare.ServletYo</servlet-class>
 	</servlet>
-	<!-- <servlet>
+	<servlet>
 		<servlet-name>ServletDataStore</servlet-name>
 		<servlet-class>com.lama.polyshare.datastore.ServletDataStore</servlet-class>
-	</servlet> -->
+	</servlet>
 
 	<servlet>
 		<servlet-name>Upload</servlet-name>
@@ -28,7 +28,7 @@
 	
 	<servlet>
         <servlet-name>bouncehandler</servlet-name>
-        <servlet-class>com.lama.polyshare.mails.BounceHandlerServlet</servlet-class>
+        <servlet-class>com.lama.polyshare.mails.ServletBounceHandler</servlet-class>
     </servlet>
     
     <servlet-mapping>
@@ -41,10 +41,10 @@
 		<url-pattern>/yo</url-pattern>
 	</servlet-mapping>
 
-	<!-- <servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>ServletDataStore</servlet-name>
 		<url-pattern>/datastore</url-pattern>
-	</servlet-mapping> -->
+	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>Upload</servlet-name>
