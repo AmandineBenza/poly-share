@@ -27,9 +27,9 @@ import com.lama.polyshare.datastore.model.UserManager;
 @SuppressWarnings("serial")
 public class ServletDataStore extends HttpServlet {
 
-	public final static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-	public final static DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
-	public final static KeyFactory keyFactory = datastore.newKeyFactory();
+	public volatile static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+	public volatile static DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+	public volatile static KeyFactory keyFactory = datastore.newKeyFactory();
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {

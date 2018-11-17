@@ -8,7 +8,7 @@ import com.lama.polyshare.datastore.ServletDataStore;
 
 public final class UserManager {
 	
-	public final static UserManager instance = new UserManager();
+	public volatile static UserManager instance = new UserManager();
 	
 	private UserManager() {}
 	
