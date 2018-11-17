@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "a42fe150-7c9a-46f5-93fa-59c57f2bb320",
+		"name": "Poly-share",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create-user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"event\":\"create-user\", \"mail\":\"daniella@gmail.com\",\"rank\":\"Noob\"}"
+				},
+				"url": {
+					"raw": "localhost:8080/datastore",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"datastore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create-users",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"event\":\"create-users\", \"data\": [\n\t\t{\n\t\t\t\"mail\":\"kayler@lol.com\",\n\t\t\t\"rank\":\"Noob\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"eventuaal@consistency.com\",\n\t\t\t\"rank\":\"Noob\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"jaax@fat.com\",\n\t\t\t\"rank\":\"Casual\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"faab@brouillon.org\",\n\t\t\t\"rank\":\"Casual\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"faker@ahokpenta.ko\",\n\t\t\t\"rank\":\"Leet\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"reponseDeih@random.fr\",\n\t\t\t\"rank\":\"Leet\"\n\t\t}\n\t]\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/datastore",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"datastore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit-user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"event\":\"edit-user\", \"mail\":\"itsdamoy@gmail.com\",\"points\":\"75\", \"bytesCount\":\"80\"}"
+				},
+				"url": {
+					"raw": "localhost:8080/datastore",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"datastore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consult-user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"event\":\"consult-user\",\"mail\":\"eventual@consistency.com\"}"
+				},
+				"url": {
+					"raw": "localhost:8080/datastore",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"datastore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consult-users",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"event\":\"consult-users\"}"
+				},
+				"url": {
+					"raw": "localhost:8080/datastore",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"datastore"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
