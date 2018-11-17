@@ -2,19 +2,18 @@ package com.lama.polyshare.datastore.model;
 
 public class DataStoreMessage {
 
-	private String info;
+	private String[] infos;
 	
-	public DataStoreMessage(String info) {
-		super();
-		this.info = info;
+	public DataStoreMessage(String... infos) {
+		this.infos = infos;
 	}
 
-	public String getInfo() {
-		return info;
+	public String[] getInfos() {
+		return infos;
 	}
 
-	public void setInfo(String info) {
-		this.info = info;
+	public void setInfos(String[] infos) {
+		this.infos = infos;
 	}
-	
+
 }

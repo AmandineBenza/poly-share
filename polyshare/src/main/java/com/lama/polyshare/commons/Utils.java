@@ -11,5 +11,5 @@ public final class Utils {
 	public static int irand(int min, int max) {
 		return SEED.nextInt(max - min) + min;
 	}
-
+	
 }
