@@ -1,11 +1,12 @@
 com/lama/polyshare/mails/ServletBounceHandler.class
-com/lama/polyshare/datastore/ServletDataStore$1.class
 com/lama/polyshare/upload/Worker.class
+com/lama/polyshare/datastore/DownloadDataStoreWorker.class
+com/lama/polyshare/datastore/DataStoreWorker$1.class
 com/lama/polyshare/upload/Upload.class
 com/lama/polyshare/ServletYo.class
 com/lama/polyshare/datastore/model/EnumUserRank.class
 com/lama/polyshare/commons/Utils.class
-com/lama/polyshare/datastore/ServletDownloadDataStore.class
+com/lama/polyshare/download/ServletDownload.class
 com/lama/polyshare/upload/CloudStorageHelper.class
 com/lama/polyshare/datastore/model/DataStoreMessage.class
 com/lama/polyshare/datastore/model/UserManager$1.class
@@ -13,7 +14,7 @@ com/lama/polyshare/jobs/DeleteLinksJob.class
 com/lama/polyshare/scores/ServletLeaderBoard.class
 com/lama/polyshare/jobs/DeleteFilesJob.class
 com/lama/polyshare/datastore/model/UserManager.class
+com/lama/polyshare/datastore/DataStoreWorker.class
 com/lama/polyshare/commons/JSONUtils.class
 com/lama/polyshare/mails/ServletSendMails.class
-com/lama/polyshare/datastore/ServletDataStore.class
 com/lama/polyshare/commons/ServletReset.class
