@@ -61,7 +61,6 @@ public class CloudStorageHelper {
 	 * downloads a file to Google Cloud Storage to the bucket specified in the BUCKET_NAME
 	 * environment variable, appending a timestamp to end of the uploaded filename.
 	 */
-	@SuppressWarnings("deprecation")
 	public Blob downloadFile(final String bucketName,final String fileName) throws IOException {
 		BlobId blobID = BlobId.of(bucketName, fileName);
 		Blob blobInfo =	storage.get(blobID);
@@ -77,6 +76,7 @@ public class CloudStorageHelper {
 		Part filePart = req.getPart("file");
 		final String fileName = filePart.getSubmittedFileName();
 
+		// TODO unused
 		String imageUrl = req.getParameter("imageUrl");
 		// Check extension of file
 		if (fileName != null && !fileName.isEmpty() && fileName.contains(".")) {

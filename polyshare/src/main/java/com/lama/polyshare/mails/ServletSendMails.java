@@ -53,16 +53,12 @@ public class ServletSendMails extends HttpServlet {
 //	}
 
 	public void sendMail(String sender, String recipient, String recipientName, String subject, String body) {
-
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
 
 		try {
 			Message msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(sender));
-			// msg.setFrom(new InternetAddress("cequejeveux@polyshare.appspotmail.com"));
-
-			// anything@[APP_ALIAS].appspotmail.com
 			msg.addRecipient(Message.RecipientType.TO,
 					new InternetAddress(recipient, "Dear Mr or Ms " + recipientName));
 			msg.setSubject(subject);

@@ -12,11 +12,17 @@ import com.google.appengine.api.mail.BounceNotificationParser;
 
 public class BounceHandlerServlet extends HttpServlet{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7411674201504140429L;
+
 	@Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             BounceNotification bounce = BounceNotificationParser.parse(req);
             System.out.println("Bounced email notification.");
+            
             // The following data is available in a BounceNotification object
             // bounce.getOriginal().getFrom()
             // bounce.getOriginal().getTo()

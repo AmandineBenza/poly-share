@@ -12,16 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
+import com.google.cloud.datastore.Entity;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobInfo;
 import com.google.gson.JsonObject;
 import com.lama.polyshare.commons.JSONUtils;
-import com.lama.polyshare.datastore.model.User;
+import com.lama.polyshare.datastore.model.EnumUserRank;
+import com.lama.polyshare.datastore.model.UserManager;
 import com.lama.polyshare.upload.CloudStorageHelper;
 
 @SuppressWarnings("serial")
 public class DownloadServlet extends HttpServlet  {
-	
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse resp)
@@ -42,11 +43,9 @@ public class DownloadServlet extends HttpServlet  {
 		}
 	}
 	
-	
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException,
 	ServletException {
-
 		CloudStorageHelper storageHelper =	new CloudStorageHelper();
 
 		BlobInfo docInformation =
@@ -54,14 +53,16 @@ public class DownloadServlet extends HttpServlet  {
 						req, resp, "staging.poly-share.appspot.com");//"polyshare.appspot.com");
 
 		JsonObject root = new JsonObject();
-		JsonObject userData = new JsonObject();
 		root.addProperty("event","edit-user");
-		User plasticUser = new User(); 
 
+		// TODO CHECK
 		String downloadLink = docInformation.getMediaLink();
 		long fileSize = docInformation.getSize();
-		plasticUser.setLastSendDate(new Date());
-		plasticUser.setMail(req.getParameter("mailAdress"));
+		
+		// TODO CHECK
+		Entity plasticUser = UserManager.instance.buildUser(req.getParameter("mail"),
+				new Date().toString(), EnumUserRank.NOOB, 0, 0);
+		
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(TaskOptions.Builder.withUrl("/worker/upload")
 				.payload(JSONUtils.toJson(plasticUser))
