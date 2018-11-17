@@ -33,7 +33,21 @@ public class ServletDataStore extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		// Query.newEntityQueryBuilder();
+		String event = req.getParameter("event");
+		String result = "Empty.";
+		
+		switch(event){
+			case "consults": {
+				result = handleUsersConsultation();
+				break;
+			}
+			case "consult" : {
+				result = handleUserConsultation(req.getParameter("mail"));
+				break;
+			}
+		}
+		
+		resp.getWriter().println(result);
 	};
 
 	/**
@@ -69,14 +83,6 @@ public class ServletDataStore extends HttpServlet {
 			}
 			case "edit-user": {
 				result = handleUserEdition(root);
-				break;
-			}
-			case "consult-users": {
-				result = handleUsersConsultation();
-				break;
-			}
-			case "consult-user" : {
-				result = handleUserConsultation(root);
 				break;
 			}
 		}
@@ -174,8 +180,10 @@ public class ServletDataStore extends HttpServlet {
 		return buffer.toString();
 	}
 	
-	private String handleUserConsultation(JsonObject msgRoot) {
-		String mail = msgRoot.get("mail").getAsString();
+	private String handleUserConsultation(String mail) {
+		if(mail == null || mail.isEmpty())
+			return "Input mail badly formed.";
+		
 		return JSONUtils.toJson(UserManager.instance.getUserByMail(mail));
 	}
 	
