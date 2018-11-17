@@ -1,0 +1,8 @@
+<queue-entries>
+  <queue>
+    <name>superQueue</name>
+     <mode>pull</mode>
+    
+  </queue>
+  
+</queue-entries>

@@ -1,0 +1,110 @@
+package com.lama.polyshare.datastore;
+
+import java.io.IOException;
+import java.util.Date;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+import com.google.appengine.api.datastore.PropertyContainer;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.cloud.Timestamp;
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.IncompleteKey;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.KeyFactory;
+import com.google.cloud.datastore.Query;
+import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import com.google.cloud.datastore.TimestampValue;
+import com.google.gson.JsonObject;
+import com.lama.polyshare.commons.JSONUtils;
+import com.lama.polyshare.commons.Utils;
+import com.lama.polyshare.datastore.model.DataStoreMessage;
+import com.lama.polyshare.datastore.model.User;
+import com.lama.polyshare.datastore.model.User.EnumUserRank;
+
+public class DownloadDataStoreServlet extends HttpServlet{
+
+	private final static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+	public final static KeyFactory keyFactory = datastore.newKeyFactory();
+
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+		Query.newEntityQueryBuilder();
+	};
+
+
+
+	//Requested field are user email as "userMail"
+	@Override
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+		handleDownloadRequest(req);
+
+	}
+
+	private void handleDownloadRequest(HttpServletRequest req) {
+
+		IncompleteKey key = keyFactory.setKind("customsLinks").newKey();
+		String mail = req.getParameter("userMail");
+		Query<Entity> uploadQuery = Query.newEntityQueryBuilder()
+				.setKind("FileUploaded").setFilter(CompositeFilter.and(PropertyFilter.eq("mail", mail ),PropertyFilter.gt("uploadRequestStart",Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate()))))).build();
+
+		QueryResults<Entity> upload = datastore.run(uploadQuery);
+
+		Query<Entity> downloadQuery  = Query.newEntityQueryBuilder()
+				.setKind("FileDownloaded").setFilter(CompositeFilter.and(PropertyFilter.eq("mail", mail ),PropertyFilter.gt("downloadRequestStart",Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate()))))).build();
+
+		QueryResults<Entity> download = datastore.run(downloadQuery);
+		int downloadCpt = 0;
+		int uploadCpt = 0;
+		while(download.hasNext()){
+			download.next();
+			downloadCpt++;
+		}
+
+		while(upload.hasNext()){
+			upload.next();
+			uploadCpt++;
+		}
+
+		Query<Entity> query = Query.newEntityQueryBuilder()
+				.setKind("user").setFilter(PropertyFilter.eq("mail", req.getParameter("userMail"))).build();
+
+		QueryResults<Entity> user = datastore.run(query);
+
+		EnumUserRank rank = null;
+		while(user.hasNext()){
+			Entity ent = user.next();
+			rank = EnumUserRank.valueOf(ent.getString("rank"));
+		}
+		//TODO check rank != null
+		if(Utils.isAuthorizedRequest(downloadCpt + uploadCpt,rank)){
+
+			String id = Timestamp.now().toString();
+			datastore.add(Entity.newBuilder(ServletDataStore.keyFactory.newKey())
+					.setKey(key)
+					.set("mail", mail)
+					.set("id", id)
+					.set("DownloadRequestStart", Timestamp.now())
+					.set("FileName",req.getParameter("userMail"))
+					.set("rank",rank.toString())
+					.build());
+			//TODO mail ok
+		}else {
+			//TODO mail nop
+		}
+
+		//
+
+	}
+
+
+
+}
