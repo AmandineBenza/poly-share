@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <web-app version="3.0">
+
 	<servlet>
 		<servlet-name>ServletYo</servlet-name>
 		<servlet-class>com.lama.polyshare.ServletYo</servlet-class>
@@ -18,7 +19,7 @@
 
 	<servlet-mapping>
 		<servlet-name>ServletDataStore</servlet-name>
-		<url-pattern>/datastore</url-pattern>
+		<url-pattern>/taskqueues/datastoreUpload</url-pattern>
 	</servlet-mapping>
 
 
@@ -95,8 +96,6 @@
 		<servlet-name>DeleteLinksJob</servlet-name>
 		<url-pattern>/tasks/delete/links</url-pattern>
 	</servlet-mapping>
-
-
 	
 	<servlet>
 		<servlet-name>ServletReset</servlet-name>

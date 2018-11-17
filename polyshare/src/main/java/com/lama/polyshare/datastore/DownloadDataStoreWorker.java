@@ -21,7 +21,7 @@ import com.lama.polyshare.commons.Utils;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 
 @SuppressWarnings("serial")
-public class ServletDownloadDataStore extends HttpServlet {
+public class DownloadDataStoreWorker extends HttpServlet {
 
 	private volatile static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 	private volatile static KeyFactory keyFactory = datastore.newKeyFactory();
