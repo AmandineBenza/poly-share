@@ -174,7 +174,7 @@ public class DataStoreWorker extends HttpServlet {
 		JsonElement userPointsElement = msgRoot.get("points");
 		JsonElement userBytesCount = msgRoot.get("bytesCount");
 		System.out.println(		);
-		int newNumberOfBytes =  (int) toEditUser.getLong("bytesCount")/* + Integer.getInteger(fileSize.trim())*/;
+		int newNumberOfBytes =  (int) toEditUser.getLong("bytesCount") + Integer.parseInt(fileSize.trim());
 		
 		toEditUser = UserManager.instance.editUser(toEditUser,
 				

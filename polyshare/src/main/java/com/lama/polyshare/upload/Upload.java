@@ -56,11 +56,12 @@ public class Upload extends HttpServlet {
 		JsonObject root =new JsonObject();
 		root.addProperty("mail", plasticUser.getString("mail"));
 		root.addProperty("event", "edit-user");
-		
-		
+		System.out.println(fileSize);
+		System.out.println(String.valueOf(fileSize));
+		System.out.println(((Long)fileSize).toString());
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(TaskOptions.Builder.withUrl("/taskqueues/datastoreUpload").param("data",root.toString())
-				.param("downloadLink", downloadLink).param("fileName", fileName).param("fileSize", String.valueOf(fileSize)));
+				.param("downloadLink", downloadLink).param("fileName", fileName).param("fileSize", ((Long)fileSize).toString()));
 
 		try {
 			// resp.getWriter().write(downloadLink);
