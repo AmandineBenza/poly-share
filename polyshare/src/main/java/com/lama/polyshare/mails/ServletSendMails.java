@@ -24,11 +24,8 @@ public class ServletSendMails extends HttpServlet {
 	public ServletSendMails() {
 	}
 	
-	private final static ServletSendMails INSTANCE = new ServletSendMails();
+	public static volatile ServletSendMails instance = new ServletSendMails();
 
-	public static ServletSendMails getInstance(){
-		return INSTANCE;
-	}
 	
 	// https://cloud.google.com/appengine/docs/standard/java/mail/sending-mail-with-mail-api
 
@@ -40,17 +37,10 @@ public class ServletSendMails extends HttpServlet {
 //		sendNoob("amandine@benza.fr");
 	};
 
-//	@Override
-//	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-//		  String type = req.getParameter("type");
-//    if (type != null && type.equals("multipart")) {
-//      resp.getWriter().print("Sending HTML email with attachment.");
-//      sendMultipartMail();
-//    } else {
-//      resp.getWriter().print("Sending simple email.");
-//      sendMail();
-//    }
-//	}
+	@Override
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+	}
 
 	public void sendMail(String sender, String recipient, String recipientName, String subject, String body) {
 		Properties props = new Properties();

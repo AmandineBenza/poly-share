@@ -18,33 +18,39 @@
 
 	<servlet>
 		<servlet-name>ServletSendMails</servlet-name>
-		<servlet-class>com.lama.polyshare.mails.ServletSendMails</servlet-class>
+		<servlet-class>com.lama.polyshare.mails.ServletSendMails
+		</servlet-class>
 	</servlet>
 
 	<servlet>
 		<servlet-name>TaskWorker</servlet-name>
 		<servlet-class>com.lama.polyshare.upload.Worker</servlet-class>
 	</servlet>
-	
+
 	<servlet>
-        <servlet-name>bouncehandler</servlet-name>
-        <servlet-class>com.lama.polyshare.mails.BounceHandlerServlet</servlet-class>
-    </servlet>
-    
-    <servlet-mapping>
-        <servlet-name>bouncehandler</servlet-name>
-        <url-pattern>/_ah/bounce</url-pattern>
-    </servlet-mapping>
+		<servlet-name>ServletLeaderBoard</servlet-name>
+		<servlet-class>com.lama.polyshare.scores.ServletLeaderBoard
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>bouncehandler</servlet-name>
+		<servlet-class>com.lama.polyshare.mails.BounceHandlerServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>bouncehandler</servlet-name>
+		<url-pattern>/_ah/bounce</url-pattern>
+	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>ServletYo</servlet-name>
 		<url-pattern>/yo</url-pattern>
 	</servlet-mapping>
 
-	<!-- <servlet-mapping>
-		<servlet-name>ServletDataStore</servlet-name>
-		<url-pattern>/datastore</url-pattern>
-	</servlet-mapping> -->
+	<!-- <servlet-mapping> <servlet-name>ServletDataStore</servlet-name> <url-pattern>/datastore</url-pattern> 
+		</servlet-mapping> -->
 
 	<servlet-mapping>
 		<servlet-name>Upload</servlet-name>
@@ -59,6 +65,11 @@
 	<servlet-mapping>
 		<servlet-name>ServletSendMails</servlet-name>
 		<url-pattern>/sendmail</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>ServletLeaderBoard</servlet-name>
+		<url-pattern>/leaderboard</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>
