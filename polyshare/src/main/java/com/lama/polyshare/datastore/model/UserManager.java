@@ -22,7 +22,7 @@ public final class UserManager {
 		return Entity
 				.newBuilder(keyFactory .setKind("user").newKey(mail))
 				.set("mail", mail)
-				.set("lastSending", lastSending == null ? null : lastSending)
+				.set("lastSending", lastSending == null ? Timestamp.MIN_VALUE : lastSending)
 				.set("rank", rank.toString())
 				.set("points", capPoints(rank, points))
 				.set("bytesCount", bytesCount)
@@ -54,7 +54,7 @@ public final class UserManager {
 		return Entity
 				.newBuilder(keyFactory.setKind("user").newKey(user.getKey().getName()))
 				.set("mail", user.getKey().getName())
-				.set("lastSending", lastSending == null ? null : lastSending)
+				.set("lastSending", lastSending == null ? Timestamp.MIN_VALUE : lastSending)
 				.set("rank", adaptRank(points).toString())
 				.set("points", points)
 				.set("bytesCount", bytesCount)
