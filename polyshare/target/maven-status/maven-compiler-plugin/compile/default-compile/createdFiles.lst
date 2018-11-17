@@ -1,9 +1,8 @@
+com/lama/polyshare/datastore/model/UserManager$1.class
 com/lama/polyshare/datastore/ServletDataStore$1.class
 com/lama/polyshare/upload/Worker.class
-com/lama/polyshare/download/DownloadServlet.class
 com/lama/polyshare/datastore/model/UserManager.class
 com/lama/polyshare/upload/Upload.class
-com/lama/polyshare/mails/BounceHandlerServlet.class
 com/lama/polyshare/commons/JSONUtils.class
 com/lama/polyshare/ServletYo.class
 com/lama/polyshare/datastore/model/EnumUserRank.class
@@ -12,4 +11,3 @@ com/lama/polyshare/upload/CloudStorageHelper.class
 com/lama/polyshare/mails/ServletSendMails.class
 com/lama/polyshare/datastore/model/DataStoreMessage.class
 com/lama/polyshare/datastore/ServletDataStore.class
-com/lama/polyshare/datastore/DownloadDataStoreServlet.class
