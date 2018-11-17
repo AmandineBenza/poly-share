@@ -32,11 +32,6 @@ import com.lama.polyshare.upload.CloudStorageHelper;
 
 
 @SuppressWarnings("serial")
-@WebServlet(
-		name = "DataStore",
-		description = "TaskQueues: worker",
-		urlPatterns = "/taskqueues/datastoreUpload"
-		)
 public class DataStoreWorker extends HttpServlet {
 
 	private final static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
@@ -76,7 +71,13 @@ public class DataStoreWorker extends HttpServlet {
 	 */
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		JsonObject root = JSONUtils.fromJson(req.getParameter("data"), JsonObject.class);
+		JsonObject root;
+		if(req.getParameter("data") != null) {
+			root = JSONUtils.fromJson(req.getParameter("data"), JsonObject.class);
+		}
+		else {
+			root = JSONUtils.fromJson(req.getReader(), JsonObject.class);
+		}
 		System.out.println(root);
 		String event = root.get("event").getAsString();
 		String result = "Empty.";

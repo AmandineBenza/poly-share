@@ -22,7 +22,7 @@ import com.lama.polyshare.commons.JSONUtils;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 import com.lama.polyshare.datastore.model.UserManager;
 
-@MultipartConfig()
+@MultipartConfig(maxFileSize = 10*1024*1024,maxRequestSize = 20*1024*1024,fileSizeThreshold = 50*1024*1024)
 public class Upload extends HttpServlet {
 
 	private static final String BUCKET_NAME = System.getenv("BUCKET_NAME");

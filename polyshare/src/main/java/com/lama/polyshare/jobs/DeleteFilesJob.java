@@ -21,7 +21,8 @@ import com.lama.polyshare.upload.CloudStorageHelper;
 
 public class DeleteFilesJob extends HttpServlet {
 
-	private static final long serialVersionUID = -4274864314000137136L;
+	
+	private static final long serialVersionUID = -3508639832936274595L;
 	private final static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 	private static final CloudStorageHelper cloudHelper = new CloudStorageHelper();
 	
