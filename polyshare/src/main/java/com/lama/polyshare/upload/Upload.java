@@ -63,5 +63,4 @@ public class Upload extends HttpServlet {
 			throw new ServletException("Error updating book", e);
 		}
 	}
-
 }

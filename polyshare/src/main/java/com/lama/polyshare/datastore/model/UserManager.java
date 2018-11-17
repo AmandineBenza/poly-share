@@ -8,7 +8,7 @@ import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.EntityQuery.Builder;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
-import com.lama.polyshare.datastore.ServletDataStore;
+import com.lama.polyshare.datastore.DataStoreWorker;
 
 public final class UserManager {
 	
@@ -76,7 +76,7 @@ public final class UserManager {
 	}
 	
 	public Entity getUserByMail(String userMail) {
-		return datastore.get(ServletDataStore.getKey("user", userMail));
+		return datastore.get(DataStoreWorker.getKey("user", userMail));
 	}
 	
 }

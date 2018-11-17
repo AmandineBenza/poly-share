@@ -3,6 +3,7 @@ package com.lama.polyshare.datastore;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,8 +30,14 @@ import com.lama.polyshare.datastore.model.UserManager;
 import com.lama.polyshare.mails.ServletSendMails;
 import com.lama.polyshare.upload.CloudStorageHelper;
 
+
 @SuppressWarnings("serial")
-public class ServletDataStore extends HttpServlet {
+@WebServlet(
+		name = "DataStore",
+		description = "TaskQueues: worker",
+		urlPatterns = "/taskqueues/datastoreUpload"
+		)
+public class DataStoreWorker extends HttpServlet {
 
 	private final static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 	private final static KeyFactory keyFactory = datastore.newKeyFactory();
@@ -128,7 +135,8 @@ public class ServletDataStore extends HttpServlet {
 			return JSONUtils.toJson(new DataStoreMessage("User " + userMail + " already exists !"));
 		}
 
-		Entity entity = UserManager.instance.buildUser(userMail, userLastSending, userRank, userPoints, userBytesCount);
+		Entity entity = UserManager.instance.buildUser(userMail,
+				Timestamp.MIN_VALUE, userRank, userPoints, userBytesCount);
 		datastore.add(entity);
 		return JSONUtils.toJson(datastore.get(entity.getKey()));
 	}
@@ -225,7 +233,7 @@ public class ServletDataStore extends HttpServlet {
 		if (Utils.isAuthorizedRequest(downloadCpt + uploadCpt, rank)) {
 			String id = Timestamp.now().toString();
 			
-			datastore.add(Entity.newBuilder(ServletDataStore.keyFactory.newKey()).setKey(key)
+			datastore.add(Entity.newBuilder(DataStoreWorker.keyFactory.newKey()).setKey(key)
 					.set("mail", mail)
 					.set("id", id).set("UploadRequestStart", Timestamp.now())
 					.set("fileName", fileName).set("rank", rank.toString()).build());
