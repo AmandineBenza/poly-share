@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.cloud.datastore.Key;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
@@ -28,18 +26,32 @@ import com.lama.polyshare.commons.Utils;
 import com.lama.polyshare.datastore.model.DataStoreMessage;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 import com.lama.polyshare.datastore.model.UserManager;
+import com.lama.polyshare.mails.ServletSendMails;
 import com.lama.polyshare.upload.CloudStorageHelper;
 
 @SuppressWarnings("serial")
 public class ServletDataStore extends HttpServlet {
 
-	public volatile static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-	public volatile static DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
-	public volatile static KeyFactory keyFactory = datastore.newKeyFactory();
+	private final static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+	private final static KeyFactory keyFactory = datastore.newKeyFactory();
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		// Query.newEntityQueryBuilder();
+		String event = req.getParameter("event");
+		String result = "Empty.";
+		
+		switch(event){
+			case "consults": {
+				result = handleUsersConsultation();
+				break;
+			}
+			case "consult" : {
+				result = handleUserConsultation(req.getParameter("mail"));
+				break;
+			}
+		}
+		
+		resp.getWriter().println(result);
 	};
 
 	/**
@@ -54,9 +66,6 @@ public class ServletDataStore extends HttpServlet {
 	 * {"event":"edit-user",
 	 * "points":...}
 	 *  
-	 *  {"event":"consult-users"}
-	 *  
-	 *  {"event":"consult-user", "mail":"eventual@consistency.com"}
 	 */
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -65,29 +74,21 @@ public class ServletDataStore extends HttpServlet {
 		String result = "Empty.";
 
 		switch(event){
-		case "create-user": {
-			result = handleUserCreation(root);
-			break;
-		}
-		case "create-users": {
-			result = handleUserCreations(root);
-			break;
-		}
-		case "edit-user": {
-			result = handleUserEdition(root, 
-					req.getParameter("fileSize"),
-					req.getParameter("downloadLink"), 
-					req.getParameter("fileName"));
-			break;
-		}
-		case "consult-users": {
-			result = handleUsersConsultation();
-			break;
-		}
-		case "consult-user" : {
-			result = handleUserConsultation(root);
-			break;
-		}
+			case "create-user": {
+				result = handleUserCreation(root);
+				break;
+			}
+			case "create-users": {
+				result = handleUserCreations(root);
+				break;
+			}
+			case "edit-user": {
+				result = handleUserEdition(root, 
+						req.getParameter("fileSize"),
+						req.getParameter("downloadLink"), 
+						req.getParameter("fileName"));
+				break;
+			}
 		}
 
 		resp.getWriter().println(result);
@@ -222,23 +223,22 @@ public class ServletDataStore extends HttpServlet {
 		
 		// TODO check rank != null
 		if (Utils.isAuthorizedRequest(downloadCpt + uploadCpt, rank)) {
-
 			String id = Timestamp.now().toString();
 			
 			datastore.add(Entity.newBuilder(ServletDataStore.keyFactory.newKey()).setKey(key)
 					.set("mail", mail)
 					.set("id", id).set("UploadRequestStart", Timestamp.now())
 					.set("fileName", fileName).set("rank", rank.toString()).build());
-			
-			// TODO mail ok
+
+			// TODO send mail ok
+			// ServletSendMails.instance.sendUploadMail(recipient, link);
 		} else {
 			new CloudStorageHelper().deleteFile("staging.poly-share.appspot.com", fileName);
-			// TODO mail nop
+			// send mail no lol
+			ServletSendMails.instance.sendNoob(mail);
 		}
 	}
 	
-	
-
 	private String handleUsersConsultation() {
 		StringBuffer buffer = new StringBuffer();
 		QueryResults<Entity> users = UserManager.instance.getAllUsers();
@@ -257,11 +257,6 @@ public class ServletDataStore extends HttpServlet {
 		if(mail == null || mail.isEmpty())
 			return "Input mail badly formed.";
 		
-		return JSONUtils.toJson(UserManager.instance.getUserByMail(mail));
-	}
-
-	private String handleUserConsultation(JsonObject msgRoot) {
-		String mail = msgRoot.get("mail").getAsString();
 		return JSONUtils.toJson(UserManager.instance.getUserByMail(mail));
 	}
 

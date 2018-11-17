@@ -22,6 +22,7 @@ import com.google.cloud.storage.Blob;
 import com.google.gson.JsonObject;
 import com.lama.polyshare.commons.JSONUtils;
 import com.lama.polyshare.commons.Utils;
+import com.lama.polyshare.mails.ServletSendMails;
 import com.lama.polyshare.upload.CloudStorageHelper;
 
 @SuppressWarnings("serial")
@@ -67,6 +68,7 @@ public class ServletDownload extends HttpServlet  {
 			}
 			else {
 				//TODO send mail ou refuser lien invalide lol (avec une mention le lien peut etre expiré)
+				// ServletSendMails.instance.sendDownloadMail(mail, "localhost:8080/Download?linkId=" + linkID);
 			}
 		}else {
 			//TODO mail ou resp.senderreur400 invalid operation pour son rang ou sa vie ou idk balec

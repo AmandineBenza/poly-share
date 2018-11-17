@@ -1,7 +1,10 @@
 package com.lama.polyshare.datastore.model;
 
 import com.google.cloud.Timestamp;
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.EntityQuery.Builder;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
@@ -10,15 +13,14 @@ import com.lama.polyshare.datastore.ServletDataStore;
 public final class UserManager {
 	
 	public volatile static UserManager instance = new UserManager();
+	private volatile static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+	private volatile static KeyFactory keyFactory = datastore.newKeyFactory();
 	
 	private UserManager() {}
 	
 	public Entity buildUser(String mail, Timestamp lastSending, EnumUserRank rank, int points, int bytesCount) {
 		return Entity
-				.newBuilder(
-						ServletDataStore
-						.keyFactory
-						.setKind("user").newKey(mail))
+				.newBuilder(keyFactory .setKind("user").newKey(mail))
 				.set("mail", mail)
 				.set("lastSending", lastSending == null ? null : lastSending)
 				.set("rank", rank.toString())
@@ -50,10 +52,7 @@ public final class UserManager {
 	
 	public Entity editUser(Entity user, Timestamp lastSending, EnumUserRank rank, int points, int bytesCount) {
 		return Entity
-				.newBuilder(
-						ServletDataStore
-						.keyFactory
-						.setKind("user").newKey(user.getKey().getName()))
+				.newBuilder(keyFactory.setKind("user").newKey(user.getKey().getName()))
 				.set("mail", user.getKey().getName())
 				.set("lastSending", lastSending == null ? null : lastSending)
 				.set("rank", adaptRank(points).toString())
@@ -63,12 +62,12 @@ public final class UserManager {
 	}
 	
 	public QueryResults<Entity> getAllUsers() {
-		return ServletDataStore.datastore.run(Query.newEntityQueryBuilder()
+		return datastore.run(Query.newEntityQueryBuilder()
 				.setKind("user").build());
 	}
 	
 	public QueryResults<Entity> getAll(String kind) {
-		return ServletDataStore.datastore.run(Query.newEntityQueryBuilder()
+		return datastore.run(Query.newEntityQueryBuilder()
 				.setKind(kind).build());
 	}
 	
@@ -77,7 +76,7 @@ public final class UserManager {
 	}
 	
 	public Entity getUserByMail(String userMail) {
-		return ServletDataStore.datastore.get(ServletDataStore.getKey("user", userMail));
+		return datastore.get(ServletDataStore.getKey("user", userMail));
 	}
 	
 }

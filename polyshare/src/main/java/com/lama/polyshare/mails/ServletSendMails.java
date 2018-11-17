@@ -20,21 +20,13 @@ import javax.servlet.http.HttpServletResponse;
 public class ServletSendMails extends HttpServlet {
 
 	private static final long serialVersionUID = 2316390422015026794L;
-	
-	public ServletSendMails() {
-	}
-	
 	public static volatile ServletSendMails instance = new ServletSendMails();
-
 	
-	// https://cloud.google.com/appengine/docs/standard/java/mail/sending-mail-with-mail-api
-
+	public ServletSendMails() {}
+	
+	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-//		resp.getWriter().print("Sending simple email.");
-//		sendMail("amandinebenza@gmail.com", "itsdamoy@gmail.com", "Damien Fornali", "DRAGIBUS", "IT'S WORKING");
-//		sendMail("amandinebenza@gmail.com", "amandinebenza@gmail.com", "Amandine Benza", "DRAGIBUS", "IT'S WORKING");
-//		sendNoob("amandine@benza.fr");
 	};
 
 	@Override
