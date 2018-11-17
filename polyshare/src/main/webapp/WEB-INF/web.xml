@@ -32,16 +32,25 @@
 		<servlet-class>com.lama.polyshare.scores.ServletLeaderBoard
 		</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletReset</servlet-name>
+		<servlet-class>com.lama.polyshare.commons.ServletReset</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>ServletYo</servlet-name>
 		<url-pattern>/yo</url-pattern>
 	</servlet-mapping>
 
-
 	<servlet-mapping>
 		<servlet-name>ServletDataStore</servlet-name>
 		<url-pattern>/datastore</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletReset</servlet-name>
+		<url-pattern>/reset</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
