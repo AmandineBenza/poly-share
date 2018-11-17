@@ -11,7 +11,7 @@ public final class UserManager {
 	
 	private UserManager() {}
 	
-	public Entity buildUser(String mail, String lastSending, EnumUserRank rank, int points, int octetsCount) {
+	public Entity buildUser(String mail, String lastSending, EnumUserRank rank, int points, int bytesCount) {
 		return Entity
 				.newBuilder(
 						ServletDataStore
@@ -21,11 +21,11 @@ public final class UserManager {
 				.set("lastSending", lastSending == null ? "null" : lastSending)
 				.set("rank", rank.toString())
 				.set("points", points)
-				.set("octetsCount", octetsCount)
+				.set("bytesCount", bytesCount)
 				.build();
 	}
 	
-	public Entity editUser(Entity user, String lastSending, EnumUserRank rank, int points, int octetsCount) {
+	public Entity editUser(Entity user, String lastSending, EnumUserRank rank, int points, int bytesCount) {
 		return Entity
 				.newBuilder(
 						ServletDataStore
@@ -35,7 +35,7 @@ public final class UserManager {
 				.set("lastSending", lastSending == null ? "null" : lastSending)
 				.set("rank", rank.toString())
 				.set("points", points)
-				.set("octetsCount", octetsCount)
+				.set("bytesCount", bytesCount)
 				.build();
 	}
 	
