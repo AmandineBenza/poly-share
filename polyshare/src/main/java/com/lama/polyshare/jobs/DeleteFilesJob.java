@@ -70,7 +70,7 @@ public class DeleteFilesJob extends HttpServlet {
 				datastore.delete(links.next().getKey());
 			}
 			
-			//Delete the file registery.
+			//Delete the file registry.
 			datastore.delete(file.getKey());
 			//Delete the file himself
 			cloudHelper.deleteFile("staging.poly-share.appspot.com", fileName);
@@ -89,7 +89,7 @@ public class DeleteFilesJob extends HttpServlet {
 				datastore.delete(links.next().getKey());
 			}
 			
-			//Delete the file registery.
+			//Delete the file registry.
 			datastore.delete(file.getKey());
 			//Delete the file himself
 			cloudHelper.deleteFile("staging.poly-share.appspot.com", fileName);
@@ -109,7 +109,7 @@ public class DeleteFilesJob extends HttpServlet {
 				datastore.delete(links.next().getKey());
 			}
 			
-			//Delete the file registery.
+			//Delete the file registry.
 			datastore.delete(file.getKey());
 			//Delete the file himself
 			cloudHelper.deleteFile("staging.poly-share.appspot.com", fileName);
