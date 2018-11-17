@@ -1,0 +1,14 @@
+indexes:
+- kind: FileUploaded
+  properties:
+  - name: mail
+    direction: asc
+  - name: UploadRequestStart
+    direction: asc
+- kind: FileDownloaded
+  properties:
+  - name: mail
+    direction: asc
+  - name: UploadRequestStart
+    direction: asc
+   
