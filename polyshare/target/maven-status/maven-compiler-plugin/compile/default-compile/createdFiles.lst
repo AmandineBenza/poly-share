@@ -6,6 +6,7 @@ com/lama/polyshare/ServletYo.class
 com/lama/polyshare/datastore/model/EnumUserRank.class
 com/lama/polyshare/commons/Utils.class
 com/lama/polyshare/datastore/ServletDownloadDataStore.class
+com/lama/polyshare/download/ServletDownload.class
 com/lama/polyshare/upload/CloudStorageHelper.class
 com/lama/polyshare/datastore/model/DataStoreMessage.class
 com/lama/polyshare/datastore/model/UserManager$1.class

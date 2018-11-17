@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
@@ -28,6 +26,7 @@ public class ServletReset extends HttpServlet {
 		Query<Entity> query = Query.newEntityQueryBuilder().setKind("user").build();
 		datastore.run(query).forEachRemaining(e -> allKeys.add(e.getKey()));
 		allKeys.forEach(k -> datastore.delete(k));
+		resp.getWriter().println("Removed " + allKeys.size() + " users.");
 	}
 	
 }
