@@ -22,7 +22,6 @@
 		<url-pattern>/taskqueues/datastoreUpload</url-pattern>
 	</servlet-mapping>
 
-
 	<servlet>
 		<servlet-name>Upload</servlet-name>
 		<servlet-class>com.lama.polyshare.upload.Upload</servlet-class>
@@ -54,7 +53,6 @@
 		<servlet-name>TaskWorker</servlet-name>
 		<url-pattern>/taskqueues/worker</url-pattern>
 	</servlet-mapping>
-	
 
 	<servlet>
 		<servlet-name>ServletLeaderBoard</servlet-name>
@@ -96,7 +94,11 @@
 		<servlet-name>DeleteLinksJob</servlet-name>
 		<url-pattern>/tasks/delete/links</url-pattern>
 	</servlet-mapping>
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> branch 'master' of https://github.com/Damoy/poly-share.git
 	<servlet>
 		<servlet-name>ServletReset</servlet-name>
 		<servlet-class>com.lama.polyshare.commons.ServletReset</servlet-class>

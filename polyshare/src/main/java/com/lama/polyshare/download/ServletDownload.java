@@ -69,7 +69,7 @@ public class ServletDownload extends HttpServlet  {
 				//TODO send mail ou refuser lien invalide lol (avec une mention le lien peut etre expiré)
 				// ServletSendMails.instance.sendDownloadMail(mail, "localhost:8080/Download?linkId=" + linkID);
 			}
-		}else {
+		} else {
 			//TODO mail ou resp.senderreur400 invalid operation pour son rang ou sa vie ou idk balec
 		}
 
