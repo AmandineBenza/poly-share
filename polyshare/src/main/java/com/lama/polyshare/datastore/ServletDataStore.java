@@ -24,9 +24,9 @@ import com.lama.polyshare.datastore.model.DataStoreMessage;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 import com.lama.polyshare.datastore.model.UserManager;
 
-@SuppressWarnings("serial")
 public class ServletDataStore extends HttpServlet {
 
+	private static final long serialVersionUID = 9077218526460807683L;
 	public volatile static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 	public volatile static DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
 	public volatile static KeyFactory keyFactory = datastore.newKeyFactory();
