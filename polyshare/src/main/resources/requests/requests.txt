@@ -1,7 +1,7 @@
 ## Raw requests
 
 # Create-user
-curl -X POST localhost:8080/datastore -d '{"event":"create-user", "mail":"daniella@gmail.com","rank":"Noob"}'
+curl -X POST localhost:8080/datastore -d '{"event":"create-user","mail":"daniella@gmail.com","rank":"Noob"}'
 
 Response: 
 --
@@ -13,33 +13,8 @@ Response:
 --
 
 # Create-users
-curl -X POST localhost:8080/datastore -d '{"event":"create-users", "data": [
-		{
-			"mail":"kayle@lol.com",
-			"rank":"Noob"
-		},
-		{
-			"mail":"eventual@consistency.com",
-			"rank":"Noob"
-		},
-		{
-			"mail":"jax@fat.com",
-			"rank":"Casual"
-		},
-		{
-			"mail":"fab@brouillon.org",
-			"rank":"Casual"
-		},
-		{
-			"mail":"faker@ahok.ko",
-			"rank":"Leet"
-		},
-		{
-			"mail":"reponseD@random.fr",
-			"rank":"Leet"
-		}
-	]
-}'
+curl -X POST "localhost:8080/datastore" -d '{"event":"create-users", "data":[{"mail":"kayler@lol.com","rank":"Noob"},{"mail":"eventuaal@consistency.com","rank":"Noob"},{"mail":"jaax@fat.com","rank":"Casual"},{"mail":"faab@brouillon.org","rank":"Casual"},{"mail":"faker@ahokpenta.ko","rank":"Leet"},{"mail":"reponseDeih@random.fr","rank":"Leet"}]}'
+
 Response: 
 --
 'User 1 creation:
@@ -315,7 +290,7 @@ User 6 creation:
 --
 
 # Edit-user
-curl -X POST localhost:8080/datastore -d '{"event":"edit-user", "mail":"itsdamoy@gmail.com","points":"75", "bytesCount":"80"}'
+curl -X POST localhost:8080/datastore -d '{"event":"edit-user", "mail":"itsdamoy@gmail.com","points":"75","bytesCount":"80"}'
 
 Response: 
 --
