@@ -2,11 +2,11 @@
   <cron>
     <url>/tasks/delete/files</url>
     <description>delete old files</description>
-    <schedule>every 10 seconds</schedule>
+    <schedule>every 1 minutes</schedule>
   </cron>
   <cron>
     <url>/tasks/delete/links</url>
     <description>delete old files</description>
-    <schedule>every 10 seconds</schedule>
+    <schedule>every 1 minutes</schedule>
   </cron>
 </cronentries>
