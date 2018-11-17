@@ -21,9 +21,30 @@ public final class UserManager {
 				.set("mail", mail)
 				.set("lastSending", lastSending == null ? "null" : lastSending)
 				.set("rank", rank.toString())
-				.set("points", points)
+				.set("points", capPoints(rank, points))
 				.set("bytesCount", bytesCount)
 				.build();
+	}
+	
+	public static int capPoints(EnumUserRank rank, int points) {
+		switch(rank) {
+		case NOOB:
+			return Math.min(points, 100);
+		case CASUAL:
+			return Math.min(points, 200);
+		case LEET:
+			return Math.max(points, 201);
+		default:
+			return points;
+		}
+	}
+	
+	public static EnumUserRank adaptRank(int points) {
+		if(points <= 100)
+			return EnumUserRank.NOOB;
+		if(points <= 200)
+			return EnumUserRank.CASUAL;
+		return EnumUserRank.LEET;
 	}
 	
 	public Entity editUser(Entity user, String lastSending, EnumUserRank rank, int points, int bytesCount) {
@@ -34,7 +55,7 @@ public final class UserManager {
 						.setKind("user").newKey(user.getKey().getName()))
 				.set("mail", user.getKey().getName())
 				.set("lastSending", lastSending == null ? "null" : lastSending)
-				.set("rank", rank.toString())
+				.set("rank", adaptRank(points).toString())
 				.set("points", points)
 				.set("bytesCount", bytesCount)
 				.build();
