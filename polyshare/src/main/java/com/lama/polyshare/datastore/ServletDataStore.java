@@ -152,7 +152,6 @@ public class ServletDataStore extends HttpServlet {
 
 		//		.param("downloadLink", downloadLink).param("fileSize", String.valueOf(fileSize)));
 
-
 		if(toEditUser == null) {
 			return JSONUtils.toJson(new DataStoreMessage("User " 
 					+ userMail + " does not exist !"));
@@ -162,9 +161,7 @@ public class ServletDataStore extends HttpServlet {
 		JsonElement userPointsElement = msgRoot.get("points");
 		JsonElement userBytesCount = msgRoot.get("bytesCount");
 
-		int newNumberOfOctet =  (int) toEditUser.getLong("bytesCount") + Integer.getInteger(fileSize);
-		
-		
+		int newNumberOfBytes =  (int) toEditUser.getLong("bytesCount") + Integer.getInteger(fileSize);
 		
 		toEditUser = UserManager.instance.editUser(toEditUser,
 				
@@ -174,11 +171,10 @@ public class ServletDataStore extends HttpServlet {
 				null,
 				userPointsElement == null ?
 						(int) toEditUser.getLong("points") : 
-							newNumberOfOctet/1000000,
+							newNumberOfBytes/1000000,
 							userBytesCount == null ? 
-									(int) newNumberOfOctet :
+									(int) newNumberOfBytes :
 										userBytesCount.getAsInt());
-		
 		
 		registerUpload( toEditUser.getString("mail"), EnumUserRank.valueOf(toEditUser.getString("rank")), fileName);
 		
@@ -187,8 +183,7 @@ public class ServletDataStore extends HttpServlet {
 	}
 	
 	
-	private void registerUpload(String mail,EnumUserRank rank, String fileName) throws IOException {
-		
+	private void registerUpload(String mail, EnumUserRank rank, String fileName) throws IOException {
 		IncompleteKey key = keyFactory.setKind("FileUploaded").newKey();
 		
 		Query<Entity> uploadQuery = Query.newEntityQueryBuilder().setKind("FileUploaded")
@@ -222,8 +217,7 @@ public class ServletDataStore extends HttpServlet {
 		Query<Entity> query = Query.newEntityQueryBuilder().setKind("user")
 				.setFilter(PropertyFilter.eq("mail", mail)).build();
 
-		QueryResults<Entity> user = datastore.run(query);
-
+		QueryResults<Entity> users = datastore.run(query);
 		
 		
 		// TODO check rank != null

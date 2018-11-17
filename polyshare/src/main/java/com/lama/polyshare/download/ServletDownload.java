@@ -2,7 +2,6 @@ package com.lama.polyshare.download;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,37 +12,27 @@ import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.taskqueue.TaskOptions.Method;
-import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
-import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.BlobInfo;
 import com.google.gson.JsonObject;
 import com.lama.polyshare.commons.JSONUtils;
 import com.lama.polyshare.commons.Utils;
-import com.lama.polyshare.datastore.model.EnumUserRank;
-import com.lama.polyshare.datastore.model.UserManager;
 import com.lama.polyshare.upload.CloudStorageHelper;
 
 @SuppressWarnings("serial")
 public class ServletDownload extends HttpServlet  {
 
-
 	private final static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
-
 		JsonObject root = JSONUtils.fromJson(req.getReader(), JsonObject.class);
-
 		String mail = root.get("mail").getAsString();
 
 		if(Utils.checkRequest(mail)) {
@@ -57,12 +46,11 @@ public class ServletDownload extends HttpServlet  {
 
 			if(workingLinks.hasNext()) {
 				Entity metaFileDataToDownload = workingLinks.next();
-
 				String fileName = metaFileDataToDownload.getString("fileName");
 				CloudStorageHelper storageHelper =	new CloudStorageHelper();
 				Blob b = storageHelper.downloadFile("staging.poly-share.appspot.com", fileName);
-				resp.setCharacterEncoding("UTF-8");
 
+				resp.setCharacterEncoding("UTF-8");
 				resp.setContentType("application/octet-stream");   
 				resp.setHeader("Content-Disposition","attachment; filename=\"" + fileName + "\"");   
 
@@ -94,7 +82,6 @@ public class ServletDownload extends HttpServlet  {
 		// TODO CHECK
 		String fileName = req.getParameter("fileName");
 		String mail = req.getParameter("mail");
-
 
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(TaskOptions.Builder.withUrl("/worker/download").method(Method.POST)
