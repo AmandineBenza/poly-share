@@ -22,7 +22,6 @@ import com.google.cloud.storage.Blob;
 import com.google.gson.JsonObject;
 import com.lama.polyshare.commons.JSONUtils;
 import com.lama.polyshare.commons.Utils;
-import com.lama.polyshare.mails.ServletSendMails;
 import com.lama.polyshare.upload.CloudStorageHelper;
 
 @SuppressWarnings("serial")
