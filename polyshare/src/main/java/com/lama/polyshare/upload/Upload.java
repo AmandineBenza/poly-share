@@ -43,18 +43,24 @@ public class Upload extends HttpServlet {
 		CloudStorageHelper storageHelper = new CloudStorageHelper();
 		BlobInfo docInformation = storageHelper.getImageOrTxtUrl(req, resp, "staging.poly-share.appspot.com");// "polyshare.appspot.com");
 
-		JsonObject root = new JsonObject();
-		root.addProperty("event", "edit-user");
-
+		
+		
 		String downloadLink = docInformation.getMediaLink();
 		long fileSize = docInformation.getSize();
 		String fileName = docInformation.getName();
+		
 		// TODO CHECK
 		Entity plasticUser = UserManager.instance.buildUser(req.getParameter("mail"), Timestamp.now(),
 				EnumUserRank.NOOB, 0, 0);
-
+		
+		
+		JsonObject root =new JsonObject();
+		root.addProperty("mail", plasticUser.getString("mail"));
+		root.addProperty("event", "edit-user");
+		
+		
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(TaskOptions.Builder.withUrl("/worker/upload").payload(JSONUtils.toJson(plasticUser))
+		queue.add(TaskOptions.Builder.withUrl("/taskqueues/datastoreUpload").param("data",root.toString())
 				.param("downloadLink", downloadLink).param("fileName", fileName).param("fileSize", String.valueOf(fileSize)));
 
 		try {

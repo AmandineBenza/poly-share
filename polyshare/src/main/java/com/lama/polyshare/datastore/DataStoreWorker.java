@@ -76,7 +76,8 @@ public class DataStoreWorker extends HttpServlet {
 	 */
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		JsonObject root = JSONUtils.fromJson(req.getReader(), JsonObject.class);
+		JsonObject root = JSONUtils.fromJson(req.getParameter("data"), JsonObject.class);
+		System.out.println(root);
 		String event = root.get("event").getAsString();
 		String result = "Empty.";
 
@@ -142,6 +143,7 @@ public class DataStoreWorker extends HttpServlet {
 	}
 
 	private String handleUserCreations(JsonObject msgRoot) {
+		
 		JsonArray usersJson = msgRoot.get("data").getAsJsonArray();
 		StringBuffer buffer = new StringBuffer();
 		int cpt = 1;
@@ -151,16 +153,15 @@ public class DataStoreWorker extends HttpServlet {
 			buffer.append(handleUserCreation(userJson.getAsJsonObject()));
 			buffer.append("\n");
 		}
-
+		
 		return buffer.toString();
 	}
 
 	private String handleUserEdition(JsonObject msgRoot, String fileSize, String downloadLink,String fileName ) throws IOException {
 		String userMail = msgRoot.get("mail").getAsString();
 		Entity toEditUser = UserManager.instance.getUserByMail(userMail);
-
-		//		.param("downloadLink", downloadLink).param("fileSize", String.valueOf(fileSize)));
-
+		System.out.println(toEditUser);
+		System.out.println(userMail);
 		if(toEditUser == null) {
 			return JSONUtils.toJson(new DataStoreMessage("User " 
 					+ userMail + " does not exist !"));
@@ -169,8 +170,8 @@ public class DataStoreWorker extends HttpServlet {
 		JsonElement userDateElement = msgRoot.get("lastSending");
 		JsonElement userPointsElement = msgRoot.get("points");
 		JsonElement userBytesCount = msgRoot.get("bytesCount");
-
-		int newNumberOfBytes =  (int) toEditUser.getLong("bytesCount") + Integer.getInteger(fileSize);
+		System.out.println(		);
+		int newNumberOfBytes =  (int) toEditUser.getLong("bytesCount")/* + Integer.getInteger(fileSize.trim())*/;
 		
 		toEditUser = UserManager.instance.editUser(toEditUser,
 				
@@ -185,14 +186,14 @@ public class DataStoreWorker extends HttpServlet {
 									(int) newNumberOfBytes :
 										userBytesCount.getAsInt());
 		
-		registerUpload( toEditUser.getString("mail"), EnumUserRank.valueOf(toEditUser.getString("rank")), fileName);
+		registerUpload( toEditUser.getString("mail"), EnumUserRank.valueOf(toEditUser.getString("rank")), fileName,downloadLink);
 		
 		datastore.update(toEditUser);
 		return JSONUtils.toJson(datastore.get(toEditUser.getKey()));
 	}
 	
 	
-	private void registerUpload(String mail, EnumUserRank rank, String fileName) throws IOException {
+	private void registerUpload(String mail, EnumUserRank rank, String fileName,String downloadLink) throws IOException {
 		IncompleteKey key = keyFactory.setKind("FileUploaded").newKey();
 		
 		Query<Entity> uploadQuery = Query.newEntityQueryBuilder().setKind("FileUploaded")
