@@ -143,7 +143,7 @@
 				}
 			],
 			"request": {
-				"method": "POST",
+				"method": "GET",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -157,13 +157,23 @@
 					"raw": "{\"event\":\"consult-user\",\"mail\":\"eventual@consistency.com\"}"
 				},
 				"url": {
-					"raw": "localhost:8080/datastore",
+					"raw": "localhost:8080/datastore?event=consult&mail=eventual@consistency.com",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"datastore"
+					],
+					"query": [
+						{
+							"key": "event",
+							"value": "consult"
+						},
+						{
+							"key": "mail",
+							"value": "eventual@consistency.com"
+						}
 					]
 				}
 			},
@@ -184,7 +194,7 @@
 				}
 			],
 			"request": {
-				"method": "POST",
+				"method": "GET",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -198,13 +208,19 @@
 					"raw": "{\"event\":\"consult-users\"}"
 				},
 				"url": {
-					"raw": "localhost:8080/datastore",
+					"raw": "localhost:8080/datastore?event=consults",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"datastore"
+					],
+					"query": [
+						{
+							"key": "event",
+							"value": "consults"
+						}
 					]
 				}
 			},

@@ -258,6 +258,13 @@ public class ServletDataStore extends HttpServlet {
 
 		return buffer.toString();
 	}
+	
+	private String handleUserConsultation(String mail) {
+		if(mail == null || mail.isEmpty())
+			return "Input mail badly formed.";
+		
+		return JSONUtils.toJson(UserManager.instance.getUserByMail(mail));
+	}
 
 	private String handleUserConsultation(JsonObject msgRoot) {
 		String mail = msgRoot.get("mail").getAsString();

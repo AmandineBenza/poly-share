@@ -13,5 +13,4 @@
 		<service>mail</service>
 		<service>mail_bounce</service>
 	</inbound-services>
-
 </appengine-web-app>
