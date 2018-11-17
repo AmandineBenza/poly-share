@@ -3,12 +3,29 @@ package com.lama.polyshare.commons;
 import java.util.Date;
 import java.util.Random;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.cloud.Timestamp;
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.KeyFactory;
+import com.google.cloud.datastore.Query;
+import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 
 public class Utils {
 
 	private final static Random SEED = new Random();
 
+
+	public volatile static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+	public volatile static DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+	public volatile static KeyFactory keyFactory = datastore.newKeyFactory();
+	
+	
 	/*
 	 * Convenience method to add a specified number of minutes to a Date object
 	 * From:
@@ -37,6 +54,51 @@ public class Utils {
 
 	public static int irand(int min, int max) {
 		return SEED.nextInt(max - min) + min;
+	}
+	
+	public static boolean checkRequest(String mail) {
+		Query<Entity> uploadQuery = Query.newEntityQueryBuilder().setKind("FileUploaded")
+				.setFilter(CompositeFilter.and(PropertyFilter.eq("mail", mail), PropertyFilter.gt("uploadRequestStart",
+						Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
+				.build();
+
+		QueryResults<Entity> upload = datastore.run(uploadQuery);
+
+		Query<Entity> downloadQuery = Query.newEntityQueryBuilder().setKind("FileDownloaded")
+				.setFilter(
+						CompositeFilter
+								.and(PropertyFilter.eq("mail", mail),
+										PropertyFilter.gt("downloadRequestStart",
+												Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
+				.build();
+
+		QueryResults<Entity> download = datastore.run(downloadQuery);
+		int downloadCpt = 0;
+		int uploadCpt = 0;
+		while (download.hasNext()) {
+			download.next();
+			downloadCpt++;
+		}
+
+		while (upload.hasNext()) {
+			upload.next();
+			uploadCpt++;
+		}
+
+		Query<Entity> query = Query.newEntityQueryBuilder().setKind("user")
+				.setFilter(PropertyFilter.eq("mail", mail)).build();
+
+		QueryResults<Entity> user = datastore.run(query);
+
+		
+		EnumUserRank rank = null;
+		while (user.hasNext()) {
+			Entity ent = user.next();
+			rank = EnumUserRank.valueOf(ent.getString("rank"));
+		}
+		
+		// TODO check rank != null
+		return Utils.isAuthorizedRequest(downloadCpt + uploadCpt, rank);
 	}
 
 }

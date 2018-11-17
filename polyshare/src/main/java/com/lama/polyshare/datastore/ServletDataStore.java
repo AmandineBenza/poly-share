@@ -10,11 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.cloud.datastore.Key;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.IncompleteKey;
 import com.google.cloud.datastore.KeyFactory;
+import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -23,6 +28,7 @@ import com.lama.polyshare.commons.Utils;
 import com.lama.polyshare.datastore.model.DataStoreMessage;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 import com.lama.polyshare.datastore.model.UserManager;
+import com.lama.polyshare.upload.CloudStorageHelper;
 
 @SuppressWarnings("serial")
 public class ServletDataStore extends HttpServlet {
@@ -30,7 +36,7 @@ public class ServletDataStore extends HttpServlet {
 	public volatile static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 	public volatile static DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
 	public volatile static KeyFactory keyFactory = datastore.newKeyFactory();
-	
+
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		// Query.newEntityQueryBuilder();
@@ -57,41 +63,44 @@ public class ServletDataStore extends HttpServlet {
 		JsonObject root = JSONUtils.fromJson(req.getReader(), JsonObject.class);
 		String event = root.get("event").getAsString();
 		String result = "Empty.";
-		
+
 		switch(event){
-			case "create-user": {
-				result = handleUserCreation(root);
-				break;
-			}
-			case "create-users": {
-				result = handleUserCreations(root);
-				break;
-			}
-			case "edit-user": {
-				result = handleUserEdition(root);
-				break;
-			}
-			case "consult-users": {
-				result = handleUsersConsultation();
-				break;
-			}
-			case "consult-user" : {
-				result = handleUserConsultation(root);
-				break;
-			}
+		case "create-user": {
+			result = handleUserCreation(root);
+			break;
 		}
-		
+		case "create-users": {
+			result = handleUserCreations(root);
+			break;
+		}
+		case "edit-user": {
+			result = handleUserEdition(root, 
+					req.getParameter("fileSize"),
+					req.getParameter("downloadLink"), 
+					req.getParameter("fileName"));
+			break;
+		}
+		case "consult-users": {
+			result = handleUsersConsultation();
+			break;
+		}
+		case "consult-user" : {
+			result = handleUserConsultation(root);
+			break;
+		}
+		}
+
 		resp.getWriter().println(result);
 	}
-	
+
 	private String handleUserCreation(JsonObject msgRoot) {
 		String userMail = msgRoot.get("mail").getAsString();
 		JsonElement userRankElement = msgRoot.get("rank");
 		EnumUserRank userRank = null;
 		int userPoints = 0;
 		int userBytesCount = 0;
-		String userLastSending = null;
-		
+		com.google.cloud.Timestamp userLastSending = null;
+
 		if(userRankElement == null) {
 			userRank = EnumUserRank.NOOB;
 			userPoints = Utils.irand(0, 100 - 20);
@@ -111,74 +120,150 @@ public class ServletDataStore extends HttpServlet {
 				throw new IllegalStateException("Type of user unknown.");
 			}
 		}
-		
+
 		Entity toEditUser = UserManager.instance.getUserByMail(userMail);
-		
+
 		if(toEditUser != null) {
 			return JSONUtils.toJson(new DataStoreMessage("User " + userMail + " already exists !"));
 		}
-		
+
 		Entity entity = UserManager.instance.buildUser(userMail, userLastSending, userRank, userPoints, userBytesCount);
 		datastore.add(entity);
 		return JSONUtils.toJson(datastore.get(entity.getKey()));
 	}
-	
+
 	private String handleUserCreations(JsonObject msgRoot) {
 		JsonArray usersJson = msgRoot.get("data").getAsJsonArray();
 		StringBuffer buffer = new StringBuffer();
 		int cpt = 1;
-		
+
 		for(JsonElement userJson : usersJson) {
 			buffer.append("User " + cpt++ + " creation:\n");
 			buffer.append(handleUserCreation(userJson.getAsJsonObject()));
 			buffer.append("\n");
 		}
-		
+
 		return buffer.toString();
 	}
-	
-	private String handleUserEdition(JsonObject msgRoot) {
+
+	private String handleUserEdition(JsonObject msgRoot, String fileSize, String downloadLink,String fileName ) throws IOException {
 		String userMail = msgRoot.get("mail").getAsString();
 		Entity toEditUser = UserManager.instance.getUserByMail(userMail);
-		
+
+		//		.param("downloadLink", downloadLink).param("fileSize", String.valueOf(fileSize)));
+
+
 		if(toEditUser == null) {
 			return JSONUtils.toJson(new DataStoreMessage("User " 
 					+ userMail + " does not exist !"));
 		}
-		
+
 		JsonElement userDateElement = msgRoot.get("lastSending");
 		JsonElement userPointsElement = msgRoot.get("points");
 		JsonElement userBytesCount = msgRoot.get("bytesCount");
+
+		int newNumberOfOctet =  (int) toEditUser.getLong("bytesCount") + Integer.getInteger(fileSize);
+		
+		
 		
 		toEditUser = UserManager.instance.editUser(toEditUser,
-			userDateElement == null ? toEditUser.getString("lastSending") : userDateElement.getAsString(),
-			EnumUserRank.valueOf(toEditUser.getString("rank")),
-			userPointsElement == null ? (int) toEditUser.getLong("points") : userPointsElement.getAsInt(),
-			userBytesCount == null ? (int) toEditUser.getLong("bytesCount") : userBytesCount.getAsInt());
+				
+				(userDateElement == null ? 
+						Timestamp.now() : 
+							Timestamp.parseTimestamp(userDateElement.getAsString())),
+				null,
+				userPointsElement == null ?
+						(int) toEditUser.getLong("points") : 
+							newNumberOfOctet/1000000,
+							userBytesCount == null ? 
+									(int) newNumberOfOctet :
+										userBytesCount.getAsInt());
+		
+		
+		registerUpload( toEditUser.getString("mail"), EnumUserRank.valueOf(toEditUser.getString("rank")), fileName);
 		
 		datastore.update(toEditUser);
 		return JSONUtils.toJson(datastore.get(toEditUser.getKey()));
 	}
 	
+	
+	private void registerUpload(String mail,EnumUserRank rank, String fileName) throws IOException {
+		
+		IncompleteKey key = keyFactory.setKind("FileUploaded").newKey();
+		
+		Query<Entity> uploadQuery = Query.newEntityQueryBuilder().setKind("FileUploaded")
+				.setFilter(CompositeFilter.and(PropertyFilter.eq("mail", mail), PropertyFilter.gt("uploadRequestStart",
+						Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
+				.build();
+
+		QueryResults<Entity> upload = datastore.run(uploadQuery);
+
+		Query<Entity> downloadQuery = Query.newEntityQueryBuilder().setKind("FileDownloaded")
+				.setFilter(
+						CompositeFilter
+								.and(PropertyFilter.eq("mail", mail),
+										PropertyFilter.gt("downloadRequestStart",
+												Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
+				.build();
+
+		QueryResults<Entity> download = datastore.run(downloadQuery);
+		int downloadCpt = 0;
+		int uploadCpt = 0;
+		while (download.hasNext()) {
+			download.next();
+			downloadCpt++;
+		}
+
+		while (upload.hasNext()) {
+			upload.next();
+			uploadCpt++;
+		}
+
+		Query<Entity> query = Query.newEntityQueryBuilder().setKind("user")
+				.setFilter(PropertyFilter.eq("mail", mail)).build();
+
+		QueryResults<Entity> user = datastore.run(query);
+
+		
+		
+		// TODO check rank != null
+		if (Utils.isAuthorizedRequest(downloadCpt + uploadCpt, rank)) {
+
+			String id = Timestamp.now().toString();
+			
+			datastore.add(Entity.newBuilder(ServletDataStore.keyFactory.newKey()).setKey(key)
+					.set("mail", mail)
+					.set("id", id).set("UploadRequestStart", Timestamp.now())
+					.set("fileName", fileName).set("rank", rank.toString()).build());
+			
+			// TODO mail ok
+		} else {
+			new CloudStorageHelper().deleteFile("staging.poly-share.appspot.com", fileName);
+			// TODO mail nop
+		}
+	}
+	
+	
+
 	private String handleUsersConsultation() {
 		StringBuffer buffer = new StringBuffer();
 		QueryResults<Entity> users = UserManager.instance.getAllUsers();
 		int cpt = 1;
-		
+
 		while(users.hasNext()) {
 			buffer.append(">> User " + cpt++ + ":\n");
 			buffer.append(JSONUtils.toJson(users.next()));
 			buffer.append("\n");
 		}
-		
+
 		return buffer.toString();
 	}
-	
+
 	private String handleUserConsultation(JsonObject msgRoot) {
 		String mail = msgRoot.get("mail").getAsString();
 		return JSONUtils.toJson(UserManager.instance.getUserByMail(mail));
 	}
-	
+
 	public static Key getKey(String kind, String id) {
 		return keyFactory.setKind(kind).newKey(id);
 	}

@@ -57,13 +57,16 @@ public class CloudStorageHelper {
 	}
 
 
-	/**
-	 * downloads a file to Google Cloud Storage to the bucket specified in the BUCKET_NAME
-	 * environment variable, appending a timestamp to end of the uploaded filename.
-	 */
+	
 	public Blob downloadFile(final String bucketName,final String fileName) throws IOException {
 		BlobId blobID = BlobId.of(bucketName, fileName);
 		Blob blobInfo =	storage.get(blobID);
+		return blobInfo;
+	}
+	
+	public boolean deleteFile(final String bucketName,final String fileName) throws IOException {
+		BlobId blobID = BlobId.of(bucketName, fileName);
+		boolean blobInfo =	storage.delete(blobID);
 		return blobInfo;
 	}
 

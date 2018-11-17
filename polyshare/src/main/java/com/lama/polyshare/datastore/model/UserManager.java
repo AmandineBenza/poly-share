@@ -1,5 +1,6 @@
 package com.lama.polyshare.datastore.model;
 
+import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.EntityQuery.Builder;
 import com.google.cloud.datastore.Query;
@@ -12,14 +13,14 @@ public final class UserManager {
 	
 	private UserManager() {}
 	
-	public Entity buildUser(String mail, String lastSending, EnumUserRank rank, int points, int bytesCount) {
+	public Entity buildUser(String mail, Timestamp lastSending, EnumUserRank rank, int points, int bytesCount) {
 		return Entity
 				.newBuilder(
 						ServletDataStore
 						.keyFactory
 						.setKind("user").newKey(mail))
 				.set("mail", mail)
-				.set("lastSending", lastSending == null ? "null" : lastSending)
+				.set("lastSending", lastSending == null ? null : lastSending)
 				.set("rank", rank.toString())
 				.set("points", capPoints(rank, points))
 				.set("bytesCount", bytesCount)
@@ -47,14 +48,14 @@ public final class UserManager {
 		return EnumUserRank.LEET;
 	}
 	
-	public Entity editUser(Entity user, String lastSending, EnumUserRank rank, int points, int bytesCount) {
+	public Entity editUser(Entity user, Timestamp lastSending, EnumUserRank rank, int points, int bytesCount) {
 		return Entity
 				.newBuilder(
 						ServletDataStore
 						.keyFactory
 						.setKind("user").newKey(user.getKey().getName()))
 				.set("mail", user.getKey().getName())
-				.set("lastSending", lastSending == null ? "null" : lastSending)
+				.set("lastSending", lastSending == null ? null : lastSending)
 				.set("rank", adaptRank(points).toString())
 				.set("points", points)
 				.set("bytesCount", bytesCount)

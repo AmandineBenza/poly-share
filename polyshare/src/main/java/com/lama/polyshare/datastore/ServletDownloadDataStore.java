@@ -16,6 +16,7 @@ import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
+import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.lama.polyshare.commons.Utils;
 import com.lama.polyshare.datastore.model.EnumUserRank;
@@ -28,18 +29,29 @@ public class ServletDownloadDataStore extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		Query.newEntityQueryBuilder();
+		
+		IncompleteKey key = keyFactory.setKind("FileUploaded").newKey();
+		String mail = req.getParameter("mail");
+		
+		datastore.add(Entity.newBuilder(ServletDataStore.keyFactory.newKey()).setKey(key)
+				.set("mail", mail)
+				.set("DownloadRequestStart", Timestamp.now())
+				.build());
 	};
-
+	
+	
+	
+	
 	// Requested field are user email as "userMail"
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		handleDownloadRequest(req);
+		handleDownloadLinkRequest(req);
 	}
 
-	private void handleDownloadRequest(HttpServletRequest req) {
-		IncompleteKey key = keyFactory.setKind("customsLinks").newKey();
+	private void handleDownloadLinkRequest(HttpServletRequest req) {
+		IncompleteKey key = keyFactory.setKind("CustomsLinks").newKey();
 		String mail = req.getParameter("userMail");
+		
 		Query<Entity> uploadQuery = Query.newEntityQueryBuilder().setKind("FileUploaded")
 				.setFilter(CompositeFilter.and(PropertyFilter.eq("mail", mail), PropertyFilter.gt("uploadRequestStart",
 						Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
@@ -85,8 +97,8 @@ public class ServletDownloadDataStore extends HttpServlet {
 			String id = Timestamp.now().toString();
 			datastore.add(Entity.newBuilder(ServletDataStore.keyFactory.newKey()).setKey(key).set("mail", mail)
 					.set("id", id).set("DownloadRequestStart", Timestamp.now())
-					.set("FileName", req.getParameter("userMail")).set("rank", rank.toString()).build());
-			// TODO mail ok
+					.set("fileName", req.getParameter("fileName")).set("rank", rank.toString()).build());
+			// TODO mail ok whith id
 		} else {
 			// TODO mail nop
 		}

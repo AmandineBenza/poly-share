@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <web-app version="3.0">
-
 	<servlet>
 		<servlet-name>ServletYo</servlet-name>
 		<servlet-class>com.lama.polyshare.ServletYo</servlet-class>
 	</servlet>
+	
 	<!-- <servlet>
 		<servlet-name>ServletDataStore</servlet-name>
 		<servlet-class>com.lama.polyshare.datastore.ServletDataStore</servlet-class>
@@ -30,6 +29,27 @@
         <servlet-name>bouncehandler</servlet-name>
         <servlet-class>com.lama.polyshare.mails.BounceHandlerServlet</servlet-class>
     </servlet>
+    
+    <servlet>
+        <servlet-name>DeleteFilesJobs</servlet-name>
+        <servlet-class>com.lama.polyshare.jobs.DeleteFilesJob</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>DeleteFilesJobs</servlet-name>
+        <url-pattern>tasks/delete/files</url-pattern>
+    </servlet-mapping>
+    
+     <servlet>
+        <servlet-name>DeleteLinksJob</servlet-name>
+        <servlet-class>com.lama.polyshare.jobs.DeleteLinksJob</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>DeleteLinksJob</servlet-name>
+        <url-pattern>/tasks/delete/links</url-pattern>
+    </servlet-mapping>
+    
     
     <servlet-mapping>
         <servlet-name>bouncehandler</servlet-name>

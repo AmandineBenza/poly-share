@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
+import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
@@ -38,6 +39,7 @@ public class Upload extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+		
 		CloudStorageHelper storageHelper = new CloudStorageHelper();
 		BlobInfo docInformation = storageHelper.getImageOrTxtUrl(req, resp, "staging.poly-share.appspot.com");// "polyshare.appspot.com");
 
@@ -46,14 +48,14 @@ public class Upload extends HttpServlet {
 
 		String downloadLink = docInformation.getMediaLink();
 		long fileSize = docInformation.getSize();
-
+		String fileName = docInformation.getName();
 		// TODO CHECK
-		Entity plasticUser = UserManager.instance.buildUser(req.getParameter("mail"), new Date().toString(),
+		Entity plasticUser = UserManager.instance.buildUser(req.getParameter("mail"), Timestamp.now(),
 				EnumUserRank.NOOB, 0, 0);
 
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(TaskOptions.Builder.withUrl("/worker/upload").payload(JSONUtils.toJson(plasticUser))
-				.param("downloadLink", downloadLink).param("fileSize", String.valueOf(fileSize)));
+				.param("downloadLink", downloadLink).param("fileName", fileName).param("fileSize", String.valueOf(fileSize)));
 
 		try {
 			// resp.getWriter().write(downloadLink);
