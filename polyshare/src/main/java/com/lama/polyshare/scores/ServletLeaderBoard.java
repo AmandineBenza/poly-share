@@ -37,7 +37,7 @@ public class ServletLeaderBoard extends HttpServlet {
 
 	public void rankUsers(int nbUsers, PrintWriter writer) {
 		Builder users = UserManager.instance.getUserQueryBuilder(nbUsers);
-		users.setOrderBy(OrderBy.asc("points"));
+		users.setOrderBy(OrderBy.desc("points"));
 
 		EntityQuery query = users.build();
 		QueryResults<Entity> entities = datastore.run(query);

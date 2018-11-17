@@ -31,7 +31,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"event\":\"create-user\", \"mail\":\"daniella@gmail.com\",\"rank\":\"Noob\"}"
+					"raw": "{\"event\":\"create-user\", \"mail\":\"noobpolyshare1@gmail.com\",\"rank\":\"Noob\"}"
 				},
 				"url": {
 					"raw": "localhost:8080/datastore",
@@ -72,7 +72,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"event\":\"create-users\", \"data\": [\n\t\t{\n\t\t\t\"mail\":\"kayler@lol.com\",\n\t\t\t\"rank\":\"Noob\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"eventuaal@consistency.com\",\n\t\t\t\"rank\":\"Noob\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"jaax@fat.com\",\n\t\t\t\"rank\":\"Casual\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"faab@brouillon.org\",\n\t\t\t\"rank\":\"Casual\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"faker@ahokpenta.ko\",\n\t\t\t\"rank\":\"Leet\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"reponseDeih@random.fr\",\n\t\t\t\"rank\":\"Leet\"\n\t\t}\n\t]\n}"
+					"raw": "{\"event\":\"create-users\", \"data\": [\n\t\t{\n\t\t\t\"mail\":\"noobypolyshare2@gmail.com\",\n\t\t\t\"rank\":\"Noob\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"noobpolyshare1@gmail.com\",\n\t\t\t\"rank\":\"Noob\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"casualpolyshare1@gmail.com\",\n\t\t\t\"rank\":\"Casual\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"casuallypolyshare2@gmail.com\",\n\t\t\t\"rank\":\"Casual\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"leetpolyshare1@gmail.com\",\n\t\t\t\"rank\":\"Leet\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"leetypolyshare2@gmail.com\",\n\t\t\t\"rank\":\"Leet\"\n\t\t}\n\t]\n}"
 				},
 				"url": {
 					"raw": "localhost:8080/datastore",
@@ -113,7 +113,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"event\":\"edit-user\", \"mail\":\"itsdamoy@gmail.com\",\"points\":\"75\", \"bytesCount\":\"80\"}"
+					"raw": "{\"event\":\"edit-user\", \"mail\":\"leetypolyshare2@gmail.com\",\"points\":\"75\", \"bytesCount\":\"80\"}"
 				},
 				"url": {
 					"raw": "localhost:8080/datastore",
@@ -154,10 +154,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"event\":\"consult-user\",\"mail\":\"eventual@consistency.com\"}"
+					"raw": "{\"event\":\"consult-user\",\"mail\":\"casuallypolyshare2@gmail.com\"}"
 				},
 				"url": {
-					"raw": "localhost:8080/datastore?event=consult&mail=eventual@consistency.com",
+					"raw": "localhost:8080/datastore?event=consult&mail=casuallypolyshare2@gmail.com",
 					"host": [
 						"localhost"
 					],
@@ -172,7 +172,7 @@
 						},
 						{
 							"key": "mail",
-							"value": "eventual@consistency.com"
+							"value": "casuallypolyshare2@gmail.com"
 						}
 					]
 				}
