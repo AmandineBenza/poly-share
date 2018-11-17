@@ -35,14 +35,14 @@ public class ServletSendMails extends HttpServlet {
 
 	}
 	
-	public void sendUploadMail(String recipient, String link) {
-		sendMail(SENDER_MAIL, recipient, "", "Successful upload of your file", link);	
+	public void sendUploadMail(String recipient, String link, String filename) {
+		sendMail(SENDER_MAIL, recipient, "", "Successful upload of your file", filename + " : " + link);	
 	}
 	
 	public void sendDownloadMail(String recipient, String link) {
 		sendMail(SENDER_MAIL, recipient, "", "Download link for your file", link);	
 	}
-	
+	 
 	public void sendNoob(String recipient) {
 		sendMail(SENDER_MAIL, recipient, "", "Here's your link", "Lol. No noob.");	
 	}

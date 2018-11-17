@@ -249,7 +249,7 @@ public class DataStoreWorker extends HttpServlet {
 					.set("fileName", fileName).set("rank", rank.toString()).build());
 
 			// send mail ok
-			ServletSendMails.instance.sendUploadMail(mail, downloadLink);
+			ServletSendMails.instance.sendUploadMail(mail, downloadLink, fileName);
 		} else {
 			new CloudStorageHelper().deleteFile("staging.poly-share.appspot.com", fileName);
 			// send mail no lol
