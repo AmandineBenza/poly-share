@@ -21,6 +21,7 @@ public class ServletSendMails extends HttpServlet {
 
 	private static final long serialVersionUID = 2316390422015026794L;
 	public static volatile ServletSendMails instance = new ServletSendMails();
+	public final static String SENDER_MAIL = "amandinebenza@gmail.com";
 	
 	public ServletSendMails() {}
 	
@@ -32,6 +33,18 @@ public class ServletSendMails extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
+	}
+	
+	public void sendUploadMail(String recipient, String link) {
+		sendMail(SENDER_MAIL, recipient, "", "Successful upload of your file", link);	
+	}
+	
+	public void sendDownloadMail(String recipient, String link) {
+		sendMail(SENDER_MAIL, recipient, "", "Download link for your file", link);	
+	}
+	
+	public void sendNoob(String recipient) {
+		sendMail(SENDER_MAIL, recipient, "", "Here's your link", "Lol. No noob.");	
 	}
 
 	public void sendMail(String sender, String recipient, String recipientName, String subject, String body) {
@@ -56,17 +69,5 @@ public class ServletSendMails extends HttpServlet {
 		}
 	}
 	
-	public void sendUploadMail(String recipient, String link) {
-		sendMail("amandinebenza@gmail.com", recipient, "", "Successful upload of your file", link);	
-	}
-	
-	public void sendDownloadMail(String recipient, String link) {
-		sendMail("amandinebenza@gmail.com", recipient, "", "Download link for your file", link);	
-	}
-	
-	public void sendNoob(String recipient) {
-		sendMail("amandinebenza@gmail.com", recipient, "", "Here's your link", "Lol. No noob.");	
-	}
-    
 	
 }

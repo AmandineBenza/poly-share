@@ -79,8 +79,6 @@ public class CloudStorageHelper {
 		Part filePart = req.getPart("file");
 		final String fileName = filePart.getSubmittedFileName();
 
-		// TODO unused
-		String imageUrl = req.getParameter("imageUrl");
 		// Check extension of file
 		if (fileName != null && !fileName.isEmpty() && fileName.contains(".")) {
 			final String extension = fileName.substring(fileName.lastIndexOf('.') + 1);

@@ -43,7 +43,6 @@
 		<url-pattern>/sendmail</url-pattern>
 	</servlet-mapping>
 
-
 	<servlet>
 		<servlet-name>TaskWorker</servlet-name>
 		<servlet-class>com.lama.polyshare.upload.Worker</servlet-class>

@@ -108,7 +108,7 @@ public class DataStoreWorker extends HttpServlet {
 		EnumUserRank userRank = null;
 		int userPoints = 0;
 		int userBytesCount = 0;
-		com.google.cloud.Timestamp userLastSending = null;
+		com.google.cloud.Timestamp userLastSending = Timestamp.MIN_VALUE;
 
 		if(userRankElement == null) {
 			userRank = EnumUserRank.NOOB;
@@ -137,7 +137,7 @@ public class DataStoreWorker extends HttpServlet {
 		}
 
 		Entity entity = UserManager.instance.buildUser(userMail,
-				Timestamp.MIN_VALUE, userRank, userPoints, userBytesCount);
+				userLastSending, userRank, userPoints, userBytesCount);
 		datastore.add(entity);
 		return JSONUtils.toJson(datastore.get(entity.getKey()));
 	}
@@ -160,8 +160,11 @@ public class DataStoreWorker extends HttpServlet {
 	private String handleUserEdition(JsonObject msgRoot, String fileSize, String downloadLink,String fileName ) throws IOException {
 		String userMail = msgRoot.get("mail").getAsString();
 		Entity toEditUser = UserManager.instance.getUserByMail(userMail);
+
 		System.out.println(toEditUser);
 		System.out.println(userMail);
+
+
 		if(toEditUser == null) {
 			return JSONUtils.toJson(new DataStoreMessage("User " 
 					+ userMail + " does not exist !"));
@@ -185,15 +188,16 @@ public class DataStoreWorker extends HttpServlet {
 							userBytesCount == null ? 
 									(int) newNumberOfBytes :
 										userBytesCount.getAsInt());
-		
-		registerUpload( toEditUser.getString("mail"), EnumUserRank.valueOf(toEditUser.getString("rank")), fileName,downloadLink);
+
+		registerUpload(toEditUser.getString("mail"),
+				EnumUserRank.valueOf(toEditUser.getString("rank")), fileName, downloadLink);
 		
 		datastore.update(toEditUser);
 		return JSONUtils.toJson(datastore.get(toEditUser.getKey()));
 	}
 	
 	
-	private void registerUpload(String mail, EnumUserRank rank, String fileName,String downloadLink) throws IOException {
+	private void registerUpload(String mail, EnumUserRank rank, String fileName, String downloadLink) throws IOException {
 		IncompleteKey key = keyFactory.setKind("FileUploaded").newKey();
 		
 		Query<Entity> uploadQuery = Query.newEntityQueryBuilder().setKind("FileUploaded")
@@ -224,13 +228,6 @@ public class DataStoreWorker extends HttpServlet {
 			uploadCpt++;
 		}
 
-		Query<Entity> query = Query.newEntityQueryBuilder().setKind("user")
-				.setFilter(PropertyFilter.eq("mail", mail)).build();
-
-		QueryResults<Entity> users = datastore.run(query);
-		
-		
-		// TODO check rank != null
 		if (Utils.isAuthorizedRequest(downloadCpt + uploadCpt, rank)) {
 			String id = Timestamp.now().toString();
 			
@@ -239,8 +236,8 @@ public class DataStoreWorker extends HttpServlet {
 					.set("id", id).set("UploadRequestStart", Timestamp.now())
 					.set("fileName", fileName).set("rank", rank.toString()).build());
 
-			// TODO send mail ok
-			// ServletSendMails.instance.sendUploadMail(recipient, link);
+			// send mail ok
+			ServletSendMails.instance.sendUploadMail(mail, downloadLink);
 		} else {
 			new CloudStorageHelper().deleteFile("staging.poly-share.appspot.com", fileName);
 			// send mail no lol

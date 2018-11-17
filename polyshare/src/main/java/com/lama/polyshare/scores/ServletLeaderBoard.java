@@ -29,30 +29,28 @@ public class ServletLeaderBoard extends HttpServlet {
 		resp.getWriter().print("LeaderBoard !\n");
 		rankUsers(5, resp.getWriter());
 	};
-
-	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-	};
-
+	
 	public void rankUsers(int nbUsers, PrintWriter writer) {
 		Builder users = UserManager.instance.getUserQueryBuilder(nbUsers);
 		users.setOrderBy(OrderBy.desc("points"));
 
 		EntityQuery query = users.build();
 		QueryResults<Entity> entities = datastore.run(query);
-
 		int i = 1;
 
 		while (entities.hasNext()) {
 			Entity user = entities.next();
 			String mail = user.getString("mail");
 			String rank = user.getString("rank");
+			
 			int points = (int) user.getLong("points");
-
 			writer.print(i + ". " + mail + " | " + rank + " | " + points + " \n");
 			i++;
 		}
 	}
 
+	@Override
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+	};
 }

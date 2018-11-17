@@ -19,6 +19,7 @@ import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.lama.polyshare.commons.Utils;
 import com.lama.polyshare.datastore.model.EnumUserRank;
+import com.lama.polyshare.mails.ServletSendMails;
 
 @SuppressWarnings("serial")
 public class DownloadDataStoreWorker extends HttpServlet {
@@ -85,19 +86,15 @@ public class DownloadDataStoreWorker extends HttpServlet {
 			rank = EnumUserRank.valueOf(ent.getString("rank"));
 		}
 
-		// TODO check rank != null
 		if (Utils.isAuthorizedRequest(downloadCpt + uploadCpt, rank)) {
 			String id = Timestamp.now().toString();
 			datastore.add(Entity.newBuilder(keyFactory.newKey()).setKey(key).set("mail", mail).set("id", id)
 					.set("DownloadRequestStart", Timestamp.now()).set("fileName", req.getParameter("fileName"))
 					.set("rank", rank.toString()).build());
-			// TODO mail ok whith id
+			
+			ServletSendMails.instance.sendDownloadMail(mail, "localhost:8080/download?linkId=" + id);
 		} else {
-			// TODO mail nop
+			ServletSendMails.instance.sendNoob(mail);
 		}
-
-		//
-
 	}
-
 }
