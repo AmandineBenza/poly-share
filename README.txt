@@ -80,7 +80,17 @@ Logiciel:
 
 1. Lancer Postman.
 2. Importer /src/main/resources/requests/*.json (mais pas les fichiers *test*)
-3. Lancer avec delay=1000 ms et Keep variable values=true
+3. Lancer avec delay=500 ms et Keep variable values=true
+
+- Contenu de "src/main/resources/requests":
+
+1. "Poly-share-noob-to-casual.postman_collection.json"
+	- Promotion d'un utilisateur de rang Noob vers Casual
+2. "Poly-share-dl-limit-by-rank.postman_collection.json"
+	- Démonstration de la limite de download par utilisateur suivant leur niveau
+3. "TODO"
+	- Démonstration des downloads en parallèle pour différents utilisateurs
+
 
 ------------  
 
