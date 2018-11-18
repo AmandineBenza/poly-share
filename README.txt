@@ -34,7 +34,7 @@ Logiciel:
 
 1. Lancer Postman.
 2. Importer le dossier /src/main/resources/requests
-3. Svp, lancer avec delay=500 ms et Keep variable values=true
+3. Svp, lancer l'environnement "Poly-share-run.postman_environment.json" avec delay=500 ms et Keep variable values=true
 
 - Contenu de "src/main/resources/requests"
 
@@ -96,19 +96,19 @@ Logiciel:
 																- Upload.java || Permet de lancer une requetre d'upload
 																- Worker.java || Implementation d'un worker 
 													 -> Resources 
-													 		-> Requests
-													 			Voir ci-dessus !
-													 		-> Accounts 
+													 		-> postman_collections || Contient les scénarios Postman ainsi que l'environnement à utiliser [NECESSAIRE]
+													 		-> postman_runner_results || Contient les résultats des exécutions de ces scénarios Postman
+													 		-> gmail_accounts 
 													 			- Polyshare_accounts.txt || Comptes GMAIL de nos 6 utilisateurs ainsi que les mots de passe associés
-													 		-> Webapp
-													 		 	- index.jsp
-													 		 	-> WEB-INF
-													 		 		- appengine-web.xml
-													 		 		- cron.xml 
-													 		 		- index.yaml
-													 		 		- logging.properties
-													 		 		- queue.xml
-													 		 		- web.xml
+											 		-> Webapp
+											 		 	- index.jsp
+											 		 	-> WEB-INF
+											 		 		- appengine-web.xml
+											 		 		- cron.xml 
+											 		 		- index.yaml
+											 		 		- logging.properties
+											 		 		- queue.xml
+											 		 		- web.xml
 
 ------------  
 
