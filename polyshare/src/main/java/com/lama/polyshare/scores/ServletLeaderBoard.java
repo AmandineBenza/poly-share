@@ -26,7 +26,7 @@ public class ServletLeaderBoard extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		resp.getWriter().print("LeaderBoard !\n");
+		resp.getWriter().print("LeaderBoard ! <br>");
 		rankUsers(5, resp.getWriter());
 	};
 	
@@ -44,7 +44,7 @@ public class ServletLeaderBoard extends HttpServlet {
 			String rank = user.getString("rank");
 			
 			int points = (int) user.getLong("points");
-			writer.print(i + ". " + mail + " | " + rank + " | " + points + " \n");
+			writer.print(i + ". " + mail + " | " + rank + " | " + points + "<br>");
 			i++;
 		}
 	}
