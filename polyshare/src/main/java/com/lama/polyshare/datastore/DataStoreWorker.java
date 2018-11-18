@@ -137,7 +137,7 @@ public class DataStoreWorker extends HttpServlet {
 		}
 
 		Entity entity = UserManager.instance.buildUser(userMail,
-				userLastSending, userRank, userPoints, userBytesCount);
+				userLastSending, userRank, userPoints, userPoints * 1000000);
 		datastore.add(entity);
 		return JSONUtils.toJson(datastore.get(entity.getKey()));
 	}
@@ -173,7 +173,7 @@ public class DataStoreWorker extends HttpServlet {
 		JsonElement userDateElement = msgRoot.get("lastSending");
 		JsonElement userPointsElement = msgRoot.get("points");
 		JsonElement userBytesCount = msgRoot.get("bytesCount");
-		System.out.println(		);
+		
 		int newNumberOfBytes =  (int) toEditUser.getLong("bytesCount") + Integer.parseInt(fileSize.trim());
 
 		toEditUser = UserManager.instance.editUser(toEditUser,
@@ -183,8 +183,8 @@ public class DataStoreWorker extends HttpServlet {
 							Timestamp.parseTimestamp(userDateElement.getAsString())),
 				null,
 				userPointsElement == null ?
-						(int) toEditUser.getLong("points") : 
-							newNumberOfBytes/1000000,
+						(int) newNumberOfBytes/1000000  : 
+							(int) toEditUser.getLong("points"),
 							userBytesCount == null ? 
 									(int) newNumberOfBytes :
 										userBytesCount.getAsInt());
