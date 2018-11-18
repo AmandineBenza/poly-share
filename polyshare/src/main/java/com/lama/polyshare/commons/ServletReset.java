@@ -19,7 +19,7 @@ public class ServletReset extends HttpServlet {
 
 	private static final long serialVersionUID = -3033318538535959542L;
 	private final static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-	
+	//https://2-dot-poly-share.appspot.com
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		List<Key> allKeys = new ArrayList<>();

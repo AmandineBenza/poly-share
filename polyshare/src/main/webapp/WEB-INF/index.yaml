@@ -5,10 +5,17 @@ indexes:
     direction: asc
   - name: UploadRequestStart
     direction: asc
+  - name: rank
+    direction: asc
 - kind: FileDownloaded
   properties:
   - name: mail
     direction: asc
-  - name: UploadRequestStart
+  - name: DownloadRequestStart
     direction: asc
-   
+  - name: rank
+    direction: asc
+- kind: FileUploaded
+  properties:
+  - name: rank
+  - name: UploadRequestStart

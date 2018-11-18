@@ -50,7 +50,7 @@ public class Utils {
 	
 	public static boolean checkRequest(String mail) {
 		Query<Entity> uploadQuery = Query.newEntityQueryBuilder().setKind("FileUploaded")
-				.setFilter(CompositeFilter.and(PropertyFilter.eq("mail", mail), PropertyFilter.gt("uploadRequestStart",
+				.setFilter(CompositeFilter.and(PropertyFilter.eq("mail", mail), PropertyFilter.gt("UploadRequestStart",
 						Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
 				.build();
 
@@ -60,7 +60,7 @@ public class Utils {
 				.setFilter(
 						CompositeFilter
 								.and(PropertyFilter.eq("mail", mail),
-										PropertyFilter.gt("downloadRequestStart",
+										PropertyFilter.gt("DownloadRequestStart",
 												Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
 				.build();
 

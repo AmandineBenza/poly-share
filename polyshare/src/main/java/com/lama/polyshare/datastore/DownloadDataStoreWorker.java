@@ -30,7 +30,7 @@ public class DownloadDataStoreWorker extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
-		IncompleteKey key = keyFactory.setKind("FileUploaded").newKey();
+		IncompleteKey key = keyFactory.setKind("FileDownloaded").newKey();
 		String mail = req.getParameter("mail");
 
 		datastore.add(Entity.newBuilder(keyFactory.newKey()).setKey(key).set("mail", mail)
@@ -45,10 +45,11 @@ public class DownloadDataStoreWorker extends HttpServlet {
 
 	private void handleDownloadLinkRequest(HttpServletRequest req) {
 		IncompleteKey key = keyFactory.setKind("CustomsLinks").newKey();
-		String mail = req.getParameter("userMail");
+		String mail = req.getParameter("mail");
 
 		Query<Entity> uploadQuery = Query.newEntityQueryBuilder().setKind("FileUploaded")
-				.setFilter(CompositeFilter.and(PropertyFilter.eq("mail", mail), PropertyFilter.gt("uploadRequestStart",
+				.setFilter(CompositeFilter.and(PropertyFilter.eq("mail", mail),
+						PropertyFilter.gt("UploadRequestStart",
 						Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
 				.build();
 
@@ -58,7 +59,7 @@ public class DownloadDataStoreWorker extends HttpServlet {
 				.setFilter(
 						CompositeFilter
 								.and(PropertyFilter.eq("mail", mail),
-										PropertyFilter.gt("downloadRequestStart",
+										PropertyFilter.gt("DownloadRequestStart",
 												Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
 				.build();
 
@@ -76,7 +77,7 @@ public class DownloadDataStoreWorker extends HttpServlet {
 		}
 
 		Query<Entity> query = Query.newEntityQueryBuilder().setKind("user")
-				.setFilter(PropertyFilter.eq("mail", req.getParameter("userMail"))).build();
+				.setFilter(PropertyFilter.eq("mail", req.getParameter("mail"))).build();
 
 		QueryResults<Entity> user = datastore.run(query);
 
@@ -92,7 +93,7 @@ public class DownloadDataStoreWorker extends HttpServlet {
 					.set("DownloadRequestStart", Timestamp.now()).set("fileName", req.getParameter("fileName"))
 					.set("rank", rank.toString()).build());
 			
-			ServletSendMails.instance.sendDownloadMail(mail, "poly-share.appspot.com/download?linkId=" + id);
+			ServletSendMails.instance.sendDownloadMail(mail, "poly-share.appspot.com/Download?linkId=" + id);
 		} else {
 			ServletSendMails.instance.sendNoob(mail);
 		}

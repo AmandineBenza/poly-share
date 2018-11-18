@@ -33,8 +33,8 @@ public class ServletDownload extends HttpServlet  {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		JsonObject root = JSONUtils.fromJson(req.getReader(), JsonObject.class);
-		String mail = root.get("mail").getAsString();
+		String mail = req.getParameter("mail");
+
 
 		if(Utils.checkRequest(mail)) {
 			String linkID = req.getParameter("linkId");
@@ -67,6 +67,7 @@ public class ServletDownload extends HttpServlet  {
 						Method.GET).param("mail", mail));
 			}
 			else {
+				//TODO retirer ça ? lol
 				// send mail ou refuser lien invalide lol (avec une mention le lien peut etre expiré)
 				ServletSendMails.instance.sendDownloadMail(mail, "poly-share.appspot.com/Download?linkId=" + linkID);
 			}

@@ -16,6 +16,17 @@
         <servlet-name>ServletDataStore</servlet-name>
         <url-pattern>/taskqueues/datastoreUpload</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>WorkerDownload</servlet-name>
+        <servlet-class>com.lama.polyshare.datastore.DownloadDataStoreWorker
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>WorkerDownload</servlet-name>
+        <url-pattern>/worker/download</url-pattern>
+    </servlet-mapping>
 
 	<servlet>
 		<servlet-name>ServletYo</servlet-name>
@@ -42,6 +53,18 @@
 		<servlet-name>Upload</servlet-name>
 		<url-pattern>/Upload</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Download</servlet-name>
+		<servlet-class>com.lama.polyshare.download.ServletDownload</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Download</servlet-name>
+		<url-pattern>/Download</url-pattern>
+	</servlet-mapping>
+	
+	
 
 	<servlet>
 		<servlet-name>ServletSendMails</servlet-name>
@@ -104,6 +127,7 @@
 		<url-pattern>/tasks/delete/files</url-pattern>
 	</servlet-mapping>
 
+	
 
 	<servlet>
 		<servlet-name>ServletReset</servlet-name>

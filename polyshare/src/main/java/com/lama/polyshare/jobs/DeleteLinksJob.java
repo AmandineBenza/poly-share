@@ -22,7 +22,7 @@ public class DeleteLinksJob extends HttpServlet {
 	private final static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 	
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse resp)
+	protected void doGet(HttpServletRequest request, HttpServletResponse resp)
 			throws ServletException, IOException {
 		Query<Entity> oldLinksQuery = Query.newEntityQueryBuilder().setKind("CustomsLinks")
 				.setFilter(PropertyFilter.lt("DownloadRequestStart",

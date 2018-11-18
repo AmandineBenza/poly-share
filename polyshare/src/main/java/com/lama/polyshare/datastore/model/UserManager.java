@@ -20,7 +20,7 @@ public final class UserManager {
 	
 	public Entity buildUser(String mail, Timestamp lastSending, EnumUserRank rank, int points, int bytesCount) {
 		return Entity
-				.newBuilder(keyFactory .setKind("user").newKey(mail))
+				.newBuilder(keyFactory.setKind("user").newKey(mail))
 				.set("mail", mail)
 				.set("lastSending", lastSending == null ? Timestamp.MIN_VALUE : lastSending)
 				.set("rank", rank.toString())
