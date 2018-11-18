@@ -88,12 +88,12 @@ public class DownloadDataStoreWorker extends HttpServlet {
 		}
 
 		if (Utils.isAuthorizedRequest(downloadCpt + uploadCpt, rank)) {
-			String id = Timestamp.now().toString();
+			String id = req.getParameter("id");
 			datastore.add(Entity.newBuilder(keyFactory.newKey()).setKey(key).set("mail", mail).set("id", id)
 					.set("DownloadRequestStart", Timestamp.now()).set("fileName", req.getParameter("fileName"))
 					.set("rank", rank.toString()).build());
 			
-			ServletSendMails.instance.sendDownloadMail(mail, "poly-share.appspot.com/Download?linkId=" + id+"&mail=" + mail);
+			ServletSendMails.instance.sendDownloadMail(mail, "poly-share.appspot.com/Download?linkId=" + id +"&mail=" + mail);
 		} else {
 			ServletSendMails.instance.sendNoob(mail);
 		}

@@ -12,6 +12,7 @@ import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.taskqueue.TaskOptions.Method;
+import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
@@ -85,11 +86,12 @@ public class ServletDownload extends HttpServlet  {
 		String mail = req.getParameter("mail");
 
 		Queue queue = QueueFactory.getDefaultQueue();
+		String id = Timestamp.now().toString();
 		queue.add(TaskOptions.Builder.withUrl("/worker/download").method(Method.POST)
-				.param("fileName",fileName).param("mail", mail));
+				.param("fileName",fileName).param("mail", mail).param("id",id ));
 
 		try {
-			//			resp.getWriter().write(downloadLink);
+			resp.getWriter().write("poly-share.appspot.com/Download?linkId=" + id +"&mail=" + mail);
 		} catch (Exception e) {
 			throw new ServletException("Error updating book", e);
 		}

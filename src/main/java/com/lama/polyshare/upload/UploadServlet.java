@@ -41,8 +41,9 @@ public class UploadServlet extends HttpServlet {
 		
 		if(richard == null ) {
 			docInformation = storageHelper.getImageOrTxtUrl(req, resp, "staging.poly-share.appspot.com");// "polyshare.appspot.com");
+			
 		} else {
-			docInformation = storageHelper.getDevDebugTestAPIImageOrTxtUrl(Integer.parseInt(richard), "staging.poly-share.appspot.com"); 
+			docInformation = storageHelper.getDevDebugTestAPIImageOrTxtUrl(Integer.parseInt(richard), req.getParameter("reqFileName"), "staging.poly-share.appspot.com"); 
 		}
 		
 		String downloadLink = docInformation.getMediaLink();
