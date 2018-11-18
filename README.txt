@@ -91,7 +91,7 @@ Logiciel:
 /reset || Accès direct à la réinitialisation de la base de données
 
 /taskqueues/datastoreUpload || Creation et consultation des utilisateurs
-		- Exemple de requêtes : 
+		- Exemple de requête : 
 			- curl --request POST \
   			--url https://poly-share.appspot.com/taskqueues/datastoreUpload \
   			--header 'Content-Type: application/json' \
@@ -104,7 +104,7 @@ Logiciel:
 
 
 /Download || Téléchargement d'un fichier 
-	- Exemple de requêtes : 
+	- Exemple de requête : 
 		- curl -X POST "https://poly-share.appspot.com/Download?fileName={{generatedFileName}}&mail=noobpolyshare1@gmail.com"
  
 
