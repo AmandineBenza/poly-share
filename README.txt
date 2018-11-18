@@ -1,15 +1,16 @@
----- Cloud Computing Project - Fabrice HUET ----
------------------------------------------------
-Groupe:
+---- Cloud Computing - Poly-Share - Fabrice HUET ----
+-----------------------------------------------------
+>> Groupe
 - TOUTAIN Xavier
 - FORNALI Damien
 - BENZA Amandine
 - HAJJI Amine
 
-Contexte:
+>> Contexte
 - Master II IFI
 - Nice-Sophia-Antipolis University, 2018-2019
------------------------------------------------
+- https://docs.google.com/document/d/1VVrKrDH9Hj0iGAbUADNwkXJDBd2Hnzye52RD3ASlBMA/edit#
+-----------------------------------------------------
 
 >> Pour lancer l'application
 
@@ -21,11 +22,46 @@ Contexte:
 
 ------------  
 
->> Composition de l'archive:
+>> Accéder à la page d'accueil
+- https://poly-share.appspot.com/
+
+------------  
+
+>> Tests Postman
+
+Logiciel:
+- Postman: https://www.getpostman.com/
+
+1. Lancer Postman.
+2. Importer le dossier /src/main/resources/requests
+3. Svp, lancer avec delay=500 ms et Keep variable values=true
+
+- Contenu de "src/main/resources/requests"
+
+1. "Poly-share-noob-to-casual.postman_collection.json"
+	- Promotion d'un utilisateur de rang Noob vers Casual
+2. "Poly-share-dl-limit-by-rank.postman_collection.json"
+	- Démonstration de la limite de download par utilisateur suivant leur niveau
+3. "Poly-share-concurrent-dl.postman_collection.json"
+	- Démonstration des download en parallèle pour différents utilisateurs
+4. "Poly-share-trials.postman_collection"
+	- Requêtes additionnelles
+5. "Poly-share-run.postman_environment.json"
+	- Environnement nécessaire au bon déroulement des requêtes
+6. "Poly-share-noob-to-casual.postman_test_run.json"
+	- Résultats du lancement des requêtes Postman pour la promotion d'un utilisateur de rang Noob vers Casual
+7. "Poly-share-concurrent-dl.postman_test_run.json"
+	- Résultats du lancement des requêtes Postman pour les download en parallèle pour différents utilisateurs.
+
+------------  
+
+>> Composition de l'archive
+
 -- Polyshare 
-						- README.txt 
+						- README.txt : this
 						- nbactions.xml
-						- pom.xml 		
+						- pom.xml : maven's pom
+						- upload.html : Un utilisateur se rend sur une page d'accueil où il peut uploader des fichiers.
 
 						-> deliverables 
 									- ArchitectureAndInstances.pdf (Rendu 1)
@@ -61,9 +97,7 @@ Contexte:
 																- Worker.java || Implementation d'un worker 
 													 -> Resources 
 													 		-> Requests
-													 			- Poly-share-noob-to-casual.postman_collection.json || Scénario de promotion d'un utilisateur Noob
-													 			- TODO
-													 			- TODO
+													 			Voir ci-dessus !
 													 		-> Accounts 
 													 			- Polyshare_accounts.txt || Comptes GMAIL de nos 6 utilisateurs ainsi que les mots de passe associés
 													 		-> Webapp
@@ -78,41 +112,13 @@ Contexte:
 
 ------------  
 
-[Lancer les Tests Postman]
-
-Logiciel:
-- Postman: https://www.getpostman.com/
-
-1. Lancer Postman.
-2. Importer /src/main/resources/requests
-3. Lancer avec delay=500 ms et Keep variable values=true
-
-- Contenu de "src/main/resources/requests":
-
-1. "Poly-share-noob-to-casual.postman_collection.json"
-	- Promotion d'un utilisateur de rang Noob vers Casual
-2. "Poly-share-dl-limit-by-rank.postman_collection.json"
-	- Démonstration de la limite de download par utilisateur suivant leur niveau
-3. ""
-	-
-4. "Poly-share-trials.postman_collection"
-	- Requêtes additionnelles
-5. "Poly-share-run.postman_environment.json"
-	- Environnement nécessaire au bon déroulement des requêtes
-6. "Poly-share-noob-to-casual.postman_test_run.json"
-	- Résultat du lancement des requêtes postman pour la promotion d'un utilisateur de rang Noob vers Casual
-7. ""
-	-
-
-------------  
-
-[Points d'entrée]
+>> Points d'entrée de l'application
 
 /leaderboard || Accès direct au leaderboard
 
 /reset || Accès direct à la réinitialisation de la base de données
 
-/taskqueues/datastoreUpload || Creation et consultation des utilisateurs
+/taskqueues/datastoreUpload || Création et consultation des utilisateurs
 		- Exemple de requête : 
 			- curl --request POST \
   			--url https://poly-share.appspot.com/taskqueues/datastoreUpload \
@@ -123,7 +129,6 @@ Logiciel:
 	- Exemple de requêtes : 
 		- curl -X POST "https://poly-share.appspot.com/Upload?mail=xavier96@rocketmail.com&generatedFileSize=1048576" -d ""
 		- curl -X POST -F file=@"Nouveau document.py" https://poly-share.appspot.com/Upload?mail=leetpolyshare1@gmail.com
-
 
 /Download || Téléchargement d'un fichier 
 	- Exemple de requête : 
