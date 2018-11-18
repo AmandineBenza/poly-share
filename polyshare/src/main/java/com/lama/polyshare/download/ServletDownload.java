@@ -80,7 +80,7 @@ public class ServletDownload extends HttpServlet  {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException,
 	ServletException {
-		// TODO CHECK
+
 		String fileName = req.getParameter("fileName");
 		String mail = req.getParameter("mail");
 
