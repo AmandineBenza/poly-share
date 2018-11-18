@@ -1,0 +1,305 @@
+{
+	"info": {
+		"_postman_id": "420b8d39-7f5b-48a6-bc9f-a127c740ba04",
+		"name": "Polyshare-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Reset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://poly-share.appspot.com/reset",
+					"protocol": "https",
+					"host": [
+						"poly-share",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create-users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "08d22f6d-c41a-4e14-8b99-3ce0966656b3",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"event\":\"create-users\", \"data\": [\n\t\t{\n\t\t\t\"mail\":\"noobpolyshare1@gmail.com\",\n\t\t\t\"rank\":\"Noob\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"noobypolyshare2@gmail.com\",\n\t\t\t\"rank\":\"Noob\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"casualpolyshare1@gmail.com\",\n\t\t\t\"rank\":\"Casual\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"casuallypolyshare2@gmail.com\",\n\t\t\t\"rank\":\"Casual\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"leetpolyshare1@gmail.com\",\n\t\t\t\"rank\":\"Leet\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"leetypolyshare2@gmail.com\",\n\t\t\t\"rank\":\"Leet\"\n\t\t}\n\t]\n}"
+				},
+				"url": {
+					"raw": "https://poly-share.appspot.com/taskqueues/datastoreUpload",
+					"protocol": "https",
+					"host": [
+						"poly-share",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"taskqueues",
+						"datastoreUpload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consult-user-is-noob",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7f4d5560-167d-4b71-8de5-f5da55bf584a",
+						"exec": [
+							"eval(globals.commonPreTest)();",
+							"// request's components validity",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"User is noob\"] = jsonData[\"properties\"][\"rank\"][\"value\"] == \"NOOB\";",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f222568c-cfa2-4901-9c02-c4239b9869a5",
+						"exec": [
+							"postman.setGlobalVariable(\"commonPreTest\", () => {",
+							"    // response code validity",
+							"    tests[\"Status code is OK.\"] = responseCode.code == 200;",
+							"    ",
+							"    // content type header existence",
+							"    var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+							"    ",
+							"    tests[\"Has Content-Type.\"] = contentTypeHeaderExists;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://poly-share.appspot.com/taskqueues/datastoreUpload?event=consult&mail=noobpolyshare1@gmail.com",
+					"protocol": "https",
+					"host": [
+						"poly-share",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"taskqueues",
+						"datastoreUpload"
+					],
+					"query": [
+						{
+							"key": "event",
+							"value": "consult"
+						},
+						{
+							"key": "mail",
+							"value": "noobpolyshare1@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Noob-to-casual",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b310697e-9aa4-48e3-b206-aa0cb9392e81",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://poly-share.appspot.com/Upload?mail=noobpolyshare1@gmail.com&generatedFileSize=10485760",
+					"protocol": "https",
+					"host": [
+						"poly-share",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"Upload"
+					],
+					"query": [
+						{
+							"key": "mail",
+							"value": "noobpolyshare1@gmail.com"
+						},
+						{
+							"key": "generatedFileSize",
+							"value": "10485760"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consult-user-is-casual",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7f4d5560-167d-4b71-8de5-f5da55bf584a",
+						"exec": [
+							"eval(globals.commonPreTest)();",
+							"// request's components validity",
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(jsonData[\"properties\"][\"rank\"][\"value\"]);",
+							"tests[\"User is casual\"] = jsonData[\"properties\"][\"rank\"][\"value\"] == \"CASUAL\";"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "26c58a2e-9da4-4896-aa35-8f69bf086058",
+						"exec": [
+							"postman.setGlobalVariable(\"commonPreTest\", () => {",
+							"    // response code validity",
+							"    tests[\"Status code is OK.\"] = responseCode.code == 200;",
+							"    ",
+							"    // content type header existence",
+							"    var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+							"    ",
+							"    tests[\"Has Content-Type.\"] = contentTypeHeaderExists;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://poly-share.appspot.com/taskqueues/datastoreUpload?event=consult&mail=noobpolyshare1@gmail.com",
+					"protocol": "https",
+					"host": [
+						"poly-share",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"taskqueues",
+						"datastoreUpload"
+					],
+					"query": [
+						{
+							"key": "event",
+							"value": "consult"
+						},
+						{
+							"key": "mail",
+							"value": "noobpolyshare1@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5abc33d9-c035-4736-85a2-6ece299374a0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f8284f13-8375-477e-a460-438ae954b77f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

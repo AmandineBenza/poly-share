@@ -1,0 +1,356 @@
+{
+	"id": "f28fc6fa-a4ac-446e-816e-958e913e7c34",
+	"name": "Polyshare-API2",
+	"allTests": [],
+	"timestamp": "2018-11-18T12:51:51.427Z",
+	"collection_id": "420b8d39-7f5b-48a6-bc9f-a127c740ba04",
+	"folder_id": 0,
+	"target_type": "collection",
+	"environment_id": "0",
+	"data": [],
+	"delay": 1000,
+	"count": 1,
+	"collection": {
+		"id": "420b8d39-7f5b-48a6-bc9f-a127c740ba04",
+		"name": "Polyshare-API2",
+		"description": "",
+		"auth": null,
+		"events": [
+			{
+				"listen": "prerequest",
+				"script": {
+					"id": "5abc33d9-c035-4736-85a2-6ece299374a0",
+					"type": "text/javascript",
+					"exec": [
+						""
+					]
+				}
+			},
+			{
+				"listen": "test",
+				"script": {
+					"id": "f8284f13-8375-477e-a460-438ae954b77f",
+					"type": "text/javascript",
+					"exec": [
+						""
+					]
+				}
+			}
+		],
+		"variables": [],
+		"order": [
+			"c1971de0-dff4-4064-b724-6aea46252579",
+			"b3366c8c-9bea-4359-b19f-7f703dc738bd",
+			"caac6883-80b6-4f4d-9867-9909c4a97925",
+			"c5054091-348e-430e-92a4-acf2032865eb",
+			"39c72ceb-cb43-491e-9ea1-bb4038390c90"
+		],
+		"folders_order": [],
+		"owner": "2707058",
+		"permissions": {},
+		"favorite": true,
+		"shared": false,
+		"type": "collection",
+		"depth": 0
+	},
+	"folder": null,
+	"environment": null,
+	"globals": [
+		{
+			"value": "() => {\n    // response code validity\n    tests[\"Status code is OK.\"] = responseCode.code == 200;\n    \n    // content type header existence\n    var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\n    \n    tests[\"Has Content-Type.\"] = contentTypeHeaderExists;\n}",
+			"key": "commonPreTest",
+			"enabled": true
+		},
+		{
+			"value": "(request, responseBody) => {\n    var jsonRequest = xml2Json(request.data);\n    var jsonResponse = xml2Json(responseBody);\n    \n    // the actual upsell content encapsulated into a json object\n    var upsell = jsonRequest[\"soap:Envelope\"][\"soap:Body\"][\"Fare_FlexPricerUpsell\"];\n    // the actual reply content encapsulated into a json object\n    var reply = jsonResponse[\"SOAP\\-ENV:Envelope\"][\"SOAP\\-ENV:Body\"][\"Fare_FlexPricerUpsellReply\"];\n    \n    // the connecting services\n    var connectingServices = reply[\"connectingServices\"];\n    // the lounge service\n    var loungeService = connectingServices[\"loungeService\"];\n    // the lounge array\n    var lounges = loungeService[\"lounge\"];\n    \n    // the request departure IATA code\n    var departureIata = extractRequestDeparture(upsell);\n    // the request arrival IATA code\n    var arrivalIata = extractRequestArrival(upsell);\n\n    if(lounges != null){\n            lounges.forEach((lounge) => {\n    \n        let description = lounge[\"description\"];\n        let detailedLocation = lounge[\"detailedLocation\"];\n        let entryConditions = lounge[\"entryConditions\"][\"entryCondition\"];\n        let facilities = lounge[\"facilities\"][\"facility\"];\n        let iata = lounge[\"iata\"];\n        let id = lounge[\"id\"];\n        let images = lounge[\"images\"][\"image\"];\n        let location = lounge[\"location\"];\n        let name = lounge[\"name\"];\n        let openings = lounge[\"openings\"][\"opening\"];\n        let src = lounge[\"srcUrl\"];\n        \n        // check nullity part\n        checkNullity(\"description\", description);\n        checkNullity(\"detailedLocation\", detailedLocation);\n        checkNullity(\"entryConditions\", entryConditions);\n        checkNullity(\"facilities\", facilities);\n        checkNullity(\"iata\", iata);\n        checkNullity(\"id\", id);\n        checkNullity(\"images\", images);\n        checkNullity(\"location\", location);\n        checkNullity(\"name\", name);\n        checkNullity(\"openings\", openings);\n        checkNullity(\"src\", src);\n        \n        // check non-emptyness\n        checkStrEmptyness(\"description\", description);\n        checkStrEmptyness(\"detailedLocation\", detailedLocation);\n        checkStrEmptyness(\"iata\", iata);\n        checkStrEmptyness(\"id\", id);\n        checkStrEmptyness(\"location\", location);\n        checkStrEmptyness(\"name\", name);\n        checkStrEmptyness(\"src\", src);\n        \n        // check arrays\n        checkArrayEmptyness(\"entryConditions\", entryConditions);\n        checkArrayEmptyness(\"facilities\", facilities);\n        checkArrayEmptyness(\"images\", images);\n        checkArrayEmptyness(\"openings\", openings);\n        \n        // check content\n        checkIdConsistence(id, departureIata, arrivalIata);\n        checkIataConsistence(id, departureIata, arrivalIata);\n    });\n    }\n\n    function extractRequestDeparture(upsell){\n        let itineraries = upsell[\"itinerary\"];\n        \n        // have to dissociate OW requests from multi ptc as \n        if(itineraries.constructor == Array){\n            return itineraries[0][\"departureLocalization\"][\"departurePoint\"][\"locationId\"];\n        } else {\n            return itineraries[\"departureLocalization\"][\"departurePoint\"][\"locationId\"];\n        }\n    }\n    \n    function extractRequestArrival(upsell){\n        let itineraries = upsell[\"itinerary\"];\n        \n        // have to dissociate OW requests from multi ptc as \n        if(itineraries.constructor == Array){\n            return itineraries[itineraries.length - 1][\"arrivalLocalization\"][\"arrivalPointDetails\"][\"locationId\"];\n        } else {\n            return itineraries[\"arrivalLocalization\"][\"arrivalPointDetails\"][\"locationId\"];\n        }\n    }\n    \n    function checkNullity(varName, obj){\n        tests[\"Check \" + varName + \" is not null !\"] = obj !== null;\n    }\n    \n    function checkStrEmptyness(varName, obj){\n        tests[\"Check \" + varName + \" is not empty !\"] = obj.trim() != \"\";\n    }\n    \n    function checkArrayEmptyness(varName, obj){\n        tests[\"Check \" + varName + \" is not empty !\"] = obj.length > 0;\n    }\n    \n    function checkIdConsistence(id, departure, arrival){\n        tests[\"Check id consistence.\"] = (id !== departure && id !== arrival);\n    }\n    \n    function checkIataConsistence(iata, departure, arrival){\n        tests[\"Check iata consistence.\"] = (!iata.includes(departure) && !iata.includes(arrival));\n    }\n    \n}",
+			"key": "responseValidityTest",
+			"enabled": true
+		},
+		{
+			"value": "() => {\n    tests[\"Content-Type has application/json.\"] = responseHeaders[\"Content-Type\"].has(\"application/json\");\n}",
+			"key": "preJsonTest",
+			"enabled": true
+		},
+		{
+			"value": "() => {\n    tests[\"Content-Type has text/plain.\"] = responseHeaders[\"Content-Type\"].has(\"text/plain\");\n}",
+			"key": "preTextTest",
+			"enabled": true
+		}
+	],
+	"results": [
+		{
+			"name": "Reset",
+			"id": "c1971de0-dff4-4064-b724-6aea46252579",
+			"url": "https://poly-share.appspot.com/reset",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"589"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "589",
+			"totalRequestTime": "589",
+			"iterationResults": {}
+		},
+		{
+			"name": "Create-users",
+			"id": "b3366c8c-9bea-4359-b19f-7f703dc738bd",
+			"url": "https://poly-share.appspot.com/taskqueues/datastoreUpload",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"1120"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "1120",
+			"totalRequestTime": "1120",
+			"iterationResults": {}
+		},
+		{
+			"name": "Consult-user-is-noob",
+			"id": "caac6883-80b6-4f4d-9867-9909c4a97925",
+			"url": "https://poly-share.appspot.com/taskqueues/datastoreUpload?event=consult&mail=noobpolyshare1@gmail.com",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status code is OK.",
+				"status": "pass",
+				"Has Content-Type.": true,
+				"User is noob": true
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"User is noob": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"81"
+			],
+			"allTests": [
+				{
+					"Status code is OK.": true,
+					"Has Content-Type.": true,
+					"User is noob": true
+				}
+			],
+			"time": "81",
+			"totalRequestTime": "81",
+			"iterationResults": {}
+		},
+		{
+			"name": "Noob-to-casual",
+			"id": "c5054091-348e-430e-92a4-acf2032865eb",
+			"url": "https://poly-share.appspot.com/Upload?mail=noobpolyshare1@gmail.com&generatedFileSize=10485760",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"812"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "812",
+			"totalRequestTime": "812",
+			"iterationResults": {}
+		},
+		{
+			"name": "Consult-user-is-casual",
+			"id": "39c72ceb-cb43-491e-9ea1-bb4038390c90",
+			"url": "https://poly-share.appspot.com/taskqueues/datastoreUpload?event=consult&mail=noobpolyshare1@gmail.com",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status code is OK.",
+				"status": "pass",
+				"Has Content-Type.": true,
+				"User is casual": true
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"User is casual": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"174"
+			],
+			"allTests": [
+				{
+					"Status code is OK.": true,
+					"Has Content-Type.": true,
+					"User is casual": true
+				}
+			],
+			"time": "174",
+			"totalRequestTime": "174",
+			"iterationResults": {}
+		}
+	],
+	"totalPass": 6,
+	"totalFail": 0,
+	"totalTime": 2776,
+	"lifecycle": "done",
+	"requests": [
+		{
+			"name": "Reset",
+			"id": "c1971de0-dff4-4064-b724-6aea46252579",
+			"url": "https://poly-share.appspot.com/reset",
+			"time": "2018-11-18T12:51:51.427Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Create-users",
+			"id": "b3366c8c-9bea-4359-b19f-7f703dc738bd",
+			"url": "https://poly-share.appspot.com/taskqueues/datastoreUpload",
+			"time": "2018-11-18T12:51:51.427Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Consult-user-is-noob",
+			"id": "caac6883-80b6-4f4d-9867-9909c4a97925",
+			"url": "https://poly-share.appspot.com/taskqueues/datastoreUpload?event=consult&mail=noobpolyshare1@gmail.com",
+			"time": "2018-11-18T12:51:51.427Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"User is noob": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Noob-to-casual",
+			"id": "c5054091-348e-430e-92a4-acf2032865eb",
+			"url": "https://poly-share.appspot.com/Upload?mail=noobpolyshare1@gmail.com&generatedFileSize=10485760",
+			"time": "2018-11-18T12:51:51.427Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Consult-user-is-casual",
+			"id": "39c72ceb-cb43-491e-9ea1-bb4038390c90",
+			"url": "https://poly-share.appspot.com/taskqueues/datastoreUpload?event=consult&mail=noobpolyshare1@gmail.com",
+			"time": "2018-11-18T12:51:51.427Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"User is casual": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		}
+	],
+	"synced": false
+}

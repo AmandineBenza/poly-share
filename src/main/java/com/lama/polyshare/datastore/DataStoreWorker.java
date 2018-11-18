@@ -117,7 +117,7 @@ public class DataStoreWorker extends HttpServlet {
 			userRank = EnumUserRank.valueOf(userRankElement.getAsString().trim().toUpperCase());
 			switch (userRank) {
 			case NOOB:
-				userPoints = Utils.irand(0, 100 - 20);
+				userPoints = Utils.irand(91, 95);
 				break;
 			case CASUAL:
 				userPoints = Utils.irand(100, 200 - 20);
