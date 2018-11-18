@@ -34,7 +34,7 @@ Logiciel:
 
 1. Lancer Postman.
 2. Importer le dossier /src/main/resources/requests
-3. Svp, lancer l'environnement "Poly-share-run.postman_environment.json" avec delay=500 ms et Keep variable values=true
+3. Svp, lancez avec l'environnement "Poly-share-run.postman_environment.json", delay=500 ms et Keep variable values=true
 
 - Contenu de "src/main/resources/requests"
 
@@ -57,7 +57,7 @@ Logiciel:
 - Veuillez, s'il vous plaît, vérifier que le total d'envoi de mail est inférieur au quota max (100). Etat de facturation -> ressource -> Destinataires contactés par e-mail:
 	https://console.cloud.google.com/appengine?hl=fr&project=poly-share&serviceId=default&duration=PT1H
 
-Si l'utilisation actuelle est au dessus du quota maximum, s'il vous plaît, passez le champ "Utils.MAILS_ACTIVATED" à false puis mvn clean install puis mvn appengine:update puis relancez les tests ! 
+Si l'utilisation actuelle est au dessus du quota maximum, s'il vous plaît, passez le champ "Utils.MAILS_ACTIVATED" à false puis mvn clean install puis mvn appengine:update puis relancez les tests !
 ------------  
 
 >> Composition de l'archive
