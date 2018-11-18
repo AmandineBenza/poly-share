@@ -1,13 +1,18 @@
-------------------------------------------------------
+---- Cloud Computing Project - Fabrice HUET ----
+-----------------------------------------------
+Groupe:
 - TOUTAIN Xavier
-- FORNALI DAMIEN
+- FORNALI Damien
 - BENZA Amandine
-- HAJI Amine						
+- HAJJI Amine						
 
+Contexte:
 - Master II IFI
 - Nice-Sophia-Antipolis University, 2018-2019
+-----------------------------------------------
 
----- Cloud Computing Project ----
+>> Remarques et contenu
+
 
 ------------  
 
