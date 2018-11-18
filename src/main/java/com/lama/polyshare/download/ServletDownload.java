@@ -12,6 +12,7 @@ import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.taskqueue.TaskOptions.Method;
+import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
@@ -22,7 +23,7 @@ import com.google.cloud.storage.Blob;
 import com.google.gson.JsonObject;
 import com.lama.polyshare.commons.JSONUtils;
 import com.lama.polyshare.commons.Utils;
-import com.lama.polyshare.mails.ServletSendMails;
+import com.lama.polyshare.mails.MailSender;
 import com.lama.polyshare.upload.CloudStorageHelper;
 
 @SuppressWarnings("serial")
@@ -69,7 +70,7 @@ public class ServletDownload extends HttpServlet  {
 			else {
 				//TODO retirer ça ? lol
 				// send mail ou refuser lien invalide lol (avec une mention le lien peut etre expiré)
-				ServletSendMails.instance.sendDownloadMail(mail, "poly-share.appspot.com/Download?linkId=" + linkID);
+				MailSender.instance.sendDownloadMail(mail, "poly-share.appspot.com/Download?linkId=" + linkID);
 			}
 		} else {
 			// mail ou resp.senderreur400 invalid operation pour son rang ou sa vie ou idk balec
@@ -85,11 +86,12 @@ public class ServletDownload extends HttpServlet  {
 		String mail = req.getParameter("mail");
 
 		Queue queue = QueueFactory.getDefaultQueue();
+		String id = Timestamp.now().toString();
 		queue.add(TaskOptions.Builder.withUrl("/worker/download").method(Method.POST)
-				.param("fileName",fileName).param("mail", mail));
+				.param("fileName",fileName).param("mail", mail).param("id",id ));
 
 		try {
-			//			resp.getWriter().write(downloadLink);
+			resp.getWriter().write("poly-share.appspot.com/Download?linkId=" + id +"&mail=" + mail);
 		} catch (Exception e) {
 			throw new ServletException("Error updating book", e);
 		}
