@@ -11,8 +11,13 @@ Contexte:
 - Nice-Sophia-Antipolis University, 2018-2019
 -----------------------------------------------
 
->> Remarques et contenu
+>> Pour lancer l'application
 
+- Clonez le repository github https://github.com/Damoy/poly-share.git.
+- Initialisez l'environement gcloud à l'aide de la commande 'gcloud init'.
+- Choisissez le projet 'poly-share' en europe-west3.
+- Rendez-vous à la racine du dossier polyshare (au niveau du pom.xml).
+- Executez la commande mvn appengine:update.
 
 ------------  
 
@@ -79,7 +84,7 @@ Logiciel:
 - Postman: https://www.getpostman.com/
 
 1. Lancer Postman.
-2. Importer /src/main/resources/requests/*.json (mais pas les fichiers *test*)
+2. Importer /src/main/resources/requests
 3. Lancer avec delay=500 ms et Keep variable values=true
 
 - Contenu de "src/main/resources/requests":
@@ -88,9 +93,16 @@ Logiciel:
 	- Promotion d'un utilisateur de rang Noob vers Casual
 2. "Poly-share-dl-limit-by-rank.postman_collection.json"
 	- Démonstration de la limite de download par utilisateur suivant leur niveau
-3. "TODO"
-	- Démonstration des downloads en parallèle pour différents utilisateurs
-
+3. ""
+	-
+4. "Poly-share-trials.postman_collection"
+	- Requêtes additionnelles
+5. "Poly-share-run.postman_environment.json"
+	- Environnement nécessaire au bon déroulement des requêtes
+6. "Poly-share-noob-to-casual.postman_test_run.json"
+	- Résultat du lancement des requêtes postman pour la promotion d'un utilisateur de rang Noob vers Casual
+7. ""
+	-
 
 ------------  
 
@@ -117,4 +129,3 @@ Logiciel:
 	- Exemple de requête : 
 		- curl -X POST "https://poly-share.appspot.com/Download?fileName={{generatedFileName}}&mail=noobpolyshare1@gmail.com"
  
-
