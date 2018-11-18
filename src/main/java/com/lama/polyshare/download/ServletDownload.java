@@ -84,12 +84,14 @@ public class ServletDownload extends HttpServlet  {
 
 		String fileName = req.getParameter("fileName");
 		String mail = req.getParameter("mail");
-
-		Queue queue = QueueFactory.getDefaultQueue();
 		String id = Timestamp.now().toString();
-		queue.add(TaskOptions.Builder.withUrl("/worker/download").method(Method.POST)
-				.param("fileName",fileName).param("mail", mail).param("id",id ));
-
+		
+		if( fileName != null && mail != null ) {
+			Queue queue = QueueFactory.getDefaultQueue();
+			queue.add(TaskOptions.Builder.withUrl("/worker/download").method(Method.POST)
+					.param("fileName",fileName).param("mail", mail).param("id",id ));
+		}
+		
 		try {
 			resp.getWriter().write("poly-share.appspot.com/Download?linkId=" + id +"&mail=" + mail);
 		} catch (Exception e) {
