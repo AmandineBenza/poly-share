@@ -82,3 +82,29 @@ Logiciel:
 2. Importer /src/main/resources/requests/*.json (mais pas les fichiers *test*)
 3. Lancer avec delay=1000 ms et Keep variable values=true
 
+------------  
+
+[Points d'entrée]
+
+/leaderboard || Accès direct au leaderboard
+
+/reset || Accès direct à la réinitialisation de la base de données
+
+/taskqueues/datastoreUpload || Creation et consultation des utilisateurs
+		- Exemple de requêtes : 
+			- curl --request POST \
+  			--url https://poly-share.appspot.com/taskqueues/datastoreUpload \
+  			--header 'Content-Type: application/json' \
+  			--data '{"event":"create-users", "data":[{"mail":"noobpolyshare1@gmail.com","rank":"Noob"},{"mail":"noobypolyshare2@gmail.com","rank":"Noob"}]}'
+
+/Upload || Upload d'un fichier 
+	- Exemple de requêtes : 
+		- curl -X POST "https://poly-share.appspot.com/Upload?mail=xavier96@rocketmail.com&generatedFileSize=1048576" -d ""
+		- curl -X POST -F file=@"Nouveau document.py" https://poly-share.appspot.com/Upload?mail=leetpolyshare1@gmail.com
+
+
+/Download || Téléchargement d'un fichier 
+	- Exemple de requêtes : 
+		- curl -X POST "https://poly-share.appspot.com/Download?fileName={{generatedFileName}}&mail=noobpolyshare1@gmail.com"
+ 
+
