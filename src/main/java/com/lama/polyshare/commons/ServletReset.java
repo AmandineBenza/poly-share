@@ -47,10 +47,10 @@ public class ServletReset extends HttpServlet {
 		allKeys.clear();
 		
 		// Reset customs links
-//		query = Query.newEntityQueryBuilder().setKind("CustomsLinks").build();
-//		datastore.run(query).forEachRemaining(e -> allKeys.add(e.getKey()));
-//		allKeys.forEach(k -> datastore.delete(k));
-//		resp.getWriter().println("Removed " + allKeys.size() + " customs links.");
+		query = Query.newEntityQueryBuilder().setKind("CustomsLinks").build();
+		datastore.run(query).forEachRemaining(e -> allKeys.add(e.getKey()));
+		allKeys.forEach(k -> datastore.delete(k));
+		resp.getWriter().println("Removed " + allKeys.size() + " customs links.");
 	}
 	
 }
