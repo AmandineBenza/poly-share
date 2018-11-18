@@ -1,8 +1,6 @@
 <queue-entries>
   <queue>
-    <name>superQueue</name>
+    <name>PullQueueDesEnfers</name>
      <mode>pull</mode>
-    
-  </queue>
-  
+  </queue>  
 </queue-entries>
