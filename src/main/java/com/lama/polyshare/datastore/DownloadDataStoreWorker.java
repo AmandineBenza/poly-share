@@ -19,7 +19,7 @@ import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.lama.polyshare.commons.Utils;
 import com.lama.polyshare.datastore.model.EnumUserRank;
-import com.lama.polyshare.mails.ServletSendMails;
+import com.lama.polyshare.mails.MailSender;
 
 @SuppressWarnings("serial")
 public class DownloadDataStoreWorker extends HttpServlet {
@@ -93,9 +93,9 @@ public class DownloadDataStoreWorker extends HttpServlet {
 					.set("DownloadRequestStart", Timestamp.now()).set("fileName", req.getParameter("fileName"))
 					.set("rank", rank.toString()).build());
 			
-			ServletSendMails.instance.sendDownloadMail(mail, "poly-share.appspot.com/Download?linkId=" + id +"&mail=" + mail);
+			MailSender.instance.sendDownloadMail(mail, "poly-share.appspot.com/Download?linkId=" + id +"&mail=" + mail);
 		} else {
-			ServletSendMails.instance.sendNoob(mail);
+			MailSender.instance.sendNoob(mail);
 		}
 	}
 }

@@ -1,6 +1,5 @@
 package com.lama.polyshare.mails;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
@@ -17,23 +16,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class ServletSendMails extends HttpServlet {
+public class MailSender  {
 
 	private static final long serialVersionUID = 2316390422015026794L;
-	public static volatile ServletSendMails instance = new ServletSendMails();
+	public static volatile MailSender instance = new MailSender();
 	public final static String SENDER_MAIL = "amandinebenza@gmail.com";
 	
-	public ServletSendMails() {}
+	public MailSender() {}
 	
-	
-	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-	};
 
-	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-	}
 	
 	public void sendUploadMail(String recipient, String link, String filename) {
 		sendMail(SENDER_MAIL, recipient, "", "Successful upload of your file", filename + " : " + link);	

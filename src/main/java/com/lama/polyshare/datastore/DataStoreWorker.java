@@ -26,7 +26,7 @@ import com.lama.polyshare.commons.Utils;
 import com.lama.polyshare.datastore.model.DataStoreMessage;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 import com.lama.polyshare.datastore.model.UserManager;
-import com.lama.polyshare.mails.ServletSendMails;
+import com.lama.polyshare.mails.MailSender;
 import com.lama.polyshare.upload.CloudStorageHelper;
 
 
@@ -246,13 +246,13 @@ public class DataStoreWorker extends HttpServlet {
 					.set("fileName", fileName).set("rank", rank.toString()).build());
 
 			// send mail ok
-			ServletSendMails.instance.sendUploadMail(mail, downloadLink, fileName);
+			MailSender.instance.sendUploadMail(mail, downloadLink, fileName);
 			return true ;
 		} else {
 			new CloudStorageHelper().deleteFile("staging.poly-share.appspot.com", fileName);
 
 			// send mail no lol
-			ServletSendMails.instance.sendNoob(mail);
+			MailSender.instance.sendNoob(mail);
 			return false;
 		}
 	}
