@@ -21,7 +21,6 @@ import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.cloud.storage.Blob;
 import com.lama.polyshare.commons.Utils;
-import com.lama.polyshare.mails.MailSender;
 import com.lama.polyshare.upload.CloudStorageHelper;
 
 
@@ -72,7 +71,6 @@ public class ServletDownload extends HttpServlet  {
 						Method.GET).param("mail", mail));
 			}
 			else {
-				
 				resp.sendError(402);
 			}
 		} else {

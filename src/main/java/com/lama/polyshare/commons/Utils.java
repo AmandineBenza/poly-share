@@ -18,6 +18,8 @@ import com.lama.polyshare.datastore.model.EnumUserRank;
  * Fonction utilitaire pour la gestion des données relative à l'application. 
  */
 public class Utils {
+	
+	public final static boolean MAILS_ACTIVATED = true;
 
 	private final static Random SEED = new Random();
 	private static Datastore datastore = DatastoreOptions.getDefaultInstance().getService();

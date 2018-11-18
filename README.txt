@@ -53,6 +53,11 @@ Logiciel:
 7. "Poly-share-concurrent-dl.postman_test_run.json"
 	- Résultats du lancement des requêtes Postman pour les download en parallèle pour différents utilisateurs.
 
+>> En cas de soucis
+- Veuillez, s'il vous plaît, vérifier que le total d'envoi de mail est inférieur au quota max (100). Etat de facturation -> ressource -> Destinataires contactés par e-mail:
+	https://console.cloud.google.com/appengine?hl=fr&project=poly-share&serviceId=default&duration=PT1H
+
+Si l'utilisation actuelle est au dessus du quota maximum, s'il vous plaît, passez le champ "Utils.MAILS_ACTIVATED" à false puis mvn clean install puis mvn appengine:update puis relancez les tests ! 
 ------------  
 
 >> Composition de l'archive
