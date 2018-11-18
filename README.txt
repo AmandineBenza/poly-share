@@ -18,9 +18,9 @@
 						- pom.xml 		
 
 						-> deliverables 
-									> ArchitectureAndInstances.pdf (Rendu 1)
-									-> ArchitectureOverview.pdf (Rendu 1)
-									-> CloudStorage.pdf (Rendu 2)
+									- ArchitectureAndInstances.pdf (Rendu 1)
+									- ArchitectureOverview.pdf (Rendu 1)
+									- CloudStorage.pdf (Rendu 2)
 
 						-> Eclipse Project  -> Polyshare -> Java
 															- ServletYo.java || Permet de tester bon déploiement de l'application 
