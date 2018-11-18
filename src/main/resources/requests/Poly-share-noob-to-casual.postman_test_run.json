@@ -1,8 +1,8 @@
 {
-	"id": "c5260245-c5ea-4c92-8ffc-1ed30399fe85",
-	"name": "Poly-share-API",
+	"id": "43041eee-3618-4097-ae96-ab05b57b6e2b",
+	"name": "Poly-share-noob-to-casual",
 	"allTests": [],
-	"timestamp": "2018-11-18T13:15:45.723Z",
+	"timestamp": "2018-11-18T14:05:06.242Z",
 	"collection_id": "ff3f518b-e863-405f-8fe3-e98f177e5851",
 	"folder_id": 0,
 	"target_type": "collection",
@@ -12,7 +12,7 @@
 	"count": 1,
 	"collection": {
 		"id": "ff3f518b-e863-405f-8fe3-e98f177e5851",
-		"name": "Poly-share-API",
+		"name": "Poly-share-noob-to-casual",
 		"description": null,
 		"auth": null,
 		"events": [
@@ -93,13 +93,13 @@
 			},
 			"testPassFailCounts": {},
 			"times": [
-				"649"
+				"552"
 			],
 			"allTests": [
 				{}
 			],
-			"time": "649",
-			"totalRequestTime": "649",
+			"time": "552",
+			"totalRequestTime": "552",
 			"iterationResults": {}
 		},
 		{
@@ -117,13 +117,13 @@
 			},
 			"testPassFailCounts": {},
 			"times": [
-				"1107"
+				"1096"
 			],
 			"allTests": [
 				{}
 			],
-			"time": "1107",
-			"totalRequestTime": "1107",
+			"time": "1096",
+			"totalRequestTime": "1096",
 			"iterationResults": {}
 		},
 		{
@@ -160,7 +160,7 @@
 				}
 			},
 			"times": [
-				"142"
+				"95"
 			],
 			"allTests": [
 				{
@@ -169,8 +169,8 @@
 					"User is noob": true
 				}
 			],
-			"time": "142",
-			"totalRequestTime": "142",
+			"time": "95",
+			"totalRequestTime": "95",
 			"iterationResults": {}
 		},
 		{
@@ -188,13 +188,13 @@
 			},
 			"testPassFailCounts": {},
 			"times": [
-				"831"
+				"886"
 			],
 			"allTests": [
 				{}
 			],
-			"time": "831",
-			"totalRequestTime": "831",
+			"time": "886",
+			"totalRequestTime": "886",
 			"iterationResults": {}
 		},
 		{
@@ -231,7 +231,7 @@
 				}
 			},
 			"times": [
-				"156"
+				"78"
 			],
 			"allTests": [
 				{
@@ -240,21 +240,21 @@
 					"User is casual": true
 				}
 			],
-			"time": "156",
-			"totalRequestTime": "156",
+			"time": "78",
+			"totalRequestTime": "78",
 			"iterationResults": {}
 		}
 	],
 	"totalPass": 6,
 	"totalFail": 0,
-	"totalTime": 2885,
+	"totalTime": 2707,
 	"lifecycle": "done",
 	"requests": [
 		{
 			"name": "Reset",
 			"id": "25b637ef-042b-4d3a-8b8f-8be0477b6143",
 			"url": "https://poly-share.appspot.com/reset",
-			"time": "2018-11-18T13:15:45.723Z",
+			"time": "2018-11-18T14:05:06.242Z",
 			"responseCode": {
 				"code": 200,
 				"name": "OK",
@@ -269,7 +269,7 @@
 			"name": "Create-users",
 			"id": "c1354a47-f446-4964-bccb-94708ff5e712",
 			"url": "https://poly-share.appspot.com/taskqueues/datastoreUpload",
-			"time": "2018-11-18T13:15:45.723Z",
+			"time": "2018-11-18T14:05:06.242Z",
 			"responseCode": {
 				"code": 200,
 				"name": "OK",
@@ -284,7 +284,7 @@
 			"name": "Consult-user-is-noob",
 			"id": "d69cfd0b-b2e7-4463-b557-12344a7c7e6e",
 			"url": "https://poly-share.appspot.com/taskqueues/datastoreUpload?event=consult&mail=noobpolyshare1@gmail.com",
-			"time": "2018-11-18T13:15:45.723Z",
+			"time": "2018-11-18T14:05:06.242Z",
 			"responseCode": {
 				"code": 200,
 				"name": "OK",
@@ -312,7 +312,7 @@
 			"name": "Noob-to-casual",
 			"id": "9a1c487d-d249-4b94-91ca-bae87fba59e2",
 			"url": "https://poly-share.appspot.com/Upload?mail=noobpolyshare1@gmail.com&generatedFileSize=10485760",
-			"time": "2018-11-18T13:15:45.723Z",
+			"time": "2018-11-18T14:05:06.242Z",
 			"responseCode": {
 				"code": 200,
 				"name": "OK",
@@ -327,7 +327,7 @@
 			"name": "Consult-user-is-casual",
 			"id": "adf42033-aef8-4c47-97f1-f5761d8568b6",
 			"url": "https://poly-share.appspot.com/taskqueues/datastoreUpload?event=consult&mail=noobpolyshare1@gmail.com",
-			"time": "2018-11-18T13:15:45.723Z",
+			"time": "2018-11-18T14:05:06.242Z",
 			"responseCode": {
 				"code": 200,
 				"name": "OK",
