@@ -4,6 +4,10 @@ import java.io.Reader;
 
 import com.google.gson.GsonBuilder;
 
+/***
+ * 
+ * Classe utilitaire pour manipuler le Json 
+ */
 public final class JSONUtils {
 
 	private final static GsonBuilder builder = new GsonBuilder().setPrettyPrinting();

@@ -30,6 +30,12 @@ import com.lama.polyshare.mails.MailSender;
 import com.lama.polyshare.upload.CloudStorageHelper;
 
 
+/**
+ * Servlet/Worker utilisé pour la gestion des utilisateurs et des uploads 
+ * 	- Creation des utilisateurs 
+ * 	- Consultation des utilisateur 
+ *  - Creation des informations liés à l'upload de vidéo (Points et historique)
+ */
 @SuppressWarnings("serial")
 public class DataStoreWorker extends HttpServlet {
 

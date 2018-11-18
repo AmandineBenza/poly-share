@@ -6,6 +6,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+/***
+ * Servlet pour tester le bon depploiement de l'application 
+ */
 public class ServletYo extends HttpServlet {
 
 	private static final long serialVersionUID = -343983157453804598L;

@@ -13,6 +13,10 @@ import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 
+
+/***
+ * Fonction utilitaire pour la gestion des données relative à l'application. 
+ */
 public class Utils {
 
 	private final static Random SEED = new Random();

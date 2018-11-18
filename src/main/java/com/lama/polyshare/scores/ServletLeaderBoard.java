@@ -19,6 +19,9 @@ import com.google.cloud.datastore.EntityQuery.Builder;
 
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 
+/***
+ * Affiche les scores des 5 meilleur utilisateurs. 
+ */
 public class ServletLeaderBoard extends HttpServlet {
 
 	private static final long serialVersionUID = 5236901201231220762L;

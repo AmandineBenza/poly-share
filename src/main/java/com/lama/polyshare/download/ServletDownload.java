@@ -24,6 +24,12 @@ import com.lama.polyshare.commons.Utils;
 import com.lama.polyshare.mails.MailSender;
 import com.lama.polyshare.upload.CloudStorageHelper;
 
+
+/***
+ *	Servlet permettant le download des fichiers 
+ * 	- Le Post permet la generation du lien de telechargement 
+ * 	- Le get permet de telecharger un fichier via l'url de telechargement.
+ */
 @SuppressWarnings("serial")
 public class ServletDownload extends HttpServlet  {
 

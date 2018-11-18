@@ -13,7 +13,7 @@ import com.google.appengine.api.mail.BounceNotificationParser;
 public class ServletBounceHandler extends HttpServlet{
 	
 	/**
-	 * 
+	 * Classe pour la gestion des erreurs liées aux mails 
 	 */
 	private static final long serialVersionUID = -7411674201504140429L;
 

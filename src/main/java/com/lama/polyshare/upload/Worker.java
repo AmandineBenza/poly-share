@@ -12,6 +12,10 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 
 
+
+/**
+ * Servlet inutile 
+ */
 @WebServlet(
 		name = "TaskWorker",
 		description = "TaskQueues: worker",

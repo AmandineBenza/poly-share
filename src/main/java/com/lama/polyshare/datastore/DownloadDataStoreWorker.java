@@ -19,8 +19,11 @@ import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.lama.polyshare.commons.Utils;
 import com.lama.polyshare.datastore.model.EnumUserRank;
-import com.lama.polyshare.mails.MailSender;
 
+
+/***
+ * Worker pour la generation de lien de telechargements et historique des telechargements
+ */
 @SuppressWarnings("serial")
 public class DownloadDataStoreWorker extends HttpServlet {
 

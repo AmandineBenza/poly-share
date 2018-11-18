@@ -15,6 +15,10 @@ import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.Query;
 
+
+/***
+ * Servlet pour vider la base de donnée. 
+ */
 public class ServletReset extends HttpServlet {
 
 	private static final long serialVersionUID = -3033318538535959542L;
