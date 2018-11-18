@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.appidentity.AppIdentityServicePb.SigningService.Method;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
@@ -19,7 +18,6 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.google.gson.JsonObject;
-import com.lama.polyshare.commons.JSONUtils;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 import com.lama.polyshare.datastore.model.UserManager;
 import javax.servlet.http.Part;
@@ -65,26 +63,13 @@ public class Upload extends HttpServlet {
 		JsonObject root =new JsonObject();
 		root.addProperty("mail", plasticUser.getString("mail"));
 		root.addProperty("event", "edit-user");
-		System.out.println(fileSize);
-		System.out.println(String.valueOf(fileSize));
-		System.out.println(((Long)fileSize).toString());
-		
-//		Queue pullqueue = QueueFactory.getQueue("PullQueueDesEnfers");
-//		
-//		pullqueue.add(TaskOptions.Builder.withMethod(TaskOptions.Method.PULL)
-//				.tag("fileUpload")
-//				.param("data",root.toString())
-//				.param("downloadLink", downloadLink)
-//				.param("fileName", fileName)
-//				.param("fileSize", ((Long)fileSize).toString()));
-		
 		
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(TaskOptions.Builder.withUrl("/taskqueues/datastoreUpload").param("data",root.toString())
 				.param("downloadLink", downloadLink).param("fileName", fileName).param("fileSize", ((Long)fileSize).toString()));
 
 		try {
-			// resp.getWriter().write(downloadLink);
+			 resp.getWriter().write(fileName);
 		} catch (Exception e) {
 			throw new ServletException("Error updating book", e);
 		}

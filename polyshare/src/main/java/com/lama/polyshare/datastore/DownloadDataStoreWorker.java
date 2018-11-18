@@ -93,7 +93,7 @@ public class DownloadDataStoreWorker extends HttpServlet {
 					.set("DownloadRequestStart", Timestamp.now()).set("fileName", req.getParameter("fileName"))
 					.set("rank", rank.toString()).build());
 			
-			ServletSendMails.instance.sendDownloadMail(mail, "poly-share.appspot.com/Download?linkId=" + id);
+			ServletSendMails.instance.sendDownloadMail(mail, "poly-share.appspot.com/Download?linkId=" + id+"&mail=" + mail);
 		} else {
 			ServletSendMails.instance.sendNoob(mail);
 		}

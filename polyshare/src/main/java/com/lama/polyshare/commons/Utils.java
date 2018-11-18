@@ -67,6 +67,7 @@ public class Utils {
 		QueryResults<Entity> download = datastore.run(downloadQuery);
 		int downloadCpt = 0;
 		int uploadCpt = 0;
+		
 		while (download.hasNext()) {
 			download.next();
 			downloadCpt++;
