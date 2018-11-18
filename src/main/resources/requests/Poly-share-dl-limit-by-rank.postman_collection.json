@@ -81,15 +81,14 @@
 			"response": []
 		},
 		{
-			"name": "Upload-file",
+			"name": "Leet-Upload-file",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"id": "b310697e-9aa4-48e3-b206-aa0cb9392e81",
 						"exec": [
-							"postman.setEnvironmentVariable(\"downloadLink\", responseBody);",
-							"console.log(\"environment downloadLink:\" + environment[\"downloadLink\"]);"
+							"postman.setEnvironmentVariable(\"generatedFileName\", responseBody);"
 						],
 						"type": "text/javascript"
 					}
@@ -128,16 +127,25 @@
 			"response": []
 		},
 		{
-			"name": "Download-file",
+			"name": "Noob-request-download-file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4f28e346-0fb3-4b3a-aaaf-f4b1e2fd8e02",
+						"exec": [
+							"postman.setEnvironmentVariable(\"noobRequestDownloadFile\", responseBody);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"url": {
-					"raw": "https://poly-share.appspot.com/Download?fileName={{downloadFile}}&mail=leetpolyshare1@gmail.com",
+					"raw": "https://poly-share.appspot.com/Download?fileName={{generatedFileName}}&mail=noobpolyshare1@gmail.com",
 					"protocol": "https",
 					"host": [
 						"poly-share",
@@ -150,12 +158,292 @@
 					"query": [
 						{
 							"key": "fileName",
-							"value": "{{downloadFile}}"
+							"value": "{{generatedFileName}}"
 						},
 						{
 							"key": "mail",
-							"value": "leetpolyshare1@gmail.com"
+							"value": "noobpolyshare1@gmail.com"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Noob-download-file-1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4f28e346-0fb3-4b3a-aaaf-f4b1e2fd8e02",
+						"exec": [
+							"eval(globals.commonPreTest)();",
+							"",
+							"if(responseHeaders[\"Content-Disposition\"] !== null){",
+							"   tests[\"Download file is ok.\"] = responseHeaders[\"Content-Disposition\"].replace(\"attachment; filename=\\\"\",\"\").replace(\" \",\"\").replace(\"\\\"\",\"\") == environment[\"generatedFileName\"];",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4d339f6a-081a-4a0b-b7e9-947b204c54c3",
+						"exec": [
+							"postman.setGlobalVariable(\"commonPreTest\", () => {",
+							"    // response code validity",
+							"    tests[\"Status code is OK.\"] = responseCode.code == 200;",
+							"    ",
+							"    // content type header existence",
+							"    var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+							"    ",
+							"    tests[\"Has Content-Type.\"] = contentTypeHeaderExists;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{noobRequestDownloadFile}}",
+					"host": [
+						"{{noobRequestDownloadFile}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Noob-download-file-2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4f28e346-0fb3-4b3a-aaaf-f4b1e2fd8e02",
+						"exec": [
+							"eval(globals.commonPreTest)();"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77637728-d9e6-4ae4-b804-5b544c588774",
+						"exec": [
+							"postman.setGlobalVariable(\"commonPreTest\", () => {",
+							"    // response code validity",
+							"    tests[\"Status code is not ok, could not download file.\"] = responseCode.code == 400;",
+							"    ",
+							"    // content type header existence",
+							"    var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+							"    ",
+							"    tests[\"Has Content-Type.\"] = contentTypeHeaderExists;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{noobRequestDownloadFile}}",
+					"host": [
+						"{{noobRequestDownloadFile}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Casual-request-download-file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4f28e346-0fb3-4b3a-aaaf-f4b1e2fd8e02",
+						"exec": [
+							"postman.setEnvironmentVariable(\"casualRequestDownloadFile\", responseBody);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://poly-share.appspot.com/Download?fileName={{generatedFileName}}&mail=casualpolyshare1@gmail.com",
+					"protocol": "https",
+					"host": [
+						"poly-share",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"Download"
+					],
+					"query": [
+						{
+							"key": "fileName",
+							"value": "{{generatedFileName}}"
+						},
+						{
+							"key": "mail",
+							"value": "casualpolyshare1@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Casual-download-file-1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4f28e346-0fb3-4b3a-aaaf-f4b1e2fd8e02",
+						"exec": [
+							"eval(globals.commonPreTest)();",
+							"",
+							"if(responseHeaders[\"Content-Disposition\"] !== null){",
+							"   tests[\"Download file is ok.\"] = responseHeaders[\"Content-Disposition\"].replace(\"attachment; filename=\\\"\",\"\").replace(\" \",\"\").replace(\"\\\"\",\"\") == environment[\"generatedFileName\"];",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4d339f6a-081a-4a0b-b7e9-947b204c54c3",
+						"exec": [
+							"postman.setGlobalVariable(\"commonPreTest\", () => {",
+							"    // response code validity",
+							"    tests[\"Status code is OK.\"] = responseCode.code == 200;",
+							"    ",
+							"    // content type header existence",
+							"    var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+							"    ",
+							"    tests[\"Has Content-Type.\"] = contentTypeHeaderExists;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{casualRequestDownloadFile}}",
+					"host": [
+						"{{casualRequestDownloadFile}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Casual-download-file-2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4f28e346-0fb3-4b3a-aaaf-f4b1e2fd8e02",
+						"exec": [
+							"eval(globals.commonPreTest)();",
+							"",
+							"if(responseHeaders[\"Content-Disposition\"] !== null){",
+							"   tests[\"Download file is ok.\"] = responseHeaders[\"Content-Disposition\"].replace(\"attachment; filename=\\\"\",\"\").replace(\" \",\"\").replace(\"\\\"\",\"\") == environment[\"generatedFileName\"];",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4d339f6a-081a-4a0b-b7e9-947b204c54c3",
+						"exec": [
+							"postman.setGlobalVariable(\"commonPreTest\", () => {",
+							"    // response code validity",
+							"    tests[\"Status code is OK.\"] = responseCode.code == 200;",
+							"    ",
+							"    // content type header existence",
+							"    var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+							"    ",
+							"    tests[\"Has Content-Type.\"] = contentTypeHeaderExists;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{casualRequestDownloadFile}}",
+					"host": [
+						"{{casualRequestDownloadFile}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Casual-download-file-3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4f28e346-0fb3-4b3a-aaaf-f4b1e2fd8e02",
+						"exec": [
+							"eval(globals.commonPreTest)();"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77637728-d9e6-4ae4-b804-5b544c588774",
+						"exec": [
+							"postman.setGlobalVariable(\"commonPreTest\", () => {",
+							"    // response code validity",
+							"    tests[\"Status code is not ok, casual could not download file.\"] = responseCode.code == 400;",
+							"    ",
+							"    // content type header existence",
+							"    var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+							"    ",
+							"    tests[\"Has Content-Type.\"] = contentTypeHeaderExists;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{casualRequestDownloadFile}}",
+					"host": [
+						"{{casualRequestDownloadFile}}"
 					]
 				}
 			},
