@@ -51,10 +51,12 @@
 																- Worker.java || Implementation d'un worker 
 													 -> Resources 
 													 		-> Requests
-													 			- Poly-share-online.postman_collection.json || Bundle de requêtes postman qui visent application en ligne
-													 			- Poly-share.postman_collection.json || Bundle de requêtes postman qui visent application en local
+													 			- Poly-share-online.postman_collection.json || Bundle de requêtes postman qui visent l'application en ligne
+													 			- Poly-share-local.postman_collection.json || Bundle de requêtes postman qui visent l'application en local
+													 			- Poly-share-API.postman_collection.json || Tests Postman requis dans le sujet
+													 			- Poly-share-API.postman_test_run.json || Résultats des tests Postman requis dans le sujet
 													 		-> Accounts 
-													 			- PolyShare_Accounts.txt || Comptes de nos utilisateurs ainsi que les mots de passe associés
+													 			- Polyshare_accounts.txt || Comptes GMAIL de nos 6 utilisateurs ainsi que les mots de passe associés
 													 		-> Webapp
 													 		 	- index.jsp
 													 		 	-> WEB-INF
@@ -67,12 +69,12 @@
 
 ------------  
 
-[Postman scenarios Launch]
+[Lancer les Tests Postman]
 
-Requirements:
-- Postman software: https://www.getpostman.com/
+Logiciel:
+- Postman: https://www.getpostman.com/
 
-1. Launch Postman.
-2. import "Poly-share-online.postman_collection.json".
-4. Run (delay=100ms, Keep variable values=true)
+1. Lancer Postman.
+2. importer "Poly-share-API.postman_collection.json".
+3. Lancer avec delay=1000 ms et Keep variable values=true
 

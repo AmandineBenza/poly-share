@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "cff218e4-4392-4661-a68b-5a36d331cb9f",
-		"name": "Poly-share",
+		"_postman_id": "0bc7a413-1fa9-45d9-8d6d-35b7e77b52f0",
+		"name": "Poly-share-local",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -13,7 +13,7 @@
 					"script": {
 						"id": "54b5d02b-ba1c-41d1-a212-f2dc446dfc9e",
 						"exec": [
-							""
+							"console.log(pm.response.json());"
 						],
 						"type": "text/javascript"
 					}
@@ -34,7 +34,8 @@
 					"raw": "{\"event\":\"create-user\", \"mail\":\"noobpolyshare1@gmail.com\",\"rank\":\"Noob\"}"
 				},
 				"url": {
-					"raw": "localhost:8080/taskqueues/datastoreUpload",
+					"raw": "https://localhost:8080/taskqueues/datastoreUpload",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
@@ -76,7 +77,8 @@
 					"raw": "{\"event\":\"create-users\", \"data\": [\n\t\t{\n\t\t\t\"mail\":\"noobpolyshare1@gmail.com\",\n\t\t\t\"rank\":\"Noob\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"noobypolyshare2@gmail.com\",\n\t\t\t\"rank\":\"Noob\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"casualpolyshare1@gmail.com\",\n\t\t\t\"rank\":\"Casual\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"casuallypolyshare2@gmail.com\",\n\t\t\t\"rank\":\"Casual\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"leetpolyshare1@gmail.com\",\n\t\t\t\"rank\":\"Leet\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"leetypolyshare2@gmail.com\",\n\t\t\t\"rank\":\"Leet\"\n\t\t}\n\t]\n}"
 				},
 				"url": {
-					"raw": "localhost:8080/taskqueues/datastoreUpload",
+					"raw": "https://localhost:8080/taskqueues/datastoreUpload",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
@@ -118,7 +120,8 @@
 					"raw": "{\"event\":\"edit-user\", \"mail\":\"leetypolyshare2@gmail.com\",\"points\":\"75\", \"bytesCount\":\"80\"}"
 				},
 				"url": {
-					"raw": "localhost:8080/taskqueues/datastoreUpload",
+					"raw": "https://localhost:8080/taskqueues/datastoreUpload",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
@@ -160,7 +163,8 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:8080/taskqueues/datastoreUpload?event=consult&mail=casuallypolyshare2@gmail.com",
+					"raw": "https://localhost:8080/taskqueues/datastoreUpload?event=consult&mail=casuallypolyshare2@gmail.com",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
@@ -212,7 +216,8 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:8080/taskqueues/datastoreUpload?event=consults",
+					"raw": "https://localhost:8080/taskqueues/datastoreUpload?event=consults",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
@@ -241,7 +246,8 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:8080/leaderboard",
+					"raw": "https://localhost:8080/leaderboard",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
@@ -254,29 +260,79 @@
 			"response": []
 		},
 		{
-			"name": "Reset",
+			"name": "Upload-file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b310697e-9aa4-48e3-b206-aa0cb9392e81",
+						"exec": [
+							"postman.setEnvironmentVariable(\"downloadLink\", responseBody);",
+							"console.log(\"environment downloadLink:\" + environment[\"downloadLink\"]);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:8080/reset",
+					"raw": "https://localhost:8080/Upload?mail=leetpolyshare1@gmail.com&generatedFileSize=1048576",
+					"protocol": "https",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"reset"
+						"Upload"
+					],
+					"query": [
+						{
+							"key": "mail",
+							"value": "leetpolyshare1@gmail.com"
+						},
+						{
+							"key": "generatedFileSize",
+							"value": "1048576"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download-file",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://localhost:8080/Download?fileName={{downloadFile}}&mail=leetpolyshare1@gmail.com",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Download"
+					],
+					"query": [
+						{
+							"key": "fileName",
+							"value": "{{downloadFile}}"
+						},
+						{
+							"key": "mail",
+							"value": "leetpolyshare1@gmail.com"
+						}
 					]
 				}
 			},
