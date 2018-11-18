@@ -1,0 +1,165 @@
+{
+	"info": {
+		"_postman_id": "ccc4ccf6-b35b-4bce-b8f2-705b91a83cd1",
+		"name": "Poly-share-dl-limit-by-rank",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Reset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://poly-share.appspot.com/reset",
+					"protocol": "https",
+					"host": [
+						"poly-share",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create-users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "08d22f6d-c41a-4e14-8b99-3ce0966656b3",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"event\":\"create-users\", \"data\": [\n\t\t{\n\t\t\t\"mail\":\"noobpolyshare1@gmail.com\",\n\t\t\t\"rank\":\"Noob\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"noobypolyshare2@gmail.com\",\n\t\t\t\"rank\":\"Noob\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"casualpolyshare1@gmail.com\",\n\t\t\t\"rank\":\"Casual\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"casuallypolyshare2@gmail.com\",\n\t\t\t\"rank\":\"Casual\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"leetpolyshare1@gmail.com\",\n\t\t\t\"rank\":\"Leet\"\n\t\t},\n\t\t{\n\t\t\t\"mail\":\"leetypolyshare2@gmail.com\",\n\t\t\t\"rank\":\"Leet\"\n\t\t}\n\t]\n}"
+				},
+				"url": {
+					"raw": "https://poly-share.appspot.com/taskqueues/datastoreUpload",
+					"protocol": "https",
+					"host": [
+						"poly-share",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"taskqueues",
+						"datastoreUpload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload-file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b310697e-9aa4-48e3-b206-aa0cb9392e81",
+						"exec": [
+							"postman.setEnvironmentVariable(\"downloadLink\", responseBody);",
+							"console.log(\"environment downloadLink:\" + environment[\"downloadLink\"]);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://poly-share.appspot.com/Upload?mail=leetpolyshare1@gmail.com&generatedFileSize=1048576",
+					"protocol": "https",
+					"host": [
+						"poly-share",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"Upload"
+					],
+					"query": [
+						{
+							"key": "mail",
+							"value": "leetpolyshare1@gmail.com"
+						},
+						{
+							"key": "generatedFileSize",
+							"value": "1048576"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download-file",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://poly-share.appspot.com/Download?fileName={{downloadFile}}&mail=leetpolyshare1@gmail.com",
+					"protocol": "https",
+					"host": [
+						"poly-share",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"Download"
+					],
+					"query": [
+						{
+							"key": "fileName",
+							"value": "{{downloadFile}}"
+						},
+						{
+							"key": "mail",
+							"value": "leetpolyshare1@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

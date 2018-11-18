@@ -4,7 +4,7 @@ Groupe:
 - TOUTAIN Xavier
 - FORNALI Damien
 - BENZA Amandine
-- HAJJI Amine						
+- HAJJI Amine
 
 Contexte:
 - Master II IFI
