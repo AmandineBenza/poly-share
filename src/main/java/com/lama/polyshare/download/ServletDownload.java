@@ -20,8 +20,6 @@ import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.cloud.storage.Blob;
-import com.google.gson.JsonObject;
-import com.lama.polyshare.commons.JSONUtils;
 import com.lama.polyshare.commons.Utils;
 import com.lama.polyshare.mails.MailSender;
 import com.lama.polyshare.upload.CloudStorageHelper;
@@ -68,13 +66,12 @@ public class ServletDownload extends HttpServlet  {
 						Method.GET).param("mail", mail));
 			}
 			else {
-				//TODO retirer ça ? lol
-				// send mail ou refuser lien invalide lol (avec une mention le lien peut etre expiré)
-				MailSender.instance.sendDownloadMail(mail, "poly-share.appspot.com/Download?linkId=" + linkID);
+				
+				resp.sendError(402);
 			}
 		} else {
 			// mail ou resp.senderreur400 invalid operation pour son rang ou sa vie ou idk balec
-			resp.sendError(404);
+			resp.sendError(400);
 		}
 	}
 
@@ -93,7 +90,7 @@ public class ServletDownload extends HttpServlet  {
 		}
 		
 		try {
-			resp.getWriter().write("poly-share.appspot.com/Download?linkId=" + id +"&mail=" + mail);
+			resp.getWriter().write("http://poly-share.appspot.com/Download?linkId=" + id +"&mail=" + mail+ "\n");
 		} catch (Exception e) {
 			throw new ServletException("Error updating book", e);
 		}

@@ -77,7 +77,7 @@ public class Utils {
 			upload.next();
 			uploadCpt++;
 		}
-
+		
 		Query<Entity> query = Query.newEntityQueryBuilder().setKind("user")
 				.setFilter(PropertyFilter.eq("mail", mail)).build();
 
@@ -88,6 +88,9 @@ public class Utils {
 			Entity ent = user.next();
 			rank = EnumUserRank.valueOf(ent.getString("rank"));
 		}
+		
+		if(rank == null)
+			return false;
 		
 		return Utils.isAuthorizedRequest(downloadCpt + uploadCpt, rank);
 	}
