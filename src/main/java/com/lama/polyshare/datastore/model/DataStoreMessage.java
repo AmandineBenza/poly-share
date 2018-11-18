@@ -1,5 +1,9 @@
 package com.lama.polyshare.datastore.model;
 
+
+/**
+ * Utilitaire faciliter la transformation JSon 
+ */
 public class DataStoreMessage {
 
 	private String[] infos;

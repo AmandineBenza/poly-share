@@ -16,6 +16,10 @@ import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.lama.polyshare.commons.Utils;
 
+
+/***
+ *	Supprimes les liens apres 5 minutes.
+ */
 public class DeleteLinksJob extends HttpServlet {
 	
 	private static final long serialVersionUID = -4274864314000137136L;

@@ -10,6 +10,9 @@ import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.lama.polyshare.datastore.DataStoreWorker;
 
+/***
+ * Classe utilitaire pour la transformation des user en entity.
+ */
 public final class UserManager {
 	
 	public volatile static UserManager instance = new UserManager();

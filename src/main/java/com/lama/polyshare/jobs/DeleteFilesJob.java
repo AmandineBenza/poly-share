@@ -19,6 +19,9 @@ import com.lama.polyshare.commons.Utils;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 import com.lama.polyshare.upload.CloudStorageHelper;
 
+/***
+ *	Verifie les fichiers en ligne et supprime ceux qui le doivent
+ */
 public class DeleteFilesJob extends HttpServlet {
 
 

@@ -20,6 +20,10 @@ import com.google.gson.JsonObject;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 import com.lama.polyshare.datastore.model.UserManager;
 
+
+/***
+ * Servlet pour l'upload de fichier
+ */
 @MultipartConfig(maxFileSize = 10*1024*1024,maxRequestSize = 20*1024*1024,fileSizeThreshold = 50*1024*1024)
 public class UploadServlet extends HttpServlet {
 
@@ -36,14 +40,14 @@ public class UploadServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		CloudStorageHelper storageHelper = new CloudStorageHelper();
-		String richard = req.getParameter("generatedFileSize");
+		String fileSizeS = req.getParameter("generatedFileSize");
 		BlobInfo docInformation = null;
 		
-		if(richard == null ) {
+		if(fileSizeS == null ) {
 			docInformation = storageHelper.getImageOrTxtUrl(req, resp, "staging.poly-share.appspot.com");// "polyshare.appspot.com");
 			
 		} else {
-			docInformation = storageHelper.getDevDebugTestAPIImageOrTxtUrl(Integer.parseInt(richard), req.getParameter("reqFileName"), "staging.poly-share.appspot.com"); 
+			docInformation = storageHelper.getDevDebugTestAPIImageOrTxtUrl(Integer.parseInt(fileSizeS), req.getParameter("reqFileName"), "staging.poly-share.appspot.com"); 
 		}
 		
 		String downloadLink = docInformation.getMediaLink();

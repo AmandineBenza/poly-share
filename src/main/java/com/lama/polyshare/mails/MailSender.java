@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+/***
+ *	Utilitaire pour l'envoi de mail 
+ */
 public class MailSender  {
 
 	private static final long serialVersionUID = 2316390422015026794L;
