@@ -69,14 +69,14 @@ public class Upload extends HttpServlet {
 		System.out.println(String.valueOf(fileSize));
 		System.out.println(((Long)fileSize).toString());
 		
-		Queue pullqueue = QueueFactory.getQueue("PullQueueDesEnfers");
-		
-		pullqueue.add(TaskOptions.Builder.withMethod(TaskOptions.Method.PULL)
-				.tag("fileUpload")
-				.param("data",root.toString())
-				.param("downloadLink", downloadLink)
-				.param("fileName", fileName)
-				.param("fileSize", ((Long)fileSize).toString()));
+//		Queue pullqueue = QueueFactory.getQueue("PullQueueDesEnfers");
+//		
+//		pullqueue.add(TaskOptions.Builder.withMethod(TaskOptions.Method.PULL)
+//				.tag("fileUpload")
+//				.param("data",root.toString())
+//				.param("downloadLink", downloadLink)
+//				.param("fileName", fileName)
+//				.param("fileSize", ((Long)fileSize).toString()));
 		
 		
 		Queue queue = QueueFactory.getDefaultQueue();
