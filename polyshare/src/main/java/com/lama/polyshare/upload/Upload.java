@@ -1,7 +1,6 @@
 package com.lama.polyshare.upload;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -20,7 +19,6 @@ import com.google.cloud.storage.StorageOptions;
 import com.google.gson.JsonObject;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 import com.lama.polyshare.datastore.model.UserManager;
-import javax.servlet.http.Part;
 
 @MultipartConfig(maxFileSize = 10*1024*1024,maxRequestSize = 20*1024*1024,fileSizeThreshold = 50*1024*1024)
 public class Upload extends HttpServlet {
@@ -34,31 +32,25 @@ public class Upload extends HttpServlet {
 	}
 
 	static private final long serialVersionUID = 1L;
-	static private final Logger log = Logger.getLogger(Worker.class.getName());
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		
-		
 		CloudStorageHelper storageHelper = new CloudStorageHelper();
 		String richard = req.getParameter("generatedFileSize");
 		BlobInfo docInformation = null;
+		
 		if(richard == null ) {
-			 docInformation = storageHelper.getImageOrTxtUrl(req, resp, "staging.poly-share.appspot.com");// "polyshare.appspot.com");
-		}
-		else {
+			docInformation = storageHelper.getImageOrTxtUrl(req, resp, "staging.poly-share.appspot.com");// "polyshare.appspot.com");
+		} else {
 			docInformation = storageHelper.getDevDebugTestAPIImageOrTxtUrl(Integer.parseInt(richard), "staging.poly-share.appspot.com"); 
 		}
 		
-		//FOR sparta
 		String downloadLink = docInformation.getMediaLink();
 		long fileSize = docInformation.getSize();
 		String fileName = docInformation.getName();
 		
-		// TODO CHECK
 		Entity plasticUser = UserManager.instance.buildUser(req.getParameter("mail"), Timestamp.now(),
 				EnumUserRank.NOOB, 0, 0);
-		
 		
 		JsonObject root =new JsonObject();
 		root.addProperty("mail", plasticUser.getString("mail"));
