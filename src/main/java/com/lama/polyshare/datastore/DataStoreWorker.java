@@ -173,69 +173,67 @@ public class DataStoreWorker extends HttpServlet {
 		JsonElement userDateElement = msgRoot.get("lastSending");
 		JsonElement userPointsElement = msgRoot.get("points");
 		JsonElement userBytesCount = msgRoot.get("bytesCount");
-		
+
 		int newNumberOfBytes =  (int) toEditUser.getLong("bytesCount") + Integer.parseInt(fileSize.trim());
 
-		toEditUser = UserManager.instance.editUser(toEditUser,
 
-				(userDateElement == null ? 
-						Timestamp.now() : 
-							Timestamp.parseTimestamp(userDateElement.getAsString())),
-				null,
-				userPointsElement == null ?
-						(int) newNumberOfBytes/1000000  : 
-							(int) toEditUser.getLong("points"),
-							userBytesCount == null ? 
-									(int) newNumberOfBytes :
-										userBytesCount.getAsInt());
 
-		registerUpload(toEditUser.getString("mail"),
-				EnumUserRank.valueOf(toEditUser.getString("rank")), fileName, downloadLink);
+		if(registerUpload(toEditUser.getString("mail"),
+				EnumUserRank.valueOf(toEditUser.getString("rank")), fileName, downloadLink)) {
+
+			toEditUser = UserManager.instance.editUser(toEditUser,
+
+					(userDateElement == null ? 
+							Timestamp.now() : 
+								Timestamp.parseTimestamp(userDateElement.getAsString())),
+					null,
+					userPointsElement == null ?
+							(int) newNumberOfBytes/1000000  : 
+								(int) toEditUser.getLong("points"),
+								userBytesCount == null ? 
+										(int) newNumberOfBytes :
+											userBytesCount.getAsInt());
+		}
 
 		datastore.update(toEditUser);
 		return JSONUtils.toJson(datastore.get(toEditUser.getKey()));
 	}
 
 
-	private void registerUpload(String mail, EnumUserRank rank, String fileName, String downloadLink) throws IOException {
+	private boolean registerUpload(String mail, EnumUserRank rank, String fileName, String downloadLink) throws IOException {
 		IncompleteKey key = keyFactory.setKind("FileUploaded").newKey();
 		int downloadCpt = 0;
 		int uploadCpt = 0;
 
-//		try {
-			Query<Entity> uploadQuery = Query.newEntityQueryBuilder()
-					.setKind("FileUploaded")
-					.setFilter(CompositeFilter.and(PropertyFilter.eq("mail", mail),
-							PropertyFilter.gt("UploadRequestStart",
-							Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
-					.build();
 
-			QueryResults<Entity> upload = datastore.run(uploadQuery);
-			
-			while (upload.hasNext()) {
-				upload.next();
-				uploadCpt++;
-			}
-//		}catch(Exception e){
-//		}
-		
-		try {
-			Query<Entity> downloadQuery = Query.newEntityQueryBuilder().setKind("FileDownloaded")
-					.setFilter(
-							CompositeFilter
-							.and(PropertyFilter.eq("mail", mail),
-									PropertyFilter.gt("downloadRequestStart",
-											Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
-					.build();
+		Query<Entity> uploadQuery = Query.newEntityQueryBuilder()
+				.setKind("FileUploaded")
+				.setFilter(CompositeFilter.and(PropertyFilter.eq("mail", mail),
+						PropertyFilter.gt("UploadRequestStart",
+								Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
+				.build();
 
-			QueryResults<Entity> download = datastore.run(downloadQuery);
-			while (download.hasNext()) {
-				download.next();
-				downloadCpt++;
-			}
+		QueryResults<Entity> upload = datastore.run(uploadQuery);
+
+		while (upload.hasNext()) {
+			upload.next();
+			uploadCpt++;
 		}
-		catch(Exception e){
+
+		Query<Entity> downloadQuery = Query.newEntityQueryBuilder().setKind("FileDownloaded")
+				.setFilter(
+						CompositeFilter
+						.and(PropertyFilter.eq("mail", mail),
+								PropertyFilter.gt("DownloadRequestStart",
+										Timestamp.of(Utils.addMinutesToDate(-1, Timestamp.now().toDate())))))
+				.build();
+
+		QueryResults<Entity> download = datastore.run(downloadQuery);
+		while (download.hasNext()) {
+			download.next();
+			downloadCpt++;
 		}
+
 
 
 
@@ -249,10 +247,13 @@ public class DataStoreWorker extends HttpServlet {
 
 			// send mail ok
 			ServletSendMails.instance.sendUploadMail(mail, downloadLink, fileName);
+			return true ;
 		} else {
 			new CloudStorageHelper().deleteFile("staging.poly-share.appspot.com", fileName);
+
 			// send mail no lol
 			ServletSendMails.instance.sendNoob(mail);
+			return false;
 		}
 	}
 

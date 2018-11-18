@@ -41,7 +41,7 @@
 
 	<servlet>
 		<servlet-name>Upload</servlet-name>
-		<servlet-class>com.lama.polyshare.upload.Upload</servlet-class>
+		<servlet-class>com.lama.polyshare.upload.UploadSevlet</servlet-class>
 		<multipart-config>
 			<max-file-size>10485760</max-file-size>
 			<max-request-size>20971520</max-request-size>
