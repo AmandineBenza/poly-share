@@ -41,7 +41,7 @@
 
 	<servlet>
 		<servlet-name>Upload</servlet-name>
-		<servlet-class>com.lama.polyshare.upload.UploadSevlet</servlet-class>
+		<servlet-class>com.lama.polyshare.upload.UploadServlet</servlet-class>
 		<multipart-config>
 			<max-file-size>10485760</max-file-size>
 			<max-request-size>20971520</max-request-size>
@@ -66,7 +66,7 @@
 	
 	
 
-	<servlet>
+<!-- 	<servlet>
 		<servlet-name>ServletSendMails</servlet-name>
 		<servlet-class>com.lama.polyshare.mails.ServletSendMails</servlet-class>
 	</servlet>
@@ -75,7 +75,7 @@
 		<servlet-name>ServletSendMails</servlet-name>
 		<url-pattern>/sendmail</url-pattern>
 	</servlet-mapping>
-
+ -->
 	<servlet>
 		<servlet-name>TaskWorker</servlet-name>
 		<servlet-class>com.lama.polyshare.upload.Worker</servlet-class>
