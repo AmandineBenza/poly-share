@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.appidentity.AppIdentityServicePb.SigningService.Method;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
@@ -21,6 +22,7 @@ import com.google.gson.JsonObject;
 import com.lama.polyshare.commons.JSONUtils;
 import com.lama.polyshare.datastore.model.EnumUserRank;
 import com.lama.polyshare.datastore.model.UserManager;
+import javax.servlet.http.Part;
 
 @MultipartConfig(maxFileSize = 10*1024*1024,maxRequestSize = 20*1024*1024,fileSizeThreshold = 50*1024*1024)
 public class Upload extends HttpServlet {
@@ -39,11 +41,18 @@ public class Upload extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		
+		
 		CloudStorageHelper storageHelper = new CloudStorageHelper();
-		BlobInfo docInformation = storageHelper.getImageOrTxtUrl(req, resp, "staging.poly-share.appspot.com");// "polyshare.appspot.com");
-
+		String richard = req.getParameter("generatedFileSize");
+		BlobInfo docInformation = null;
+		if(richard == null ) {
+			 docInformation = storageHelper.getImageOrTxtUrl(req, resp, "staging.poly-share.appspot.com");// "polyshare.appspot.com");
+		}
+		else {
+			docInformation = storageHelper.getDevDebugTestAPIImageOrTxtUrl(Integer.parseInt(richard), "staging.poly-share.appspot.com"); 
+		}
 		
-		
+		//FOR sparta
 		String downloadLink = docInformation.getMediaLink();
 		long fileSize = docInformation.getSize();
 		String fileName = docInformation.getName();
@@ -59,6 +68,17 @@ public class Upload extends HttpServlet {
 		System.out.println(fileSize);
 		System.out.println(String.valueOf(fileSize));
 		System.out.println(((Long)fileSize).toString());
+		
+		Queue pullqueue = QueueFactory.getQueue("PullQueueDesEnfers");
+		
+		pullqueue.add(TaskOptions.Builder.withMethod(TaskOptions.Method.PULL)
+				.tag("fileUpload")
+				.param("data",root.toString())
+				.param("downloadLink", downloadLink)
+				.param("fileName", fileName)
+				.param("fileSize", ((Long)fileSize).toString()));
+		
+		
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(TaskOptions.Builder.withUrl("/taskqueues/datastoreUpload").param("data",root.toString())
 				.param("downloadLink", downloadLink).param("fileName", fileName).param("fileSize", ((Long)fileSize).toString()));
