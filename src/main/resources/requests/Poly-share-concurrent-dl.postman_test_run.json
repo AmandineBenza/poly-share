@@ -1,0 +1,759 @@
+{
+	"id": "aad4a386-1c5a-4291-b8f4-89436f9b8860",
+	"name": "Poly-share-concurrent-dl",
+	"allTests": [],
+	"timestamp": "2018-11-18T20:19:30.905Z",
+	"collection_id": "bdf0922c-ec30-486e-8181-e495c4eb5df5",
+	"folder_id": 0,
+	"target_type": "collection",
+	"environment_id": "61670492-cf3a-46c6-9c4a-98fa0b54d972",
+	"data": [],
+	"delay": 500,
+	"count": 1,
+	"collection": {
+		"id": "bdf0922c-ec30-486e-8181-e495c4eb5df5",
+		"name": "Poly-share-concurrent-dl",
+		"description": "",
+		"auth": null,
+		"events": null,
+		"variables": [],
+		"order": [
+			"a042fbb8-2f59-4157-8f1a-0f3068b05785",
+			"940e1051-2880-41cc-b979-a0e0f7372d62",
+			"6b64b063-6bbd-460d-916e-0bd3dd7d9e63",
+			"5a742d9f-5c91-44bf-8cff-62f1a18208cb",
+			"d1bc63ec-a5ab-4c0f-902e-408d6be2fd3d",
+			"613ae0f1-5556-4677-9317-e0f9f87c293f",
+			"0cd5746b-4649-44e7-9472-b33c321ad244",
+			"37519a69-bb5f-447e-8b53-c004ac071d34",
+			"0b35a393-cf4f-4da3-929b-cd16303acf17",
+			"ee9a2e64-1f25-49f2-9cc1-4e7a8f596998",
+			"1ef296db-38b2-41fa-b1ad-82305f16c683",
+			"0d316eaa-7738-47fe-83ed-2af7e324802f"
+		],
+		"folders_order": [],
+		"owner": "2707058",
+		"permissions": {},
+		"favorite": false,
+		"shared": false,
+		"type": "collection",
+		"depth": 0
+	},
+	"folder": null,
+	"environment": null,
+	"globals": [
+		{
+			"value": "() => {\n    // response code validity\n    tests[\"Status code is OK.\"] = responseCode.code == 200;\n    \n    // content type header existence\n    var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\n    \n    tests[\"Has Content-Type.\"] = contentTypeHeaderExists;\n}",
+			"key": "commonPreTest",
+			"enabled": true
+		},
+		{
+			"value": "(request, responseBody) => {\n    var jsonRequest = xml2Json(request.data);\n    var jsonResponse = xml2Json(responseBody);\n    \n    // the actual upsell content encapsulated into a json object\n    var upsell = jsonRequest[\"soap:Envelope\"][\"soap:Body\"][\"Fare_FlexPricerUpsell\"];\n    // the actual reply content encapsulated into a json object\n    var reply = jsonResponse[\"SOAP\\-ENV:Envelope\"][\"SOAP\\-ENV:Body\"][\"Fare_FlexPricerUpsellReply\"];\n    \n    // the connecting services\n    var connectingServices = reply[\"connectingServices\"];\n    // the lounge service\n    var loungeService = connectingServices[\"loungeService\"];\n    // the lounge array\n    var lounges = loungeService[\"lounge\"];\n    \n    // the request departure IATA code\n    var departureIata = extractRequestDeparture(upsell);\n    // the request arrival IATA code\n    var arrivalIata = extractRequestArrival(upsell);\n\n    if(lounges != null){\n            lounges.forEach((lounge) => {\n    \n        let description = lounge[\"description\"];\n        let detailedLocation = lounge[\"detailedLocation\"];\n        let entryConditions = lounge[\"entryConditions\"][\"entryCondition\"];\n        let facilities = lounge[\"facilities\"][\"facility\"];\n        let iata = lounge[\"iata\"];\n        let id = lounge[\"id\"];\n        let images = lounge[\"images\"][\"image\"];\n        let location = lounge[\"location\"];\n        let name = lounge[\"name\"];\n        let openings = lounge[\"openings\"][\"opening\"];\n        let src = lounge[\"srcUrl\"];\n        \n        // check nullity part\n        checkNullity(\"description\", description);\n        checkNullity(\"detailedLocation\", detailedLocation);\n        checkNullity(\"entryConditions\", entryConditions);\n        checkNullity(\"facilities\", facilities);\n        checkNullity(\"iata\", iata);\n        checkNullity(\"id\", id);\n        checkNullity(\"images\", images);\n        checkNullity(\"location\", location);\n        checkNullity(\"name\", name);\n        checkNullity(\"openings\", openings);\n        checkNullity(\"src\", src);\n        \n        // check non-emptyness\n        checkStrEmptyness(\"description\", description);\n        checkStrEmptyness(\"detailedLocation\", detailedLocation);\n        checkStrEmptyness(\"iata\", iata);\n        checkStrEmptyness(\"id\", id);\n        checkStrEmptyness(\"location\", location);\n        checkStrEmptyness(\"name\", name);\n        checkStrEmptyness(\"src\", src);\n        \n        // check arrays\n        checkArrayEmptyness(\"entryConditions\", entryConditions);\n        checkArrayEmptyness(\"facilities\", facilities);\n        checkArrayEmptyness(\"images\", images);\n        checkArrayEmptyness(\"openings\", openings);\n        \n        // check content\n        checkIdConsistence(id, departureIata, arrivalIata);\n        checkIataConsistence(id, departureIata, arrivalIata);\n    });\n    }\n\n    function extractRequestDeparture(upsell){\n        let itineraries = upsell[\"itinerary\"];\n        \n        // have to dissociate OW requests from multi ptc as \n        if(itineraries.constructor == Array){\n            return itineraries[0][\"departureLocalization\"][\"departurePoint\"][\"locationId\"];\n        } else {\n            return itineraries[\"departureLocalization\"][\"departurePoint\"][\"locationId\"];\n        }\n    }\n    \n    function extractRequestArrival(upsell){\n        let itineraries = upsell[\"itinerary\"];\n        \n        // have to dissociate OW requests from multi ptc as \n        if(itineraries.constructor == Array){\n            return itineraries[itineraries.length - 1][\"arrivalLocalization\"][\"arrivalPointDetails\"][\"locationId\"];\n        } else {\n            return itineraries[\"arrivalLocalization\"][\"arrivalPointDetails\"][\"locationId\"];\n        }\n    }\n    \n    function checkNullity(varName, obj){\n        tests[\"Check \" + varName + \" is not null !\"] = obj !== null;\n    }\n    \n    function checkStrEmptyness(varName, obj){\n        tests[\"Check \" + varName + \" is not empty !\"] = obj.trim() != \"\";\n    }\n    \n    function checkArrayEmptyness(varName, obj){\n        tests[\"Check \" + varName + \" is not empty !\"] = obj.length > 0;\n    }\n    \n    function checkIdConsistence(id, departure, arrival){\n        tests[\"Check id consistence.\"] = (id !== departure && id !== arrival);\n    }\n    \n    function checkIataConsistence(iata, departure, arrival){\n        tests[\"Check iata consistence.\"] = (!iata.includes(departure) && !iata.includes(arrival));\n    }\n    \n}",
+			"key": "responseValidityTest",
+			"enabled": true
+		},
+		{
+			"value": "() => {\n    tests[\"Content-Type has application/json.\"] = responseHeaders[\"Content-Type\"].has(\"application/json\");\n}",
+			"key": "preJsonTest",
+			"enabled": true
+		},
+		{
+			"value": "() => {\n    tests[\"Content-Type has text/plain.\"] = responseHeaders[\"Content-Type\"].has(\"text/plain\");\n}",
+			"key": "preTextTest",
+			"enabled": true
+		}
+	],
+	"results": [
+		{
+			"name": "Reset",
+			"id": "a042fbb8-2f59-4157-8f1a-0f3068b05785",
+			"url": "https://poly-share.appspot.com/reset",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"1368"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "1368",
+			"totalRequestTime": "1368",
+			"iterationResults": {}
+		},
+		{
+			"name": "Create-users",
+			"id": "940e1051-2880-41cc-b979-a0e0f7372d62",
+			"url": "https://poly-share.appspot.com/taskqueues/datastoreUpload",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"1087"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "1087",
+			"totalRequestTime": "1087",
+			"iterationResults": {}
+		},
+		{
+			"name": "Leet-Upload-file",
+			"id": "6b64b063-6bbd-460d-916e-0bd3dd7d9e63",
+			"url": "https://poly-share.appspot.com/Upload?mail=leetpolyshare1@gmail.com&generatedFileSize=1048576",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"691"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "691",
+			"totalRequestTime": "691",
+			"iterationResults": {}
+		},
+		{
+			"name": "Noob-request-download-file",
+			"id": "5a742d9f-5c91-44bf-8cff-62f1a18208cb",
+			"url": "https://poly-share.appspot.com/Download?fileName=Autogeneratedfile.txt-2018-11-18-201935130&mail=noobpolyshare1@gmail.com",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"132"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "132",
+			"totalRequestTime": "132",
+			"iterationResults": {}
+		},
+		{
+			"name": "Noob1-download-file",
+			"id": "d1bc63ec-a5ab-4c0f-902e-408d6be2fd3d",
+			"url": "http://poly-share.appspot.com/Download?linkId=2018-11-18T20:19:36.293000000Z&&mail=noobpolyshare1@gmail.com",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status code is OK.",
+				"status": "pass",
+				"Has Content-Type.": true,
+				"Download file is ok.": true
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Download file is ok.": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"1469"
+			],
+			"allTests": [
+				{
+					"Status code is OK.": true,
+					"Has Content-Type.": true,
+					"Download file is ok.": true
+				}
+			],
+			"time": "1469",
+			"totalRequestTime": "1469",
+			"iterationResults": {}
+		},
+		{
+			"name": "Noob2-download-file",
+			"id": "613ae0f1-5556-4677-9317-e0f9f87c293f",
+			"url": "http://poly-share.appspot.com/Download?linkId=2018-11-18T20:19:36.293000000Z&&mail=noobypolyshare2@gmail.com",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status code is OK.",
+				"status": "pass",
+				"Has Content-Type.": true,
+				"Download file is ok.": true
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Download file is ok.": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"1015"
+			],
+			"allTests": [
+				{
+					"Status code is OK.": true,
+					"Has Content-Type.": true,
+					"Download file is ok.": true
+				}
+			],
+			"time": "1015",
+			"totalRequestTime": "1015",
+			"iterationResults": {}
+		},
+		{
+			"name": "Casual-request-download-file",
+			"id": "0cd5746b-4649-44e7-9472-b33c321ad244",
+			"url": "https://poly-share.appspot.com/Download?fileName=Autogeneratedfile.txt-2018-11-18-201935130&mail=casualpolyshare1@gmail.com",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"111"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "111",
+			"totalRequestTime": "111",
+			"iterationResults": {}
+		},
+		{
+			"name": "Casual1-download-file",
+			"id": "37519a69-bb5f-447e-8b53-c004ac071d34",
+			"url": "http://poly-share.appspot.com/Download?linkId=2018-11-18T20:19:36.293000000Z&&mail=casualpolyshare1@gmail.com",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status code is OK.",
+				"status": "pass",
+				"Has Content-Type.": true,
+				"Download file is ok.": true
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Download file is ok.": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"853"
+			],
+			"allTests": [
+				{
+					"Status code is OK.": true,
+					"Has Content-Type.": true,
+					"Download file is ok.": true
+				}
+			],
+			"time": "853",
+			"totalRequestTime": "853",
+			"iterationResults": {}
+		},
+		{
+			"name": "Casual2-download-file",
+			"id": "0b35a393-cf4f-4da3-929b-cd16303acf17",
+			"url": "http://poly-share.appspot.com/Download?linkId=2018-11-18T20:19:36.293000000Z&&mail=casuallypolyshare2@gmail.com",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status code is OK.",
+				"status": "pass",
+				"Has Content-Type.": true,
+				"Download file is ok.": true
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Download file is ok.": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"687"
+			],
+			"allTests": [
+				{
+					"Status code is OK.": true,
+					"Has Content-Type.": true,
+					"Download file is ok.": true
+				}
+			],
+			"time": "687",
+			"totalRequestTime": "687",
+			"iterationResults": {}
+		},
+		{
+			"name": "Leet-request-download-file",
+			"id": "ee9a2e64-1f25-49f2-9cc1-4e7a8f596998",
+			"url": "https://poly-share.appspot.com/Download?fileName=Autogeneratedfile.txt-2018-11-18-201935130&mail=leetpolyshare1@gmail.com",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"158"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "158",
+			"totalRequestTime": "158",
+			"iterationResults": {}
+		},
+		{
+			"name": "Leet1-download-file",
+			"id": "1ef296db-38b2-41fa-b1ad-82305f16c683",
+			"url": "http://poly-share.appspot.com/Download?linkId=2018-11-18T20:19:36.293000000Z&&mail=leetpolyshare1@gmail.com",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status code is OK.",
+				"status": "pass",
+				"Has Content-Type.": true,
+				"Download file is ok.": true
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Download file is ok.": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"634"
+			],
+			"allTests": [
+				{
+					"Status code is OK.": true,
+					"Has Content-Type.": true,
+					"Download file is ok.": true
+				}
+			],
+			"time": "634",
+			"totalRequestTime": "634",
+			"iterationResults": {}
+		},
+		{
+			"name": "Leet2-download-file",
+			"id": "0d316eaa-7738-47fe-83ed-2af7e324802f",
+			"url": "http://poly-share.appspot.com/Download?linkId=2018-11-18T20:19:36.293000000Z&&mail=leetypolyshare2@gmail.com",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"name": "Status code is OK.",
+				"status": "pass",
+				"Has Content-Type.": true,
+				"Download file is ok.": true
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Download file is ok.": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"760"
+			],
+			"allTests": [
+				{
+					"Status code is OK.": true,
+					"Has Content-Type.": true,
+					"Download file is ok.": true
+				}
+			],
+			"time": "760",
+			"totalRequestTime": "760",
+			"iterationResults": {}
+		}
+	],
+	"totalPass": 18,
+	"totalFail": 0,
+	"totalTime": 8965,
+	"lifecycle": "done",
+	"requests": [
+		{
+			"name": "Reset",
+			"id": "a042fbb8-2f59-4157-8f1a-0f3068b05785",
+			"url": "https://poly-share.appspot.com/reset",
+			"time": "2018-11-18T20:19:30.905Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Create-users",
+			"id": "940e1051-2880-41cc-b979-a0e0f7372d62",
+			"url": "https://poly-share.appspot.com/taskqueues/datastoreUpload",
+			"time": "2018-11-18T20:19:30.905Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Leet-Upload-file",
+			"id": "6b64b063-6bbd-460d-916e-0bd3dd7d9e63",
+			"url": "https://poly-share.appspot.com/Upload?mail=leetpolyshare1@gmail.com&generatedFileSize=1048576",
+			"time": "2018-11-18T20:19:30.905Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Noob-request-download-file",
+			"id": "5a742d9f-5c91-44bf-8cff-62f1a18208cb",
+			"url": "https://poly-share.appspot.com/Download?fileName=Autogeneratedfile.txt-2018-11-18-201935130&mail=noobpolyshare1@gmail.com",
+			"time": "2018-11-18T20:19:30.905Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Noob1-download-file",
+			"id": "d1bc63ec-a5ab-4c0f-902e-408d6be2fd3d",
+			"url": "http://poly-share.appspot.com/Download?linkId=2018-11-18T20:19:36.293000000Z&&mail=noobpolyshare1@gmail.com",
+			"time": "2018-11-18T20:19:30.905Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Download file is ok.": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Noob2-download-file",
+			"id": "613ae0f1-5556-4677-9317-e0f9f87c293f",
+			"url": "http://poly-share.appspot.com/Download?linkId=2018-11-18T20:19:36.293000000Z&&mail=noobypolyshare2@gmail.com",
+			"time": "2018-11-18T20:19:30.905Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Download file is ok.": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Casual-request-download-file",
+			"id": "0cd5746b-4649-44e7-9472-b33c321ad244",
+			"url": "https://poly-share.appspot.com/Download?fileName=Autogeneratedfile.txt-2018-11-18-201935130&mail=casualpolyshare1@gmail.com",
+			"time": "2018-11-18T20:19:30.905Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Casual1-download-file",
+			"id": "37519a69-bb5f-447e-8b53-c004ac071d34",
+			"url": "http://poly-share.appspot.com/Download?linkId=2018-11-18T20:19:36.293000000Z&&mail=casualpolyshare1@gmail.com",
+			"time": "2018-11-18T20:19:30.905Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Download file is ok.": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Casual2-download-file",
+			"id": "0b35a393-cf4f-4da3-929b-cd16303acf17",
+			"url": "http://poly-share.appspot.com/Download?linkId=2018-11-18T20:19:36.293000000Z&&mail=casuallypolyshare2@gmail.com",
+			"time": "2018-11-18T20:19:30.905Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Download file is ok.": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Leet-request-download-file",
+			"id": "ee9a2e64-1f25-49f2-9cc1-4e7a8f596998",
+			"url": "https://poly-share.appspot.com/Download?fileName=Autogeneratedfile.txt-2018-11-18-201935130&mail=leetpolyshare1@gmail.com",
+			"time": "2018-11-18T20:19:30.905Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Leet1-download-file",
+			"id": "1ef296db-38b2-41fa-b1ad-82305f16c683",
+			"url": "http://poly-share.appspot.com/Download?linkId=2018-11-18T20:19:36.293000000Z&&mail=leetpolyshare1@gmail.com",
+			"time": "2018-11-18T20:19:30.905Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Download file is ok.": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Leet2-download-file",
+			"id": "0d316eaa-7738-47fe-83ed-2af7e324802f",
+			"url": "http://poly-share.appspot.com/Download?linkId=2018-11-18T20:19:36.293000000Z&&mail=leetypolyshare2@gmail.com",
+			"time": "2018-11-18T20:19:30.905Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is OK.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has Content-Type.": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Download file is ok.": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		}
+	],
+	"synced": false
+}
