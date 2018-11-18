@@ -295,6 +295,87 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Upload-file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b310697e-9aa4-48e3-b206-aa0cb9392e81",
+						"exec": [
+							"postman.setEnvironmentVariable(\"downloadLink\", responseBody);",
+							"console.log(\"environment downloadLink:\" + environment[\"downloadLink\"]);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://poly-share.appspot.com/Upload?mail=leetpolyshare1@gmail.com&generatedFileSize=1048576",
+					"protocol": "https",
+					"host": [
+						"poly-share",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"Upload"
+					],
+					"query": [
+						{
+							"key": "mail",
+							"value": "leetpolyshare1@gmail.com"
+						},
+						{
+							"key": "generatedFileSize",
+							"value": "1048576"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download-file",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://poly-share.appspot.com/Download?fileName={{downloadFile}}&mail=leetpolyshare1@gmail.com",
+					"protocol": "https",
+					"host": [
+						"poly-share",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"Download"
+					],
+					"query": [
+						{
+							"key": "fileName",
+							"value": "{{downloadFile}}"
+						},
+						{
+							"key": "mail",
+							"value": "leetpolyshare1@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
