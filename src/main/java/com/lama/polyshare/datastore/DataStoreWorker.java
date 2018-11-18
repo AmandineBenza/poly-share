@@ -252,12 +252,12 @@ public class DataStoreWorker extends HttpServlet {
 					.set("fileName", fileName).set("rank", rank.toString()).build());
 
 			// send mail ok
-//			MailSender.instance.sendUploadMail(mail, downloadLink, fileName);
+			MailSender.instance.sendUploadMail(mail, downloadLink, fileName);
 			return true ;
 		} else {
 			new CloudStorageHelper().deleteFile("staging.poly-share.appspot.com", fileName);
 			// send mail no lol
-//			MailSender.instance.sendNoob(mail);
+			MailSender.instance.sendNoob(mail);
 			return false;
 		}
 	}
